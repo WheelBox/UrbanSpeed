@@ -5,19 +5,37 @@
     >
 
 
+<<<<<<< HEAD
     <item
         android:id="@+id/productsearchMenu"
         android:icon="@drawable/ic_search_white_24dp"
         android:orderInCategory="100"
         android:title="Search"
         app:showAsAction="always"></item>
+=======
+
+    <item
+        android:id="@+id/productsearchMenu"
+        android:orderInCategory="100"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_search_white_24dp"
+        android:title="Search">
+    </item>
+
+>>>>>>> master
 
 
     <item
         android:id="@+id/productcartMenu"
+<<<<<<< HEAD
         android:icon="@drawable/ic_shopping_cart_black_24dp"
         android:orderInCategory="200"
         android:title="Cart"
+=======
+        android:orderInCategory="200"
+        android:title="Cart"
+        android:icon="@drawable/ic_shopping_cart_black_24dp"
+>>>>>>> master
         app:showAsAction="always">
 
     </item>
