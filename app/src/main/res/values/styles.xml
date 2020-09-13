@@ -21,13 +21,11 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-<!--    <style name="Widget.Urban.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">-->
-<!--        <item name="android:textColor">@color/whiteColorPrimary</item>-->
-<!--        <item name="hintTextColor">@color/whiteColorPrimary</item>-->
-<!--        <item name="android:paddingBottom">8dp</item>-->
-<!--        <item name="iconTint">@color/whiteColorPrimary</item>-->
-<!--        <item name="boxStrokeColor">@color/textInputOutlineColor</item>-->
-<!--    </style>-->
+    <style name="Edit_Text" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@android:color/black</item>
+    </style>
 
     <style name="Widget.Urban.Button" parent="Widget.MaterialComponents.Button">
         <item name="android:textColor">@android:color/white</item>
@@ -36,7 +34,12 @@
 
     <style name="SplashScreen" parent="AppThemeSplash">
         <item name="android:windowBackground">@drawable/background_splash_screen</item>
+        <item name="android:navigationBarColor">@android:color/black</item>
     </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="Base.ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="Base.ThemeOverlay.AppCompat.Light" />
 
 
 </resources>

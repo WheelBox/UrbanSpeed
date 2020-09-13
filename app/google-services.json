@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1055582828569-3m7lq1tgung67u5buvsucvule1qjcur6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.abhirajsharma.urbanspeed",
+            "certificate_hash": "1411e9d61e62388176eee4725f863046732bbb42"
+          }
+        },
+        {
           "client_id": "1055582828569-3uej06hdvkop0man065cjmogqk836k7i.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

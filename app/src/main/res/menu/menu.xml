@@ -1,14 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
+<<<<<<< HEAD
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+=======
 <menu
     xmlns:android="http://schemas.android.com/apk/res/android"
+>>>>>>> master
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/favourites"
 
+<<<<<<< HEAD
+        android:icon="@drawable/ic_favorite_black_24dp"
+        android:title="Favourites"
+        app:showAsAction="always"></item>
+=======
         app:showAsAction="always"
         android:icon="@drawable/ic_favorite_black_24dp"
         android:title="Favourites">
     </item>
+>>>>>>> master
 
 </menu>

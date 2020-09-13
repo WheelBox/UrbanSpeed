@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group>
+        <item
+            android:id="@+id/nav_item_home"
+            android:title="Home" />
+        <item
+            android:id="@+id/nav_item_categories"
+            android:title="Categories" />
+        <item
+            android:id="@+id/nav_item_offers"
+            android:title="Offers" />
+    </group>
+
+    <item android:title="Account">
+        <menu>
+            <item
+                android:id="@+id/nav_item_profile"
+                android:icon="@drawable/ic_account_circle_black_24dp"
+                android:title="My Profile" />
+            <item
+                android:id="@+id/nav_item_wish"
+                android:icon="@drawable/ic_favorite_border_black_24dp"
+                android:title="My Wish List" />
+        </menu>
+    </item>
+
+    <group android:id="@+id/group_menu">
+        <item
+            android:id="@+id/nav_item_refer"
+            android:title="Refer to Friend" />
+        <item
+            android:id="@+id/nav_item_about"
+            android:title="About App" />
+    </group>
+</menu>

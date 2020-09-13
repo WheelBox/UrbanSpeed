@@ -15,10 +15,12 @@ import com.google.firebase.auth.PhoneAuthProvider
 import kotlinx.android.synthetic.main.activity_phone_login.*
 import java.util.concurrent.TimeUnit
 
+
 class PhoneLogin : AppCompatActivity() {
 
     private val auth by lazy { FirebaseAuth.getInstance() }
-    var verificationId:String = ""
+    var verificationId: String = ""
+    private val KEY_VERIFICATION_ID = "key_verification_id"
     lateinit var mCallbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks
     var countryCode:String = ""
 
@@ -26,30 +28,30 @@ class PhoneLogin : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_phone_login)
 
-        setSupportActionBar(app_bar)
+//        setSupportActionBar(app_bar)
 
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        app_bar.setOnClickListener {
-            finish()
-        }
+//        app_bar.setOnClickListener {
+//            startActivity(Intent(this, LoginActivity::class.java))
+//        }
 
         otpBtn.setOnClickListener {
-            countryCode = "+"+ccp.selectedCountryCode
+            countryCode = "+" + ccp.selectedCountryCode
             phoneProgressBar.visibility = View.VISIBLE
             verify()
         }
 
         verifyBtn.setOnClickListener {
-            Log.d("checkMe","otp: "+otp_et.text.toString())
+            Log.d("checkMe", "otp: " + otp_et.text.toString())
             phoneProgressBar.visibility = View.VISIBLE
             authenticate()
         }
 
     }
 
-
     private fun verificationCallbacks(){
         mCallbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks(){
+
             override fun onVerificationCompleted(p0: PhoneAuthCredential) {
                 signInWithPhoneAuthCredential(p0)
             }
@@ -77,14 +79,15 @@ class PhoneLogin : AppCompatActivity() {
     private fun authenticate() {
         val verificationNum = otp_et.text.toString()
         val credential = PhoneAuthProvider.getCredential(verificationId, verificationNum)
-        Log.d("checkMe",credential.toString())
+        Log.d("checkMe", credential.toString())
         signInWithPhoneAuthCredential(credential)
+//        9971439072
     }
 
     private fun verify() {
         verificationCallbacks()
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                countryCode+phone_et.text.toString(),
+                countryCode + phone_et.text.toString(),
                 60,
                 TimeUnit.SECONDS,
                 this,
@@ -109,6 +112,12 @@ class PhoneLogin : AppCompatActivity() {
         val snack = Snackbar.make(this, msg, Snackbar.LENGTH_SHORT)
         snack.animationMode = Snackbar.ANIMATION_MODE_SLIDE
         snack.show()
+    }
+
+    override fun onBackPressed() {
+        startActivity(Intent(this, LoginActivity::class.java))
+        finish()
+        return
     }
 
 }

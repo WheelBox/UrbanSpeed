@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+<<<<<<< HEAD
+    android:id="@+id/bill_ll"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="10dp"
+    android:background="#E6FDFF">
+=======
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_marginVertical="10dp"
@@ -8,6 +15,7 @@
     android:id="@+id/bill_ll"
     android:layout_height="wrap_content"
     >
+>>>>>>> master
 
 
     <TextView
@@ -41,9 +49,15 @@
         android:id="@+id/textView13"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+<<<<<<< HEAD
+        android:layout_marginTop="16dp"
+        android:text="Delivery Charges"
+        android:textSize="16dp"
+=======
         android:text="Delivery Charges"
         android:textSize="16dp"
         android:layout_marginTop="16dp"
+>>>>>>> master
         app:layout_constraintEnd_toEndOf="@+id/textView9"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/textView9"
@@ -54,11 +68,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+<<<<<<< HEAD
+        android:text="Discounts"
+
+        android:textColor="#00A700"
+        android:textSize="16dp"
+        android:visibility="gone"
+=======
         android:visibility="gone"
 
         android:text="Discounts"
         android:textSize="16dp"
         android:textColor="#00A700"
+>>>>>>> master
 
         app:layout_constraintEnd_toEndOf="@+id/textView13"
         app:layout_constraintHorizontal_bias="0.0"
@@ -69,9 +91,15 @@
         android:id="@+id/taxChargesPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+<<<<<<< HEAD
+        android:layout_marginTop="16dp"
+        android:text="35"
+        android:textSize="16dp"
+=======
         android:text="35"
         android:textSize="16dp"
         android:layout_marginTop="16dp"
+>>>>>>> master
         app:layout_constraintEnd_toEndOf="@+id/itemTotalPrice"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/itemTotalPrice"
@@ -81,8 +109,13 @@
         android:id="@+id/textView15"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+<<<<<<< HEAD
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="8dp"
+=======
 android:layout_marginBottom="8dp"
         android:layout_marginTop="12dp"
+>>>>>>> master
         android:text="Grand Total"
         android:textColor="#292828"
         android:textSize="20dp"
@@ -99,9 +132,15 @@ android:layout_marginBottom="8dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="43"
+<<<<<<< HEAD
+        android:textColor="#00A700"
+        android:textSize="16dp"
+        android:visibility="gone"
+=======
         android:visibility="gone"
         android:textColor="#00A700"
         android:textSize="16dp"
+>>>>>>> master
         app:layout_constraintEnd_toEndOf="@+id/taxChargesPrice"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/taxChargesPrice"
@@ -141,10 +180,17 @@ android:layout_marginBottom="8dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="4dp"
         android:text="Rs."
+<<<<<<< HEAD
+        android:textColor="#00A700"
+
+        android:textSize="16dp"
+        android:visibility="gone"
+=======
         android:visibility="gone"
 
         android:textSize="16dp"
         android:textColor="#00A700"
+>>>>>>> master
 
         app:layout_constraintBottom_toBottomOf="@+id/discount_price"
         app:layout_constraintEnd_toStartOf="@+id/discount_price"

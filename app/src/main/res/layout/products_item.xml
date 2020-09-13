@@ -2,6 +2,15 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+<<<<<<< HEAD
+    android:id="@+id/grocery_home_product_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="1dp"
+    android:background="@drawable/corner_round_image"
+    android:orientation="vertical"
+    android:paddingBottom="16dp">
+=======
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:id="@+id/grocery_home_product_layout"
@@ -9,6 +18,7 @@
     android:layout_margin="1dp"
     android:background="@drawable/corner_round_image"
     android:layout_height="wrap_content">
+>>>>>>> master
 
 
     <ImageView
@@ -99,8 +109,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
+<<<<<<< HEAD
+        android:layout_marginBottom="2dp"
+        android:text="₹240"
+=======
         android:text="₹240"
         android:layout_marginBottom="2dp"
+>>>>>>> master
         android:textSize="9sp"
         app:layout_constraintBottom_toBottomOf="@+id/grocery_home_product_Price"
         app:layout_constraintStart_toEndOf="@+id/grocery_home_product_Price" />
@@ -109,8 +124,13 @@
         android:id="@+id/textView97"
         android:layout_width="0dp"
         android:layout_height="0.8dp"
+<<<<<<< HEAD
+        android:background="#909797"
+        android:text=""
+=======
         android:text=""
         android:background="#909797"
+>>>>>>> master
         app:layout_constraintBottom_toBottomOf="@+id/grocery_home_product_CutPrice"
         app:layout_constraintEnd_toEndOf="@+id/grocery_home_product_CutPrice"
         app:layout_constraintStart_toStartOf="@+id/grocery_home_product_CutPrice"
@@ -122,8 +142,13 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:text="5% off"
+<<<<<<< HEAD
+        android:textColor="#4AC237"
+        android:textSize="12sp"
+=======
         android:textSize="12sp"
         android:textColor="#4AC237"
+>>>>>>> master
         app:layout_constraintBottom_toBottomOf="@+id/textView97"
         app:layout_constraintStart_toEndOf="@+id/textView97"
         app:layout_constraintTop_toTopOf="@+id/textView97" />
@@ -141,9 +166,15 @@
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/grocery_home_product_floating_action_button"
+<<<<<<< HEAD
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+=======
             android:layout_gravity="end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+>>>>>>> master
             android:backgroundTint="#fff"
             app:borderWidth="0.5dp"
             app:elevation="4dp"
@@ -155,7 +186,10 @@
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 
+<<<<<<< HEAD
+=======
 
+>>>>>>> master
     <TextView
         android:id="@+id/no_of_stock"
         android:layout_width="wrap_content"

@@ -4,6 +4,17 @@ import java.util.ArrayList;
 
 public class GroceryProductModel {
 
+<<<<<<< HEAD
+    String name, offertype, offerAmount, price, rating, reviewCount, id, tag_list;
+    long stock;
+    String image;
+    private ArrayList<String> tags;
+
+    public GroceryProductModel(String image, String name, String offertype, String offerAmount, String price, String rating, String reviewCount, long Stock, String id, String tag_list) {
+        this.image = image;
+        this.name = name;
+        this.id = id;
+=======
     String name,offertype,offerAmount,price,rating,reviewCount,id,tag_list;
     long stock;
     String image;
@@ -12,13 +23,20 @@ public class GroceryProductModel {
         this.image=image;
         this.name = name;
         this.id=id;
+>>>>>>> master
         this.offertype = offertype;
         this.offerAmount = offerAmount;
         this.price = price;
         this.rating = rating;
+<<<<<<< HEAD
+        this.reviewCount = reviewCount;
+        this.stock = Stock;
+        this.tag_list = tag_list;
+=======
         this.reviewCount=reviewCount;
         this.stock=Stock;
         this.tag_list=tag_list;
+>>>>>>> master
 
     }
 
@@ -63,9 +81,12 @@ public class GroceryProductModel {
     }
 
 
+<<<<<<< HEAD
+=======
 
 
 
+>>>>>>> master
     public String getName() {
         return name;
     }
@@ -75,7 +96,10 @@ public class GroceryProductModel {
     }
 
 
+<<<<<<< HEAD
+=======
 
+>>>>>>> master
     public String getOffertype() {
         return offertype;
     }

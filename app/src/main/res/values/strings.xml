@@ -2,4 +2,8 @@
     <string name="app_name">Urban Speed</string>
     <string name="termsAndCond"><![CDATA[Please read the T&C\'s before continuing]]></string>
     <string name="phoneVerificationDetails">You will receive an OTP code through an SMS for verification</string>
+    <string name="navigation_drawer_open">Drawer Open</string>
+    <string name="navigation_drawer_close">Drawer Closed</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

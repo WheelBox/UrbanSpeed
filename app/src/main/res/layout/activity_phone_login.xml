@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/phoneLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    android:orientation="vertical"
-    tools:context=".PhoneLogin">
+    android:orientation="vertical">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -132,23 +130,27 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/verifyBtn"
                 android:layout_width="110dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp"
                 android:backgroundTint="#ef6637"
                 android:fontFamily="@font/rubik_medium"
                 android:text="Verify"
-                android:textSize="15sp"
+                android:textSize="13sp"
                 app:cornerRadius="15dp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/otpBtn"
                 android:layout_width="110dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="20dp"
                 android:backgroundTint="#FB5445"
                 android:fontFamily="@font/rubik_medium"
                 android:text="get otp"
-                android:textSize="15sp"
+                android:textSize="13sp"
                 app:cornerRadius="15dp" />
 
         </LinearLayout>
