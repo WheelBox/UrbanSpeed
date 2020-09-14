@@ -8,14 +8,7 @@
     android:layout_marginTop="8dp"
     android:background="@drawable/corner_round_image"
     android:elevation="8dp"
-<<<<<<< HEAD
     android:orientation="vertical">
-=======
-
-    android:orientation="vertical"
->
-
->>>>>>> master
 
     <ImageView
         android:id="@+id/grocery_cart_productImage"
@@ -221,21 +214,13 @@
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_marginTop="2dp"
-<<<<<<< HEAD
         android:drawableStart="@drawable/ic_delete_black_24dp"
         android:drawablePadding="6dp"
         android:drawableTint="#A8A8A8"
         android:gravity="center"
         android:text="Remove"
         android:textColor="#252525"
-=======
-        android:gravity="center"
-        android:text="Remove"
-        android:drawableTint="#A8A8A8"
-        android:drawableStart="@drawable/ic_delete_black_24dp"
-        android:textColor="#252525"
-        android:drawablePadding="6dp"
->>>>>>> master
+
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

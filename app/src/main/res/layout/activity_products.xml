@@ -8,7 +8,6 @@
 
 
     <androidx.appcompat.widget.Toolbar
-<<<<<<< HEAD
         android:id="@+id/toolbar_grocery_product"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -20,19 +19,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_scrollFlags="scroll|enterAlways|snap">
-=======
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/toolbar_grocery_product"
-        android:background="@color/colorPrimaryDark"
-        android:minHeight="?attr/actionBarSize"
-
-        app:layout_scrollFlags="scroll|enterAlways|snap"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
->>>>>>> master
 
     </androidx.appcompat.widget.Toolbar>
 
@@ -56,23 +42,15 @@
         android:backgroundTint="#3A93FF"
         android:gravity="center"
         android:text="3"
-<<<<<<< HEAD
         android:textColor="#fff"
         android:textStyle="bold"
         android:visibility="visible"
-=======
-        android:visibility="visible"
-        android:textColor="#fff"
-        android:textStyle="bold"
->>>>>>> master
+
         app:layout_constraintBottom_toBottomOf="@+id/toolbar_grocery_product"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/toolbar_grocery_product"
         app:layout_constraintVertical_bias="0.189" />
 
 
-<<<<<<< HEAD
-=======
 
->>>>>>> master
 </androidx.constraintlayout.widget.ConstraintLayout>

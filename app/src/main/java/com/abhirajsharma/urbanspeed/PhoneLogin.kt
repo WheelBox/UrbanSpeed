@@ -99,6 +99,13 @@ class PhoneLogin : AppCompatActivity() {
         auth.signInWithCredential(credential).addOnCompleteListener(this) {
             if (it.isSuccessful){
                 phoneLayout.showSnackBar("Account Created Successfully.")
+
+
+                ///creating user in fireBase
+
+
+
+
                 phoneProgressBar.visibility = View.GONE
                 startActivity(Intent(this, MainActivity::class.java))
                 finish()

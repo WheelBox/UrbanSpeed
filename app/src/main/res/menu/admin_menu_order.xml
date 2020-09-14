@@ -3,13 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
-<<<<<<< HEAD
-    <item
-        android:id="@+id/Menu"
-        android:orderInCategory="100"
-        android:title="Menu"
-        app:showAsAction="always"></item>
-=======
+
 
 
 
@@ -19,17 +13,13 @@
         app:showAsAction="always"
         android:title="Menu">
     </item>
->>>>>>> master
 
     <item
         android:id="@+id/OrderMenu"
         android:orderInCategory="100"
-<<<<<<< HEAD
         android:title="Orders"
-        app:showAsAction="always"></item>
-=======
-        app:showAsAction="always"
-        android:title="Orders">
+        app:showAsAction="always">
+
     </item>
->>>>>>> master
+
 </menu>

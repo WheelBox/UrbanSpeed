@@ -5,17 +5,11 @@
 
     <item
         android:id="@+id/searchMenu"
-<<<<<<< HEAD
-        android:icon="@drawable/ic_search_white_24dp"
-        android:orderInCategory="100"
-        android:title="Search"
-        app:showAsAction="always"></item>
-=======
+
         android:orderInCategory="100"
         app:showAsAction="always"
         android:icon="@drawable/ic_search_white_24dp"
         android:title="Search">
     </item>
->>>>>>> master
 
 </menu>

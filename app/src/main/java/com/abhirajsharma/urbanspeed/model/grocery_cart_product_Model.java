@@ -2,18 +2,11 @@ package com.abhirajsharma.urbanspeed.model;
 
 public class grocery_cart_product_Model {
 
-<<<<<<< HEAD
-    String image;
+
     private String name, description, price, cutprice, product_id, offer, itemcount;
+    String image;
     private long in_stock;
     private int inde;
-=======
-    private String name,description,price,cutprice,product_id,offer,itemcount;
-    String image;
-    private long in_stock;
-    private  int inde;
-
->>>>>>> master
 
 
     public grocery_cart_product_Model(String name, String description, String price, String cutprice, String product_id, String itemcount, String offer, String image, long in_stock, int inde) {
@@ -22,19 +15,11 @@ public class grocery_cart_product_Model {
         this.price = price;
         this.cutprice = cutprice;
         this.product_id = product_id;
-<<<<<<< HEAD
         this.itemcount = itemcount;
         this.offer = offer;
         this.image = image;
         this.in_stock = in_stock;
         this.inde = inde;
-=======
-        this.itemcount=itemcount;
-        this.offer = offer;
-        this.image = image;
-        this.in_stock=in_stock;
-        this.inde=inde;
->>>>>>> master
     }
 
     public int getInde() {
@@ -56,10 +41,7 @@ public class grocery_cart_product_Model {
     public void setItemcount(String itemcount) {
         this.itemcount = itemcount;
     }
-<<<<<<< HEAD
 
-=======
->>>>>>> master
     public String getName() {
         return name;
     }
