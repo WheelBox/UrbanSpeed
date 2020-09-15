@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.abhirajsharma.urbanspeed.R;
 import com.abhirajsharma.urbanspeed.model.HomeCategoryModels;
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -67,7 +68,7 @@ public class HomeCategoryAdapter extends RecyclerView.Adapter<HomeCategoryAdapte
         private void setData(String url, final String Title, final String TagList){
 
 
-           // Glide.with( itemView.getContext() ).load( url ).into( image );
+            Glide.with( itemView.getContext() ).load( url ).into( image );
             title.setText( Title );
 
 
