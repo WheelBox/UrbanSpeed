@@ -13,6 +13,7 @@ import androidx.viewpager.widget.PagerAdapter;
 
 import com.abhirajsharma.urbanspeed.R;
 import com.abhirajsharma.urbanspeed.model.sliderModel;
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -37,7 +38,7 @@ public class SliderAdapter extends PagerAdapter {
 
 
         sliderCL.getBackground().setColorFilter( Color.parseColor(backColor), PorterDuff.Mode.SRC_ATOP);
-       // Glide.with( container.getContext() ).load( sliderModelList.get( position ).getBanner() ).into( banner );
+        Glide.with( container.getContext() ).load( sliderModelList.get( position ).getBanner() ).into( banner );
         container.addView( view, 0 );
 
         banner.setOnClickListener( new View.OnClickListener( ) {

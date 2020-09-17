@@ -25,6 +25,7 @@ import com.abhirajsharma.urbanspeed.model.HomeCategoryModels;
 import com.abhirajsharma.urbanspeed.model.HomeModel;
 import com.abhirajsharma.urbanspeed.model.dealsofthedayModel;
 import com.abhirajsharma.urbanspeed.model.sliderModel;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -408,10 +409,10 @@ public class HomeAdapter extends  RecyclerView.Adapter{
             nmae2.setText( Name2 );
             nmae3.setText( Name3);
             nmae4.setText( Name4 );
-           /* Glide.with( itemView.getContext() ).load( url1 ).into( image1 );
+            Glide.with( itemView.getContext() ).load( url1 ).into( image1 );
             Glide.with( itemView.getContext() ).load( url2 ).into( image2 );
             Glide.with( itemView.getContext() ).load( url3 ).into( image3 );
-            Glide.with( itemView.getContext() ).load( url4 ).into( image4 );*/
+            Glide.with( itemView.getContext() ).load( url4 ).into( image4 );
 
             image1.setOnClickListener( new View.OnClickListener( ) {
                 @Override

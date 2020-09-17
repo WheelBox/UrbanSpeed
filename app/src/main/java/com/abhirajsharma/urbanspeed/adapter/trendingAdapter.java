@@ -15,6 +15,7 @@ import androidx.annotation.RequiresApi;
 import com.abhirajsharma.urbanspeed.Products;
 import com.abhirajsharma.urbanspeed.R;
 import com.abhirajsharma.urbanspeed.model.dealsofthedayModel;
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -57,7 +58,7 @@ public class trendingAdapter extends BaseAdapter {
             TextView price = view.findViewById( R.id.dealsofthedayitemprice );
 
            final String id = gridmodelList.get( i ).getId( );
-           // Glide.with( view.getContext( ) ).load( gridmodelList.get( i ).getImage( ) ).into( imageView );
+            Glide.with( view.getContext( ) ).load( gridmodelList.get( i ).getImage( ) ).into( imageView );
             title.setText( gridmodelList.get( i ).getTitle( ) );
 
             imageView.setOnClickListener( new View.OnClickListener( ) {

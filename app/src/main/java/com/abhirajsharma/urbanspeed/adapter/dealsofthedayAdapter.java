@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.abhirajsharma.urbanspeed.R;
 import com.abhirajsharma.urbanspeed.model.dealsofthedayModel;
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -70,7 +71,7 @@ public class dealsofthedayAdapter extends RecyclerView.Adapter<dealsofthedayAdap
 
         private void setData(String resource, String Description, final String Title, String Price, final String id, final String tag) {
 
-          //  Glide.with( itemView.getContext( ) ).load( resource ).into( image );
+            Glide.with( itemView.getContext( ) ).load( resource ).into( image );
             title.setText( Title );
             price.setText( "₹" + Price + "/-" );
             description.setText( Description );

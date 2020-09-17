@@ -14,6 +14,7 @@ import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_phone_login.*
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 
@@ -102,74 +103,43 @@ class PhoneLogin : AppCompatActivity() {
                 phoneLayout.showSnackBar("Account Created Successfully.")
 
 
-                ///creating user in fireBase
-/*
+                //  firebaseAuth.signInWithEmailAndPassword( mail,password  );
+                val userData: MutableMap<String, Any> = HashMap()
+                userData["is_valid"] = true
+                userData["fullname"] = ""
+                userData["image"] = ""
+                userData["mail"] = ""
+                userData["password"] = ""
+                userData["permanent_phone"] =phone_et.text.toString()
+                userData["phone"] = phone_et.text.toString()
+                userData["previous_position"] = 0
+                userData["address_details"] = ""
+                userData["address_type"] = ""
 
-  Map<String,Object> userData =new HashMap<>(  );
-                    userData.put( "is_valid",true );
-                    userData.put( "fullname","" );
-                    userData.put( "image","" );
-                    userData.put( "mail","" );
-                    userData.put( "password","" );
-                    userData.put( "permanent_phone",phoneNo );
-                    userData.put( "phone",phoneNo );
-                    userData.put( "previous_position",0 );
-                    userData.put( "address_details","" );
-                    userData.put( "address_type","" );
+                val currentuser = FirebaseAuth.getInstance().currentUser!!.uid
 
 
-
-                    FirebaseFirestore.getInstance().collection( "USERS" ).document( firebaseAuth.getCurrentUser().getUid() ).set( userData ).addOnCompleteListener( new OnCompleteListener<Void>( ) {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            Map<String,Object> listSize =new HashMap<>(  );
-                            listSize.put( "list_size",0 );
-                            FirebaseFirestore.getInstance().collection( "USERS" ).document( firebaseAuth.getCurrentUser().getUid() ).collection( "USER_DATA" ).document("MY_ADDRESS").set( listSize )
-                                    .addOnCompleteListener( new OnCompleteListener<Void>( ) {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-
-                                        }
-                                    } );
-                            FirebaseFirestore.getInstance().collection( "USERS" ).document( firebaseAuth.getCurrentUser().getUid() ).collection( "USER_DATA" ).document("MY_GROCERY_CARTITEMCOUNT").set( listSize )
-                                    .addOnCompleteListener( new OnCompleteListener<Void>( ) {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-
-                                        }
-                                    } );
-                            FirebaseFirestore.getInstance().collection( "USERS" ).document( firebaseAuth.getCurrentUser().getUid() ).collection( "USER_DATA" ).document("MY_GROCERY_CARTLIST").set( listSize )
-                                    .addOnCompleteListener( new OnCompleteListener<Void>( ) {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-
-                                        }
-                                    } );
-                            FirebaseFirestore.getInstance().collection( "USERS" ).document( firebaseAuth.getCurrentUser().getUid() ).collection( "USER_DATA" ).document("MY_GROCERY_ORDERS").set( listSize )
-                                    .addOnCompleteListener( new OnCompleteListener<Void>( ) {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-
-                                        }
-                                    } );
-
-                            FirebaseFirestore.getInstance().collection( "USERS" ).document( firebaseAuth.getCurrentUser().getUid() ).collection( "USER_DATA" ).document("MY_GROCERY_WISHLIST").set( listSize )
-                                    .addOnCompleteListener( new OnCompleteListener<Void>( ) {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
+                FirebaseFirestore.getInstance().collection("USERS").document(currentuser).set(userData).addOnCompleteListener {
+                    val listSize: MutableMap<String, Any> = HashMap()
+                    listSize["list_size"] = 0
+                    FirebaseFirestore.getInstance().collection("USERS").document(currentuser).collection("USER_DATA").document("MY_ADDRESS").set(listSize)
+                            .addOnCompleteListener { }
+                    FirebaseFirestore.getInstance().collection("USERS").document(currentuser).collection("USER_DATA").document("MY_GROCERY_CARTITEMCOUNT").set(listSize)
+                            .addOnCompleteListener { }
+                    FirebaseFirestore.getInstance().collection("USERS").document(currentuser).collection("USER_DATA").document("MY_GROCERY_CARTLIST").set(listSize)
+                            .addOnCompleteListener { }
+                    FirebaseFirestore.getInstance().collection("USERS").document(currentuser).collection("USER_DATA").document("MY_GROCERY_ORDERS").set(listSize)
+                            .addOnCompleteListener { }
+                    FirebaseFirestore.getInstance().collection("USERS").document(currentuser).collection("USER_DATA").document("MY_GROCERY_WISHLIST").set(listSize)
+                            .addOnCompleteListener { }
+                }
 
 
 
-                                        }
-                                    } );
 
 
 
-                        }
-                    } );
- */
 
-                ///creating user in fireBase
 
                 phoneProgressBar.visibility = View.GONE
                 startActivity(Intent(this, MainActivity::class.java))
@@ -193,3 +163,4 @@ class PhoneLogin : AppCompatActivity() {
     }
 
 }
+

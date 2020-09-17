@@ -1,6 +1,8 @@
 package com.abhirajsharma.urbanspeed
 
+import android.content.ContentValues.TAG
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -144,18 +146,21 @@ class HomeFrag : Fragment() {
         view.home_category_recycler!!.adapter = homeCategoryAdapter
         homeCategoryAdapter.notifyDataSetChanged()
 
-/*
-        FirebaseFirestore.getInstance().collection("GROCERYCATEGORIES").orderBy("index").get()
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        for (documentSnapshot in Objects.requireNonNull(task.result)!!) {
-                            homeCategoryModelsList.add(HomeCategoryModels(documentSnapshot["image"].toString(),
-                                    documentSnapshot["title"].toString(), documentSnapshot["tag"].toString()))
-                        }
-                        homeCategoryAdapter.notifyDataSetChanged()
+        FirebaseFirestore.getInstance().collection("GROCERYCATEGORIES")
+                .get()
+                .addOnSuccessListener { result ->
+                    for (document in result) {
+                        Log.d(TAG, "${document.id} => ${document.data}")
+                        homeCategoryModelsList.add(HomeCategoryModels(document.data.get("image").toString(),
+                                document.data.get("title").toString(),document.data.get("tag").toString()))
                     }
+                    homeCategoryAdapter.notifyDataSetChanged()
                 }
-*/
+                .addOnFailureListener { exception ->
+                    Log.d(TAG, "Error getting documents: ", exception)
+                }
+
+
 
         val homeModelList: ArrayList<HomeModel> = ArrayList()
         val homeAdapter = HomeAdapter(homeModelList)
@@ -163,7 +168,7 @@ class HomeFrag : Fragment() {
         grocerymain.orientation = RecyclerView.VERTICAL
         view.home_recycler!!.layoutManager = grocerymain
         view.home_recycler!!.adapter = homeAdapter
-/*
+
 
         FirebaseFirestore.getInstance().collection("GROCERYHOME").orderBy("index").get()
                 .addOnCompleteListener { task ->
@@ -245,7 +250,7 @@ class HomeFrag : Fragment() {
                         Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
                     }
                 }
-*/
+
 
 
 

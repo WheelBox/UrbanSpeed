@@ -7,6 +7,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.fragment_profile.view.*
 
 class ProfileFrag : Fragment() {
@@ -52,6 +53,7 @@ class ProfileFrag : Fragment() {
 
         view.myAccountChangeAddressLayout.setOnClickListener {
             val intent = Intent(activity, MyAddress::class.java)
+            FirebaseAuth.getInstance().signOut()
             startActivity(intent)
         }
 

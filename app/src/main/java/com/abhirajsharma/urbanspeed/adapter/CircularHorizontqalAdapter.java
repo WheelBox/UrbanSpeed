@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.abhirajsharma.urbanspeed.R;
 import com.abhirajsharma.urbanspeed.model.HomeCategoryModels;
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -59,7 +60,7 @@ public class CircularHorizontqalAdapter extends RecyclerView.Adapter<CircularHor
 
         private void setData(final String Nmae, String url, final String Tag){
             name.setText( Nmae );
-          //  Glide.with( itemView.getContext()).load( url ).into( productImage );
+           Glide.with( itemView.getContext()).load( url ).into( productImage );
             productImage.setOnClickListener( new View.OnClickListener( ) {
                 @Override
                 public void onClick(View view) {
