@@ -17,9 +17,18 @@
             android:id="@+id/toolbar_main"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:menu="@menu/nav_menu"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            android:background="?attr/colorPrimaryDark"
+            app:menu="@menu/search_and_cart_icon"
+            app:popupTheme="@style/AppTheme.PopupOverlay" >
+
+            <ImageView
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/background_new"
+                />
+
+
+        </com.google.android.material.appbar.MaterialToolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 

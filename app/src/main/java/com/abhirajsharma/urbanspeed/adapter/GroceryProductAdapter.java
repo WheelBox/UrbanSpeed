@@ -17,8 +17,10 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.abhirajsharma.urbanspeed.ProductDetails;
 import com.abhirajsharma.urbanspeed.R;
 import com.abhirajsharma.urbanspeed.model.GroceryProductModel;
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -168,6 +170,16 @@ public class GroceryProductAdapter extends RecyclerView.Adapter<GroceryProductAd
 
 
             }*/
+            constraintLayout.setOnClickListener( new View.OnClickListener( ) {
+
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent( itemView.getContext( ), ProductDetails.class );
+                    intent.putExtra( "product_id", Id );
+                    intent.putExtra( "tag_string" ,Tag);
+                    itemView.getContext( ).startActivity( intent );
+                }
+            } );
 
             price.setText( "₹"+Price+"/-" );
             cutprice.setText( "₹"+cutPrice+"/-" );
@@ -204,7 +216,7 @@ public class GroceryProductAdapter extends RecyclerView.Adapter<GroceryProductAd
             rating.setText( Rating );
             reviewCount.setText( "(" + ReviewCount + ")" );
 
-          //  Glide.with( itemView.getContext( ) ).load( resource ).into( image );
+            Glide.with( itemView.getContext( ) ).load( resource ).into( image );
 
 
          /*   favouriteButton.setOnClickListener( new View.OnClickListener( ) {

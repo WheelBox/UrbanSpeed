@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.nav_menu, menu)
+        menuInflater.inflate(R.menu.search_and_cart_icon, menu)
         return true
     }
 
@@ -73,7 +73,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         if (toggle.onOptionsItemSelected(item)) {
             return true
         }
-        if (item.itemId == R.id.nav_cart) {
+        if (item.itemId == R.id.productcartMenu) {
+            startActivity(Intent(this, MyCart::class.java))
+        }
+        if (item.itemId == R.id.productsearchMenu) {
             startActivity(Intent(this, MyCart::class.java))
         }
         return super.onOptionsItemSelected(item)
