@@ -33,11 +33,11 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        String name = addressModelList.get(position).getNmae();
+        String name = addressModelList.get(position).getName();
         String phone = addressModelList.get(position).getPhone();
         String details = addressModelList.get(position).getDetails();
         String type = addressModelList.get(position).getType();
-        String altrrnamePhn = addressModelList.get(position).getAltrtnatePhn();
+        String altrrnamePhn = addressModelList.get(position).getAlternatePhn();
         int size = addressModelList.get(position).getSize();
 
 

@@ -1,17 +1,15 @@
 package com.abhirajsharma.urbanspeed.model;
 
 public class AddressModel {
-    private String nmae, phone, type, details, altrtnatePhn;
+    private String name, phone, type, details, alternatePhn;
     private int size;
 
-    public AddressModel(String nmae, String phone, String type, String details, String alternatePhn, int size) {
-        this.nmae = nmae;
+    public AddressModel(String name, String phone, String type, String details, String alternatePhn, int size) {
+        this.name = name;
         this.phone = phone;
         this.type = type;
         this.details = details;
-
-
-        this.altrtnatePhn = alternatePhn;
+        this.alternatePhn = alternatePhn;
         this.size = size;
     }
 
@@ -23,21 +21,20 @@ public class AddressModel {
         this.size = size;
     }
 
-    public String getAltrtnatePhn() {
-        return altrtnatePhn;
+    public String getAlternatePhn() {
+        return alternatePhn;
     }
 
-    public void setAltrtnatePhn(String altrtnatePhn) {
-        this.altrtnatePhn = altrtnatePhn;
+    public void setAlternatePhn(String altrtnatePhn) {
+        this.alternatePhn = altrtnatePhn;
     }
 
-
-    public String getNmae() {
-        return nmae;
+    public String getName() {
+        return name;
     }
 
-    public void setNmae(String nmae) {
-        this.nmae = nmae;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getPhone() {

@@ -7,6 +7,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.fragment_profile.view.*
 
@@ -21,6 +22,7 @@ class ProfileFrag : Fragment() {
 //    private var ordrOnDemand: LinearLayout? = null
 //    private var help_ll: LinearLayout? = null
 
+    private val auth by lazy { FirebaseAuth.getInstance() }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
@@ -35,8 +37,13 @@ class ProfileFrag : Fragment() {
 //        myAccoutnFav = view.findViewById<LinearLayout>(R.id.myAccountFavouriteLayout)
 
 
-        view.myAccountFavouriteLayout.setOnClickListener(View.OnClickListener { })
+        view.myAccountFavouriteLayout.setOnClickListener {
 
+        }
+
+        view.profile_user_name.text = auth.currentUser?.displayName.toString()
+        view.profile_user_mail.text = auth.currentUser?.email.toString()
+        Glide.with(this).load(auth.currentUser?.photoUrl.toString()).into(view.profile_image)
 
         view.myOrderLayout.setOnClickListener {
             val intent = Intent(activity, myOrder::class.java)
@@ -53,7 +60,7 @@ class ProfileFrag : Fragment() {
 
         view.myAccountChangeAddressLayout.setOnClickListener {
             val intent = Intent(activity, MyAddress::class.java)
-            FirebaseAuth.getInstance().signOut()
+//            FirebaseAuth.getInstance().signOut()
             startActivity(intent)
         }
 

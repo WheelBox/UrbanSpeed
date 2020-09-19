@@ -28,24 +28,24 @@ public class HomeCategoryAdapter extends RecyclerView.Adapter<HomeCategoryAdapte
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from( parent.getContext( ) ).inflate( R.layout.home_category_item, parent, false );
-        return new ViewHolder( view );
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_category_item, parent, false);
+        return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        String image = homeCategoryModelsList.get( position ).getImageResource( );
-        String title = homeCategoryModelsList.get( position ).getTitle( );
-        String tag=homeCategoryModelsList.get( position ).getTag();
-        holder.setData( image,title,tag );
+        String image = homeCategoryModelsList.get(position).getImageResource();
+        String title = homeCategoryModelsList.get(position).getTitle();
+        String tag = homeCategoryModelsList.get(position).getTag();
+        holder.setData(image, title, tag);
 
 
     }
 
     @Override
     public int getItemCount() {
-        return homeCategoryModelsList.size( );
+        return homeCategoryModelsList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -56,25 +56,23 @@ public class HomeCategoryAdapter extends RecyclerView.Adapter<HomeCategoryAdapte
 
 
         public ViewHolder(@NonNull View itemView) {
-            super( itemView );
+            super(itemView);
 
-            image = itemView.findViewById( R.id.grocery_home_category_icon );
-            title = itemView.findViewById( R.id.grocery_home_category_title );
-            linearLayout=itemView.findViewById( R.id.grocery_home_category_LinearLayout );
+            image = itemView.findViewById(R.id.grocery_home_category_icon);
+            title = itemView.findViewById(R.id.grocery_home_category_title);
+            linearLayout = itemView.findViewById(R.id.grocery_home_category_LinearLayout);
 
 
         }
 
-        private void setData(String url, final String Title, final String TagList){
+        private void setData(String url, final String Title, final String TagList) {
 
 
-            Glide.with( itemView.getContext() ).load( url ).into( image );
-            title.setText( Title );
+            Glide.with(itemView.getContext()).load(url).into(image);
+            title.setText(Title);
 
 
-
-
-            image.setOnClickListener( new View.OnClickListener( ) {
+            image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                   /*  if(!TagList.isEmpty()) {
@@ -83,13 +81,7 @@ public class HomeCategoryAdapter extends RecyclerView.Adapter<HomeCategoryAdapte
                         itemView.getContext( ).startActivity( intent );
                     }*/
                 }
-            } );
-
-
-
-
-
-
+            });
 
 
         }

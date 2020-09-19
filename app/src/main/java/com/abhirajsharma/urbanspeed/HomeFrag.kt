@@ -14,23 +14,15 @@ import com.abhirajsharma.urbanspeed.adapter.HomeAdapter
 import com.abhirajsharma.urbanspeed.adapter.HomeCategoryAdapter
 import com.abhirajsharma.urbanspeed.model.HomeCategoryModels
 import com.abhirajsharma.urbanspeed.model.HomeModel
+import com.abhirajsharma.urbanspeed.model.SliderModel
 import com.abhirajsharma.urbanspeed.model.dealsofthedayModel
-import com.abhirajsharma.urbanspeed.model.sliderModel
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_home.view.*
-import java.util.*
-import kotlin.collections.ArrayList
 
 class HomeFrag : Fragment() {
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-
-
-
-
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
-
 
 
         ////scroll_movement
@@ -137,8 +129,8 @@ class HomeFrag : Fragment() {
         ))
         ///lists
 */
-        val homeCategoryModelsList: ArrayList<HomeCategoryModels> = ArrayList()
-        val homeCategoryAdapter= HomeCategoryAdapter(homeCategoryModelsList)
+        val homeCategoryModelsList = arrayListOf<HomeCategoryModels>()
+        val homeCategoryAdapter = HomeCategoryAdapter(homeCategoryModelsList)
 
         val linearLayoutManager = LinearLayoutManager(activity)
         linearLayoutManager.orientation = RecyclerView.HORIZONTAL
@@ -151,8 +143,8 @@ class HomeFrag : Fragment() {
                 .addOnSuccessListener { result ->
                     for (document in result) {
                         Log.d(TAG, "${document.id} => ${document.data}")
-                        homeCategoryModelsList.add(HomeCategoryModels(document.data.get("image").toString(),
-                                document.data.get("title").toString(),document.data.get("tag").toString()))
+                        homeCategoryModelsList.add(HomeCategoryModels(document.data["image"].toString(),
+                                document.data["title"].toString(), document.data["tag"].toString()))
                     }
                     homeCategoryAdapter.notifyDataSetChanged()
                 }
@@ -175,16 +167,16 @@ class HomeFrag : Fragment() {
                     if (task.isSuccessful) {
                         for (documentSnapshot in task.result!!) {
                             if (documentSnapshot["view_type"] as Long == 1L) {
-                                var sliderModelList: ArrayList<sliderModel> = ArrayList()
+                                val sliderModelList: ArrayList<SliderModel> = ArrayList()
                                 val no_of_banners = documentSnapshot["no_of_banners"] as Long
                                 for (x in no_of_banners downTo no_of_banners - 2 + 1) {
-                                    (sliderModelList ).add(sliderModel(documentSnapshot["banner_" + x + "_image"].toString(), documentSnapshot["banner_" + x + "_tag"].toString(), documentSnapshot["banner_" + x + "_background"].toString()))
+                                    (sliderModelList).add(SliderModel(documentSnapshot["banner_" + x + "_image"].toString(), documentSnapshot["banner_" + x + "_tag"].toString(), documentSnapshot["banner_" + x + "_background"].toString()))
                                 }
                                 for (x in 1 until no_of_banners + 1) {
-                                    (sliderModelList).add(sliderModel(documentSnapshot["banner_" + x + "_image"].toString(), documentSnapshot["banner_" + x + "_tag"].toString(), documentSnapshot["banner_" + x + "_background"].toString()))
+                                    (sliderModelList).add(SliderModel(documentSnapshot["banner_" + x + "_image"].toString(), documentSnapshot["banner_" + x + "_tag"].toString(), documentSnapshot["banner_" + x + "_background"].toString()))
                                 }
                                 for (x in 1..2) {
-                                    (sliderModelList ).add(sliderModel(documentSnapshot["banner_" + x + "_image"].toString(), documentSnapshot["banner_" + x + "_tag"].toString(), documentSnapshot["banner_" + x + "_background"].toString()))
+                                    (sliderModelList).add(SliderModel(documentSnapshot["banner_" + x + "_image"].toString(), documentSnapshot["banner_" + x + "_tag"].toString(), documentSnapshot["banner_" + x + "_background"].toString()))
                                 }
                                 homeModelList.add(HomeModel(1, sliderModelList))
                             }

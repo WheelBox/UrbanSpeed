@@ -6,10 +6,10 @@ public class HomeCategoryModels {
     private String title;
     private String tag;
 
-    public HomeCategoryModels(String imageResource, String title, String tag ) {
+    public HomeCategoryModels(String imageResource, String title, String tag) {
         this.imageResource = imageResource;
         this.title = title;
-        this.tag=tag;
+        this.tag = tag;
     }
 
     public String getTag() {

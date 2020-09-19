@@ -3,33 +3,36 @@ package com.abhirajsharma.urbanspeed
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import com.bumptech.glide.Glide
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
+
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var drawer: DrawerLayout
     private lateinit var toggle: ActionBarDrawerToggle
+    private val auth by lazy { FirebaseAuth.getInstance() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val ss = SaveSharedPreference()
-        val userName = ss.getUserName(this)
-        val userId = ss.getUserID(this)
-        val userImg = ss.getUserImg(this)
-        val userMail = ss.getUserMail(this)
-        Log.d("checkMe", "$userName $userId $userMail $userImg")
 
+//        val navigationView = findViewById<NavigationView>(R.id.nav_view)
+//        val headerView: View = navigationView.getHeaderView(0)
+//        headerView.findViewById(R.id.navUsername).text = "Your Text Here"
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar_main)
         setSupportActionBar(toolbar)
@@ -51,6 +54,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         val navigationView: NavigationView = findViewById(R.id.nav_view)
         navigationView.setNavigationItemSelectedListener(this)
+
+
+        val headerView: View = navigationView.getHeaderView(0)
+        headerView.findViewById<TextView>(R.id.nav_header_name).text = auth.currentUser?.displayName.toString()
+        val imgView: ImageView = headerView.findViewById(R.id.nav_header_image)
+        Glide.with(this).load(auth.currentUser?.photoUrl.toString()).into(imgView)
 
     }
 

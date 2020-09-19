@@ -2,7 +2,6 @@ package com.abhirajsharma.urbanspeed
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -85,13 +84,6 @@ class LoginActivity : AppCompatActivity() {
 
     private fun updateUI(account: FirebaseUser) {
         progressBar.visibility = View.GONE
-        val ss = SaveSharedPreference()
-        val name = account.displayName.toString()
-        val uid = account.uid
-        val mail = account.email.toString()
-        val img = account.photoUrl.toString()
-        Log.d("checkMe", "$name $uid $mail $img")
-        ss.setUser(this, name, uid, mail, img)
         UserInfo.userName = account.displayName.toString()
         UserInfo.userId = account.uid
         UserInfo.userMail = account.email.toString()

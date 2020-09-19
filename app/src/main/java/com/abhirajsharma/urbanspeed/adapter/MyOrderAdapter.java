@@ -72,7 +72,7 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            image = itemView.findViewById(R.id.myOrder_groceryItemImage);
+            image = itemView.findViewById(R.id.wishListImg);
             deliveryStatus = itemView.findViewById(R.id.myOrder_groceryItemDeliveryStatus);
             name = itemView.findViewById(R.id.myOrder_groceryItemName);
             constraintLayout = itemView.findViewById(R.id.myOrder_groceryLayout);

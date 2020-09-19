@@ -9,9 +9,7 @@
     android:background="@drawable/ic_account_circle_black_24dp"
     android:backgroundTint="#875FF5"
     android:elevation="2dp"
-    android:paddingBottom="4dp"
-
-    >
+    android:paddingBottom="4dp">
 
     <TextView
         android:id="@+id/dealsofthedaytitle"
@@ -45,8 +43,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dealsofthedaybutton" />
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

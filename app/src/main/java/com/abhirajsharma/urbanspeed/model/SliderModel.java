@@ -1,15 +1,15 @@
 package com.abhirajsharma.urbanspeed.model;
 
-public class sliderModel {
+public class SliderModel {
 
     private String banner;
-    private String tags;
+    private String tag;
     private String background;
 
-    public sliderModel(String banner, String tags, String background) {
+    public SliderModel(String banner, String tag, String background) {
         this.banner = banner;
-        this.tags=tags;
-        this.background=background;
+        this.tag = tag;
+        this.background = background;
     }
 
     public String getBackground() {
@@ -20,12 +20,12 @@ public class sliderModel {
         this.background = background;
     }
 
-    public String getTags() {
-        return tags;
+    public String getTag() {
+        return tag;
     }
 
-    public void setTags(String tags) {
-        this.tags = tags;
+    public void setTag(String tag) {
+        this.tag = tag;
     }
 
     public String getBanner() {
