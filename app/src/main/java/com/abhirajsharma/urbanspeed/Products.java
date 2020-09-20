@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
@@ -62,8 +63,9 @@ public class Products extends AppCompatActivity {
 
 
         groceryProductAdapter = new GroceryProductAdapter(groceryProductModel);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 2);
-        product_recycler.setLayoutManager(gridLayoutManager);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+        linearLayoutManager.setOrientation( RecyclerView.VERTICAL );
+        product_recycler.setLayoutManager(linearLayoutManager);
         product_recycler.setAdapter(groceryProductAdapter);
 
         FirebaseFirestore.getInstance( ).collection( "PRODUCTS" ).orderBy( "name" ).get( )
@@ -83,7 +85,9 @@ public class Products extends AppCompatActivity {
                                         , documentSnapshot.get( "review_count" ).toString( )
                                         , (long) documentSnapshot.get( "in_stock" )
                                         , documentSnapshot.getId( )
-                                        ,"kjsdbbf") );
+                                        ,"kjsdbbf",
+                                        documentSnapshot.get( "description" ).toString( )
+                                        ) );
 
 
                             }                                loadingDialog.dismiss();

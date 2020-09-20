@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:paddingTop="8dp"
+    android:layout_marginTop="4dp"
+    android:layout_width="match_parent"
+    android:paddingBottom="4dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/grocery_home_product_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/grocery_home_productImage"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="2dp"
+            android:scaleType="centerCrop"
+
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.025"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.2"
+            app:srcCompat="@drawable/ic_account_circle_black_24dp" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout3"
+            android:layout_width="45dp"
+            android:layout_height="26dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/corner_round_layout"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/grocery_home_product_Rating"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="3.5"
+                android:textAlignment="center"
+                android:textColor="#fff"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/grocery_home_productDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="12dp"
+            android:text="this_is product_description"
+            android:textSize="14dp"
+            app:layout_constraintEnd_toStartOf="@+id/linearLayout3"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/grocery_home_productImage"
+            app:layout_constraintTop_toBottomOf="@+id/grocery_home_product_Name" />
+
+        <TextView
+            android:id="@+id/grocery_home_product_Price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:text="₹200"
+            android:textColor="#000"
+            android:textStyle="bold"
+            android:textSize="14dp"
+            app:layout_constraintStart_toEndOf="@+id/grocery_home_productImage"
+            app:layout_constraintTop_toBottomOf="@+id/grocery_home_productDescription" />
+
+        <TextView
+            android:id="@+id/grocery_home_product_CutPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginBottom="2dp"
+            android:text="₹240"
+
+            android:textSize="9sp"
+            app:layout_constraintBottom_toBottomOf="@+id/grocery_home_product_Price"
+            app:layout_constraintStart_toEndOf="@+id/grocery_home_product_Price" />
+
+        <TextView
+            android:id="@+id/textView97"
+            android:layout_width="0dp"
+            android:layout_height="0.8dp"
+            android:background="#909797"
+            android:text=""
+
+            app:layout_constraintBottom_toBottomOf="@+id/grocery_home_product_CutPrice"
+            app:layout_constraintEnd_toEndOf="@+id/grocery_home_product_CutPrice"
+            app:layout_constraintStart_toStartOf="@+id/grocery_home_product_CutPrice"
+            app:layout_constraintTop_toTopOf="@+id/grocery_home_product_CutPrice" />
+
+        <TextView
+            android:id="@+id/grocery_home_product_Offer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="5% off"
+            android:textColor="#4AC237"
+            android:textSize="12sp"
+
+            app:layout_constraintBottom_toBottomOf="@+id/textView97"
+            app:layout_constraintStart_toEndOf="@+id/textView97"
+            app:layout_constraintTop_toTopOf="@+id/textView97" />
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="260dp"
+            android:layout_height="2dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="40dp"
+            android:background="#000"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/grocery_home_productImage"
+            app:layout_constraintTop_toBottomOf="@+id/grocery_home_product_Price" />
+
+        <TextView
+            android:id="@+id/grocery_home_productEDT"
+            android:layout_width="wrap_content"
+            android:layout_height="18dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="16dp"
+            android:text="Estimate Delivery Time :- 2days"
+            android:textColor="#ED802C"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/grocery_home_productImage"
+            app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+        <TextView
+            android:id="@+id/grocery_home_product_Name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Product_name"
+            android:textColor="#B3000000"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:layout_marginEnd="12dp"
+
+            app:layout_constraintEnd_toStartOf="@+id/linearLayout3"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/grocery_home_productImage"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.cardview.widget.CardView>
