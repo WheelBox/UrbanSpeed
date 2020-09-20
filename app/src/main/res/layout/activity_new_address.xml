@@ -8,9 +8,7 @@
     tools:context=".NewAddress">
 
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -22,7 +20,8 @@
             android:layout_height="wrap_content"
             android:background="@color/colorPrimaryDark"
             android:minHeight="?attr/actionBarSize"
-
+            app:title="New Address"
+            app:titleTextColor="@android:color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -48,12 +47,12 @@
                     android:layout_marginTop="12dp"
                     android:theme="@style/Edit_Text">
 
-                    <EditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/add_address_name_et"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Enter Your Name"
-                        android:inputType="text"
+                        android:inputType="textCapSentences"
                         android:textColor="#000" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -64,13 +63,12 @@
                     android:layout_marginHorizontal="8dp"
                     android:theme="@style/Edit_Text">
 
-                    <EditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/add_address_number_et"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="mobile number"
+                        android:hint="Mobile Number"
                         android:inputType="phone"
-
                         android:textColor="#000" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -80,11 +78,11 @@
                     android:layout_marginHorizontal="8dp"
                     android:theme="@style/Edit_Text">
 
-                    <EditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/add_address_alternate_no_et"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="alternate mobile number"
+                        android:hint="Alternate Mobile Number"
                         android:inputType="number"
 
                         android:textColor="#000" />
@@ -97,13 +95,12 @@
                     android:layout_marginHorizontal="8dp"
                     android:theme="@style/Edit_Text">
 
-                    <EditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/add_address_pin_et"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="pin code"
+                        android:hint="Pin Code"
                         android:inputType="phone"
-
                         android:textColor="#000" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -116,15 +113,13 @@
                     android:layout_marginHorizontal="8dp"
                     android:theme="@style/Edit_Text">
 
-                    <EditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/add_address_details_et"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Road no., building name.,"
-                        android:inputType="textMultiLine"
-
+                        android:inputType="textCapSentences"
                         android:textColor="#000" />
-
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -143,14 +138,13 @@
 
                         android:theme="@style/Edit_Text">
 
-                        <EditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/add_address_city_et"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="city*"
-                            android:inputType="text"
+                            android:hint="City"
+                            android:inputType="textCapSentences"
                             android:paddingStart="4dp"
-
                             android:textColor="#000" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -163,12 +157,12 @@
 
                         android:theme="@style/Edit_Text">
 
-                        <EditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/add_address_state_et"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="State*"
-                            android:inputType="text"
+                            android:hint="State"
+                            android:inputType="textCapSentences"
                             android:paddingStart="4dp"
 
                             android:textColor="#000" />
@@ -181,16 +175,15 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textInputLayout4"
                     android:layout_width="match_parent"
-
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="8dp"
                     android:theme="@style/Edit_Text">
 
-                    <EditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/add_address_LandMark_et"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Landmark(optional)"
+                        android:hint="Landmark (optional)"
                         android:inputType="textMultiLine"
                         android:textColor="#000" />
 
@@ -227,6 +220,7 @@
                     android:text="Work/Office Adderss" />
 
                 <Button
+                    android:layout_marginBottom="25dp"
                     android:id="@+id/save_address_btn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

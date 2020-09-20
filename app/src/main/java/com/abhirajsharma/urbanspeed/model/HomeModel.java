@@ -17,7 +17,7 @@ public class HomeModel {
 
     /////BANNER_SLIDER
 
-    private List<sliderModel> sliderModelList;
+    private List<SliderModel> sliderModelList;
     private String title,background_color;
     private ArrayList<String> ids;
     private List<dealsofthedayModel> dealsofthedayModelList;
@@ -32,16 +32,17 @@ public class HomeModel {
     private String image_1,image_2,image_3,image_4;
     private String fourImageTitle;
 
-    public HomeModel(int type, List<sliderModel> sliderModelList) {
+    public HomeModel(int type, List<SliderModel> sliderModelList) {
         this.type = type;
         this.sliderModelList = sliderModelList;
     }
+
     public HomeModel(int type, String title, List<dealsofthedayModel> dealsofthedayModelList, ArrayList<String> ids, String background_color) {
         this.type = type;
         this.title = title;
         this.dealsofthedayModelList = dealsofthedayModelList;
-        this.ids=ids;
-        this.background_color=background_color;
+        this.ids = ids;
+        this.background_color = background_color;
     }
 
     public HomeModel(int type, int type1, String circularTitle, List<HomeCategoryModels> homeCategoryModelsList) {
@@ -77,11 +78,11 @@ public class HomeModel {
         this.type = type;
     }
 
-    public List<sliderModel> getSliderModelList() {
+    public List<SliderModel> getSliderModelList() {
         return sliderModelList;
     }
 
-    public void setSliderModelList(List<sliderModel> sliderModelList) {
+    public void setSliderModelList(List<SliderModel> sliderModelList) {
         this.sliderModelList = sliderModelList;
     }
 
