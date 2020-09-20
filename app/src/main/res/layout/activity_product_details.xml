@@ -425,4 +425,91 @@
 
     </androidx.core.widget.NestedScrollView>
 
+    <LinearLayout
+        android:id="@+id/myCartPaymentLayout"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:orientation="horizontal"
+        android:background="#fff"
+        android:elevation="8dp"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <LinearLayout
+            android:id="@+id/addtoGroceryCary"
+            android:gravity="center"
+            android:visibility="visible"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#fff"
+            android:layout_weight="1"
+
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="ADD TO CART"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#252525"
+
+                android:gravity="center_vertical"
+                android:drawableTint="#252525"
+                android:drawableEnd="@drawable/ic_shopping_cart_black_24dp"
+                android:drawablePadding="8dp"
+                />
+
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/gotoGroceryCary"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+
+            android:background="#fff"
+
+            android:layout_weight="1"
+
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="GO TO CART"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:textColor="#252525"
+                android:gravity="center_vertical"
+                android:drawableEnd="@drawable/ic_shopping_cart_black_24dp"
+                android:drawableTint="#252525"
+                android:drawablePadding="8dp"
+                />
+
+
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/buy_now_groceryBtn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Buy Now"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:backgroundTint="#DF4444"
+            android:layout_weight="1"
+            />
+
+
+    </LinearLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

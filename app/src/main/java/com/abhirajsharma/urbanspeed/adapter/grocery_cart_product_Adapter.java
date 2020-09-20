@@ -14,8 +14,11 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.abhirajsharma.urbanspeed.DBquaries;
+import com.abhirajsharma.urbanspeed.ProductDetails;
 import com.abhirajsharma.urbanspeed.R;
 import com.abhirajsharma.urbanspeed.model.grocery_cart_product_Model;
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -57,7 +60,8 @@ public class grocery_cart_product_Adapter extends RecyclerView.Adapter<grocery_c
 
         holder.setData( Image, name, description, price, cutPrice, offer, count,stock );
 
-      //  holder.setAdd(name, id, position, count,price ,stock,cutPrice);
+        holder.setAdd(name, id, position, count,price ,stock,cutPrice);
+        holder.removeFromCart( id );
     }
 
     @Override
@@ -71,6 +75,7 @@ public class grocery_cart_product_Adapter extends RecyclerView.Adapter<grocery_c
         private ImageView image;
         private LinearLayout no_countLL;
         private TextView addproduct, subproduct, product_count;
+        private TextView remove_product;
         private ConstraintLayout constraintLayout;
 
 
@@ -89,13 +94,16 @@ public class grocery_cart_product_Adapter extends RecyclerView.Adapter<grocery_c
             outOfStockTxt=itemView.findViewById( R.id.grocery_cart_out_of_stockTxt );
             no_countLL=itemView.findViewById( R.id.grocery_cart_noCountLayout );
             constraintLayout=itemView.findViewById( R.id.grocery_cart_product_item_Layout );
+            remove_product=itemView.findViewById( R.id.grocery_cart_remove_product );
 
 
         }
 
+
+
         private void setData(String res, String Name, String Desc, String Price, String CutPrice, String Offer, String count,long Stock) {
 
-           // Glide.with( itemView.getContext( ) ).load( res ).into( image );
+            Glide.with( itemView.getContext( ) ).load( res ).into( image );
 
             name.setText( Name );
 
@@ -128,13 +136,13 @@ public class grocery_cart_product_Adapter extends RecyclerView.Adapter<grocery_c
 
 
 
-      /*  private void setAdd(final String Name, final String id, final int index, String itemcount, final String price, final long stock, final String CutPrice) {
+        private void setAdd(final String Name, final String id, final int index, String itemcount, final String price, final long stock, final String CutPrice) {
 
             final int count[] = {Integer.parseInt( itemcount )};
             constraintLayout.setOnClickListener( new View.OnClickListener( ) {
                 @Override
                 public void onClick(View view) {
-                    Intent intent=new Intent( itemView.getContext(), GroceryProductDetails.class );
+                    Intent intent=new Intent( itemView.getContext(), ProductDetails.class );
                     intent.putExtra( "product_id",id );
                     intent.putExtra( "tag_string",Name );
 
@@ -150,6 +158,7 @@ public class grocery_cart_product_Adapter extends RecyclerView.Adapter<grocery_c
                     if(count[0]<stock) {
                         count[0] = count[0] + 1;
                         subproduct.setVisibility( View.VISIBLE );
+                        subproduct.setClickable( true );
 
                         Map<String, Object> itemCount = new HashMap<>( );
                         itemCount.put( id, String.valueOf( count[0] ) );
@@ -166,7 +175,7 @@ public class grocery_cart_product_Adapter extends RecyclerView.Adapter<grocery_c
                                     DBquaries.grocery_CartList_product_count.add( index, String.valueOf( count[0] ) );
                                     DBquaries.calcualtePriceGrocery( "+", price );
                                     DBquaries.calculateTotalSave( "+",price,CutPrice );
-                                    DBquaries.setTax();
+
 
 
                                 }
@@ -202,7 +211,7 @@ public class grocery_cart_product_Adapter extends RecyclerView.Adapter<grocery_c
                                     DBquaries.grocery_CartList_product_count.remove( index );
                                     DBquaries.grocery_CartList_product_count.add( index, String.valueOf( count[0] ) );
                                     DBquaries.calculateTotalSave( "-",price,CutPrice );
-                                    DBquaries.setTax();
+
 
                                 }
                             }
@@ -216,6 +225,20 @@ public class grocery_cart_product_Adapter extends RecyclerView.Adapter<grocery_c
             } );
 
 
-        }*/
+        }
+
+        private void removeFromCart(final String id){
+
+            remove_product.setOnClickListener( new View.OnClickListener( ) {
+                @Override
+                public void onClick(View view) {
+                    DBquaries.removeFromGroceryCartList( id,itemView.getContext() );
+
+                }
+            } );
+
+        }
+
+
     }
 }

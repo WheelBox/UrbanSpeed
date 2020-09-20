@@ -52,7 +52,7 @@ public class GroceryProductAdapter extends RecyclerView.Adapter<GroceryProductAd
     @NonNull
     @Override
     public GroceryProductAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from( parent.getContext( ) ).inflate( R.layout.products_item, parent, false );
+        View view = LayoutInflater.from( parent.getContext( ) ).inflate( R.layout.product_item_horizoltal, parent, false );
 
         return new ViewHolder( view );
     }
@@ -68,6 +68,7 @@ public class GroceryProductAdapter extends RecyclerView.Adapter<GroceryProductAd
         String reviewCount = groceryProductModelList.get( position ).getReviewCount( );
         String id = groceryProductModelList.get( position ).getId( );
         String tag=groceryProductModelList.get( position ).getTag_list();
+        String description=groceryProductModelList.get( position ).getDescription();
 
 
         long inStock = groceryProductModelList.get( position ).getStock( );
@@ -76,7 +77,7 @@ public class GroceryProductAdapter extends RecyclerView.Adapter<GroceryProductAd
 
         //   holder.checkAdmin( product_code );
 
-        holder.setData( name, offerType, price, offerAmount, inStock, rating, reviewCount, image, id,tag );
+        holder.setData( name, offerType, price, offerAmount, inStock, rating, reviewCount, image, id,tag,description );
 
 
     }
@@ -88,12 +89,9 @@ public class GroceryProductAdapter extends RecyclerView.Adapter<GroceryProductAd
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView name, offer, cutprice, price, rating, reviewCount,no_of_stock;
+        private TextView name, offer, cutprice, price, rating,description;
         private ImageView image;
-        private FloatingActionButton favouriteButton;
-        private LinearLayout rating_ll;
         private ConstraintLayout constraintLayout;
-        private boolean ADDED_towishList = false;
 
         public ViewHolder(@NonNull final View itemView) {
             super( itemView );
@@ -104,13 +102,10 @@ public class GroceryProductAdapter extends RecyclerView.Adapter<GroceryProductAd
             cutprice = itemView.findViewById( R.id.grocery_home_product_CutPrice );
             price = itemView.findViewById( R.id.grocery_home_product_Price );
             image = itemView.findViewById( R.id.grocery_home_productImage );
-            favouriteButton = itemView.findViewById( R.id.grocery_home_product_floating_action_button );
-            no_of_stock=itemView.findViewById( R.id.no_of_stock );
+            description=itemView.findViewById( R.id.grocery_home_productDescription );
 
             constraintLayout = itemView.findViewById( R.id.grocery_home_product_layout );
             rating = itemView.findViewById( R.id.grocery_home_product_Rating );
-            reviewCount = itemView.findViewById( R.id.grocery_home_product_ReviewCount );
-            rating_ll=itemView.findViewById( R.id.grocery_home_product_Rating_LL );
 
 
         }
@@ -140,7 +135,7 @@ public class GroceryProductAdapter extends RecyclerView.Adapter<GroceryProductAd
         }*/
 
         @SuppressLint("RestrictedApi")
-        private void setData(final String Name, String cutPrice, String Price, String OfferAmount, long instock, String Rating, String ReviewCount, String resource, final String Id, final String Tag) {
+        private void setData(final String Name, String cutPrice, String Price, String OfferAmount, long stock, String Rating, String reciew_count, String resource, final String Id, final String Tag,String Description) {
            /* if (DBquaries.IS_ADMIN) {
                 favouriteButton.setVisibility( View.GONE );
 
@@ -187,6 +182,7 @@ public class GroceryProductAdapter extends RecyclerView.Adapter<GroceryProductAd
 
             name.setText( Name );
             offer.setText( OfferAmount + " off" );
+            description.setText( Description );
 
             /*if (DBquaries.grocery_wishList.contains( Id )) {
 
@@ -207,14 +203,8 @@ public class GroceryProductAdapter extends RecyclerView.Adapter<GroceryProductAd
             }
 
 
-            if(Rating.length()==1){
 
-                rating_ll.setVisibility( View.GONE );
-                reviewCount.setVisibility( View.GONE );
-
-            }
             rating.setText( Rating );
-            reviewCount.setText( "(" + ReviewCount + ")" );
 
             Glide.with( itemView.getContext( ) ).load( resource ).into( image );
 
