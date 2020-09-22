@@ -5,7 +5,7 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.abhirajsharma.urbanspeed.R
 import com.abhirajsharma.urbanspeed.model.WishListModel
@@ -16,11 +16,12 @@ class WishListAdapter(private val context: Context, private val list: ArrayList<
     : RecyclerView.Adapter<WishListAdapter.WishListViewHolder>() {
 
     class WishListViewHolder(item: View) : RecyclerView.ViewHolder(item) {
-        val star1: ImageView = item.findViewById(R.id.myOrder_star1)
-        val star2: ImageView = item.findViewById(R.id.myOrder_star2)
-        val star3: ImageView = item.findViewById(R.id.myOrder_star3)
-        val star4: ImageView = item.findViewById(R.id.myOrder_star4)
-        val star5: ImageView = item.findViewById(R.id.myOrder_star5)
+        //        val star1: ImageView = item.findViewById(R.id.myOrder_star1)
+//        val star2: ImageView = item.findViewById(R.id.myOrder_star2)
+//        val star3: ImageView = item.findViewById(R.id.myOrder_star3)
+//        val star4: ImageView = item.findViewById(R.id.myOrder_star4)
+//        val star5: ImageView = item.findViewById(R.id.myOrder_star5)
+        val stock: TextView = item.findViewById(R.id.wishListStock)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WishListViewHolder {
@@ -32,19 +33,25 @@ class WishListAdapter(private val context: Context, private val list: ArrayList<
         val current = list[position]
         holder.itemView.wishListName.text = current.wishName
         holder.itemView.wishListPrice.text = "₹" + current.price
-        holder.itemView.wishListStock.text = current.inStock
-        Glide.with(context).load(current.img).into(holder.itemView.wishListImg)
-        Glide.with(context).load(current.logo).into(holder.itemView.wishListItemLogo)
-        val starRating = arrayListOf<ImageView>()
-        starRating.add(holder.star1)
-        starRating.add(holder.star2)
-        starRating.add(holder.star3)
-        starRating.add(holder.star4)
-        starRating.add(holder.star5)
-        val rating = current.rating
-        for (x in 0 until rating) {
-            starRating[x].setColorFilter(Color.YELLOW)
+        if (current.inStock.trim() == "Out of Stock") {
+            holder.stock.setTextColor(Color.RED)
+            holder.stock.text = current.inStock
+        } else {
+            holder.stock.text = current.inStock
         }
+//        holder.itemView.wishListStock.text = current.inStock
+        Glide.with(context).load(current.img).into(holder.itemView.wishListImg)
+//        Glide.with(context).load(current.logo).into(holder.itemView.wishListItemLogo)
+//        val starRating = arrayListOf<ImageView>()
+//        starRating.add(holder.star1)
+//        starRating.add(holder.star2)
+//        starRating.add(holder.star3)
+//        starRating.add(holder.star4)
+//        starRating.add(holder.star5)
+//        val rating = current.rating
+//        for (x in 0 until rating) {
+//            starRating[x].setColorFilter(Color.YELLOW)
+//        }
     }
 
 

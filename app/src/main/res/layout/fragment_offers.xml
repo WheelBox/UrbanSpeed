@@ -20,9 +20,9 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/offersRv"
+            android:background="@android:color/white"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:background="?attr/selectableItemBackground"
             tools:itemCount="9"
             tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             tools:listitem="@layout/dealsoftheday_recycler_item"

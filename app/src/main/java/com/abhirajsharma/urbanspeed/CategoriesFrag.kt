@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.abhirajsharma.urbanspeed.adapter.CategoriesAdapter
 import com.abhirajsharma.urbanspeed.model.HomeCategoryModels
@@ -24,7 +24,7 @@ class CategoriesFrag : Fragment() {
         val categoryModelsList = arrayListOf<HomeCategoryModels>()
         val homeCategoryAdapter = CategoriesAdapter(activity as AppCompatActivity, categoryModelsList)
 
-        val linearLayoutManager = LinearLayoutManager(activity)
+        val linearLayoutManager = GridLayoutManager(activity, 3)
         linearLayoutManager.orientation = RecyclerView.VERTICAL
         view.catRv!!.layoutManager = linearLayoutManager
         view.catRv!!.adapter = homeCategoryAdapter

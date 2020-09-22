@@ -2,43 +2,44 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:layout_margin="4dp"
     android:layout_height="wrap_content"
-    android:layout_margin="7dp"
+    android:layout_marginTop="3dp"
+    android:clickable="true"
     app:cardBackgroundColor="@android:color/white"
-    app:cardCornerRadius="10dp"
-    app:cardElevation="6dp"
+    android:focusable="true"
+    app:cardCornerRadius="4dp"
+    app:cardElevation="1dp"
     app:cardForegroundColor="@android:color/transparent">
 
     <LinearLayout
         android:id="@+id/internship_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp">
+        android:orientation="vertical"
+        android:padding="5dp">
 
         <ImageView
             android:id="@+id/catImg"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:scaleType="centerCrop"
-            android:src="@android:color/holo_green_light" />
-
-        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
+            android:layout_height="100dp"
+            android:padding="7dp"
+            android:scaleType="centerCrop"
+            android:src="@android:color/holo_red_light" />
+
+        <TextView
+            android:id="@+id/catName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:fontFamily="@font/rubik_medium"
             android:gravity="center"
-            android:orientation="vertical">
+            android:maxLines="1"
+            android:text="Mobiles"
+            android:textColor="@android:color/black"
+            android:textSize="12sp" />
 
-            <TextView
-                android:id="@+id/catName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:maxLines="1"
-                android:text="Internship"
-                android:textSize="20sp" />
-
-
-        </LinearLayout>
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>
+
+
