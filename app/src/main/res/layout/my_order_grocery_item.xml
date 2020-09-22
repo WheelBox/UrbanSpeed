@@ -131,9 +131,9 @@
         android:layout_height="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-
         android:background="@drawable/orange_dot"
         android:visibility="invisible"
+        android:backgroundTint="#1262ED"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/myOrder_groceryItemDescription" />
 
@@ -143,9 +143,10 @@
         android:layout_height="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-
         android:background="@drawable/orange_dot"
         android:visibility="invisible"
+        android:backgroundTint="#12ED1D"
+
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/myOrder_groceryItemDescription" />
 
@@ -155,6 +156,8 @@
         android:layout_height="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:backgroundTint="#ED1212"
+
         android:background="@drawable/orange_dot"
         android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"

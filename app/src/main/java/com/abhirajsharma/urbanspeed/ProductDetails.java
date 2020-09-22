@@ -111,6 +111,7 @@ public class ProductDetails extends AppCompatActivity {
         product_id=getIntent().getStringExtra( "product_id" );
 
         if(DBquaries.grocery_CartList_product_id.contains( product_id )){
+
             addtoCart.setVisibility( View.GONE );
             gotoCart.setVisibility( View.VISIBLE );
             cartFAB.setSupportImageTintList( ColorStateList.valueOf( Color.parseColor( "#39559e" ) ) );
@@ -123,13 +124,21 @@ public class ProductDetails extends AppCompatActivity {
         gotoCart.setOnClickListener( new View.OnClickListener( ) {
             @Override
             public void onClick(View view) {
-                cartFAB.setSupportImageTintList( ColorStateList.valueOf( Color.parseColor( "#696969" ) ) );
-                Intent intent=new Intent( ProductDetails.this,MyCart.class );
-                startActivity( intent );
+
+                if(DBquaries.grocery_CartList_product_id.contains( product_id )){
+
+
+                }else {
+                    cartFAB.setSupportImageTintList( ColorStateList.valueOf( Color.parseColor( "#696969" ) ) );
+                    Intent intent=new Intent( ProductDetails.this,MyCart.class );
+                    startActivity( intent );
+                }
+
 
 
             }
         } );
+
 
         cartFAB.setOnClickListener( new View.OnClickListener( ) {
             @Override

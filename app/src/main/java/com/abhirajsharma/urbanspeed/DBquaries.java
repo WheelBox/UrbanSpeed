@@ -12,6 +12,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,6 +26,8 @@ public class DBquaries {
     public static List<String> grocery_CartList_product_id = new ArrayList<>( );
     public static List<String> grocery_CartList_product_count = new ArrayList<>( );
     public static List<String> grocery_CartList_product_OutOfStock = new ArrayList<>( );
+    public static List<String> grocery_OrderList = new ArrayList<>( );
+
 
     public static int PRICE_IN_CART_GROCERY = 0;
     public static int TOTAL_SAVE = 0;
@@ -121,6 +125,29 @@ public class DBquaries {
 
 
     }
+
+
+    public static void loadGroceryOrders() {
+        grocery_OrderList.clear( );
+        FirebaseFirestore.getInstance().collection( "USERS" ).document( FirebaseAuth.getInstance( ).getCurrentUser( ).getUid( ) )
+                .collection( "USER_DATA" ).document( "MY_GROCERY_ORDERS" ).get( )
+                .addOnCompleteListener( new OnCompleteListener<DocumentSnapshot>( ) {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful( )) {
+                            long size = (long) task.getResult( ).get( "list_size" );
+                            for (long x = 0; x < size; x++) {
+                                grocery_OrderList.add( task.getResult( ).get( "order_id_" + x ).toString( ) );
+                            }
+
+
+                        }
+
+                    }
+                } );
+
+    }
+
 
 
 

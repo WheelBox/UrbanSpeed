@@ -30,6 +30,10 @@ class HomeFrag : Fragment() {
         if (DBquaries.grocery_CartList_product_id.size === 0) {
             DBquaries.loadGroceryCartList(view.context)
         }
+
+        if (DBquaries.grocery_OrderList.size === 0) {
+            DBquaries.loadGroceryOrders()
+        }
         val homeCategoryModelsList: ArrayList<HomeCategoryModels> = ArrayList()
         val homeCategoryAdapter= HomeCategoryAdapter(homeCategoryModelsList)
 

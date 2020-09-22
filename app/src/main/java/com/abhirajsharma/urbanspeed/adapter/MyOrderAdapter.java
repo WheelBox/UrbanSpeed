@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.abhirajsharma.urbanspeed.OrderDetails;
 import com.abhirajsharma.urbanspeed.R;
 import com.abhirajsharma.urbanspeed.model.MyOrderModel;
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -49,7 +50,7 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
 
 
         holder.setDAta(name, image, description, order_id, productId, rating, review, otp);
-        // holder.setdeliveryStat( is_Cancled, is_Deliverd, DeliceryStatus );
+         holder.setdeliveryStat( is_Cancled, is_Deliverd, DeliceryStatus );
 
         // holder.setStar( order_id, productId );
     }
@@ -72,7 +73,7 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            image = itemView.findViewById(R.id.wishListImg);
+            image = itemView.findViewById(R.id.myOrder_groceryItemImage);
             deliveryStatus = itemView.findViewById(R.id.myOrder_groceryItemDeliveryStatus);
             name = itemView.findViewById(R.id.myOrder_groceryItemName);
             constraintLayout = itemView.findViewById(R.id.myOrder_groceryLayout);
@@ -95,7 +96,7 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
 
         public void setDAta(String Name, String res, String desc, final String Oid, final String Pid, String Rating, final String Review, String Otp) {
 
-            //  Glide.with( itemView.getContext( ) ).load( res ).into( image );
+              Glide.with( itemView.getContext( ) ).load( res ).into( image );
 
 
             otp_txt.setText(Otp);
@@ -107,8 +108,8 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
                 public void onClick(View view) {
 
                     Intent intent = new Intent(itemView.getContext(), OrderDetails.class);
-                    // intent.putExtra( "order_id", Oid );
-                    //  intent.putExtra( "product_id", Pid );
+                     intent.putExtra( "order_id", Oid );
+                      intent.putExtra( "product_id", Pid );
                     itemView.getContext().startActivity(intent);
 
 
@@ -383,7 +384,7 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
                 }
 
 
-            } );
+            } );*/
 
 
         }
@@ -407,7 +408,7 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
 
             }
 
-*/
+
         }
     }
 
