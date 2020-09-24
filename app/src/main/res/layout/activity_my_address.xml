@@ -19,30 +19,6 @@
 
     </androidx.appcompat.widget.Toolbar>
 
-    <LinearLayout
-        android:id="@+id/current_location_ll"
-        android:layout_width="match_parent"
-        android:layout_height="57dp"
-        android:layout_marginBottom="2dp"
-        android:background="#fff"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_address">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginStart="12dp"
-            android:drawableStart="@drawable/ic_baseline_gps_fixed_24"
-            android:drawablePadding="4dp"
-            android:gravity="center_vertical"
-            android:text=" Current Location"
-            android:textColor="#df4444"
-            android:textSize="18sp" />
-
-
-    </LinearLayout>
 
 
     <LinearLayout
@@ -54,7 +30,7 @@
         android:background="#fff"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/current_location_ll">
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_address">
 
         <TextView
             android:layout_width="match_parent"

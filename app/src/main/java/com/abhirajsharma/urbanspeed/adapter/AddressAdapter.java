@@ -1,19 +1,29 @@
 package com.abhirajsharma.urbanspeed.adapter;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.abhirajsharma.urbanspeed.MyAddress;
+import com.abhirajsharma.urbanspeed.NewAddress;
 import com.abhirajsharma.urbanspeed.R;
 import com.abhirajsharma.urbanspeed.model.AddressModel;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHolder> {
 
@@ -77,7 +87,6 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
             phone.setText(Phone);
             type.setText(Type);
 
-            /*
 
             item_layout.setOnClickListener( new View.OnClickListener( ) {
                 @Override
@@ -118,9 +127,12 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
             edit.setOnClickListener( new View.OnClickListener( ) {
                 @Override
                 public void onClick(View view) {
-                    Intent intent=new Intent( itemView.getContext(), address.class );
+
+
+
+                    Intent intent=new Intent( itemView.getContext(), NewAddress.class );
                     intent.putExtra( "layout_code",1 );
-                    intent.putExtra( "position",addressModelList.size()- positon-1);
+                    intent.putExtra( "position",MyAddress.size- positon-1);
                     itemView.getContext().startActivity( intent );
                 }
             } );
@@ -178,7 +190,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
 
 
 
-             */
+
         }
 
 
