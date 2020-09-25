@@ -150,14 +150,6 @@ class HomeFrag : Fragment() {
                         Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
                     }
                 }
-
-
-
-
-
-
-
-
         return view
     }
 

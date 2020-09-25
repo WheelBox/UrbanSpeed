@@ -7,30 +7,49 @@
     tools:context=".MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarLayout3"
+        android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
+        android:background="@color/colorPrimary"
         android:theme="@style/AppTheme.AppBarOverlay">
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar_main"
+        <FrameLayout
+            android:id="@+id/toolbar_container"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimaryDark"
-            app:menu="@menu/search_and_cart_icon"
-            app:popupTheme="@style/AppTheme.PopupOverlay">
+            android:layout_height="wrap_content">
 
-            <ImageView
-                android:layout_width="180dp"
-                android:layout_height="wrap_content"
-                android:src="@drawable/background_new" />
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/colorPrimaryDark"
+                app:menu="@menu/search_and_cart_icon"
+                app:popupTheme="@style/AppTheme.PopupOverlay">
 
-        </com.google.android.material.appbar.MaterialToolbar>
+                <ImageView
+                    android:layout_width="180dp"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/background_new" />
+
+            </androidx.appcompat.widget.Toolbar>
+
+            <com.ferfalk.simplesearchview.SimpleSearchView
+                android:id="@+id/searchView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorPrimaryDark"
+                android:hint="Search for Categories, Products and More"
+                app:backIconTint="#F44336"
+                app:cursorColor="@android:color/holo_red_light"
+                app:iconsTint="#F44336"
+                app:type="card"
+                tools:visibility="visible" />
+        </FrameLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
 
     <FrameLayout
+        android:background="@android:color/white"
         android:id="@+id/fragContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -23,6 +23,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
@@ -47,6 +51,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore:21.6.0'
     implementation 'androidx.preference:preference:1.1.1'
     implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'com.github.Ferfalk:SimpleSearchView:0.1.6'
 
 }
 repositories {
