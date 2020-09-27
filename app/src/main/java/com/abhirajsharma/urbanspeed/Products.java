@@ -15,7 +15,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 
 import com.abhirajsharma.urbanspeed.adapter.GroceryProductAdapter;
@@ -33,10 +35,10 @@ import java.util.List;
 public class Products extends AppCompatActivity {
 
     public static GroceryProductAdapter groceryProductAdapter;
-    private Toolbar toolbar;
     private RecyclerView product_recycler;
     private List<GroceryProductModel> groceryProductModel;
     private Dialog loadingDialog;
+    private LinearLayout search_LL;
 
 
     @Override
@@ -45,13 +47,9 @@ public class Products extends AppCompatActivity {
         setContentView(R.layout.activity_products);
 
         product_recycler = findViewById(R.id.grocery_product_recycler);
-        toolbar = findViewById(R.id.toolbar_grocery_product);
+        search_LL=findViewById( R.id.search_LL );
 
-        toolbar.setTitle("Products");
-        setSupportActionBar(toolbar);
-        toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         loadingDialog= new Dialog( Products.this );
         loadingDialog.setContentView( R.layout.loading_progress_dialouge );
         loadingDialog.setCancelable( false );
@@ -60,6 +58,28 @@ public class Products extends AppCompatActivity {
 
 
         groceryProductModel = new ArrayList<>();
+
+        product_recycler.setOnScrollChangeListener( new View.OnScrollChangeListener( ) {
+            @Override
+            public void onScrollChange(View view, int scrollx, int scrolly, int oldscrollx, int oldscrolly) {
+
+
+                if(oldscrolly>scrolly){
+
+
+                    search_LL.setVisibility( View.VISIBLE );
+
+
+                }else {
+                    search_LL.setVisibility( View.GONE );
+
+                }
+
+
+
+
+            }
+        } );
 
 
         groceryProductAdapter = new GroceryProductAdapter(groceryProductModel);

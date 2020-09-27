@@ -12,14 +12,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.abhirajsharma.urbanspeed.adapter.HomeAdapter
 import com.abhirajsharma.urbanspeed.adapter.HomeCategoryAdapter
-import com.abhirajsharma.urbanspeed.model.HomeCategoryModels
-import com.abhirajsharma.urbanspeed.model.HomeModel
-import com.abhirajsharma.urbanspeed.model.SliderModel
-import com.abhirajsharma.urbanspeed.model.dealsofthedayModel
+import com.abhirajsharma.urbanspeed.model.*
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
 
 class HomeFrag : Fragment() {
+
+    var shopModel: ArrayList<ShopModel> = ArrayList()
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
@@ -60,14 +62,18 @@ class HomeFrag : Fragment() {
                     Log.d(TAG, "Error getting documents: ", exception)
                 }
 
+        return view
+    }
 
+    override fun onStart() {
+        super.onStart()
 
         val homeModelList: ArrayList<HomeModel> = ArrayList()
         val homeAdapter = HomeAdapter(homeModelList)
         val grocerymain = LinearLayoutManager(activity)
         grocerymain.orientation = RecyclerView.VERTICAL
-        view.home_recycler!!.layoutManager = grocerymain
-        view.home_recycler!!.adapter = homeAdapter
+        home_recycler!!.layoutManager = grocerymain
+        home_recycler!!.adapter = homeAdapter
 
 
         FirebaseFirestore.getInstance().collection("GROCERYHOME").orderBy("index").get()
@@ -95,10 +101,10 @@ class HomeFrag : Fragment() {
                                 val background = documentSnapshot["background_color"].toString()
                                 val title = documentSnapshot["title"].toString()
                                 for (x in 1 until no_of_products + 1) {
-                                   (dealsofthedayModelList).add(dealsofthedayModel(documentSnapshot["image_$x"].toString(), documentSnapshot["name_$x"].toString(), documentSnapshot["description_$x"].toString(),
-                                           documentSnapshot["price_$x"].toString(),
-                                           documentSnapshot["id_$x"].toString(),
-                                           documentSnapshot["tag_$x"].toString()))
+                                    (dealsofthedayModelList).add(dealsofthedayModel(documentSnapshot["image_$x"].toString(), documentSnapshot["name_$x"].toString(), documentSnapshot["description_$x"].toString(),
+                                            documentSnapshot["price_$x"].toString(),
+                                            documentSnapshot["id_$x"].toString(),
+                                            documentSnapshot["tag_$x"].toString()))
                                     ids.add(documentSnapshot["id_$x"].toString())
                                 }
                                 homeModelList.add(HomeModel(2, title, dealsofthedayModelList, ids, background))
@@ -143,6 +149,10 @@ class HomeFrag : Fragment() {
                                         documentSnapshot["tag_4"].toString()
                                 ))
                             }
+
+                            if(documentSnapshot["view_type"]as Long ==6L){
+                                homeModelList.add(HomeModel(6, 0, DBquaries.shopModelList))
+                            }
                         }
                         homeAdapter.notifyDataSetChanged()
                     } else {
@@ -151,15 +161,8 @@ class HomeFrag : Fragment() {
                     }
                 }
 
-
-
-
-
-
-
-
-        return view
     }
 
 
 }
+
