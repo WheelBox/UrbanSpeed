@@ -1,5 +1,6 @@
 package com.abhirajsharma.urbanspeed.adapter;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.abhirajsharma.urbanspeed.R;
+import com.abhirajsharma.urbanspeed.ShopActivity;
 import com.abhirajsharma.urbanspeed.model.dealsofthedayModel;
 import com.bumptech.glide.Glide;
 
@@ -78,6 +80,9 @@ public class dealsofthedayAdapter extends RecyclerView.Adapter<dealsofthedayAdap
             image.setOnClickListener( new View.OnClickListener( ) {
                 @Override
                 public void onClick(View view) {
+
+                    Intent intent = new Intent(view.getContext(), ShopActivity.class);
+                    view.getContext().startActivity(intent);
                  /*   Intent intent=new Intent( view.getContext(), GroceryProductDetails.class );
                     intent.putExtra("product_id", id );
                     intent.putExtra("tag_string", tag );

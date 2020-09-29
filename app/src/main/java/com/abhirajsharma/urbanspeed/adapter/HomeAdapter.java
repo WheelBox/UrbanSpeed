@@ -1,6 +1,7 @@
 package com.abhirajsharma.urbanspeed.adapter;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Handler;
@@ -21,8 +22,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.abhirajsharma.urbanspeed.R;
+import com.abhirajsharma.urbanspeed.ShopActivity;
 import com.abhirajsharma.urbanspeed.model.HomeCategoryModels;
 import com.abhirajsharma.urbanspeed.model.HomeModel;
+import com.abhirajsharma.urbanspeed.model.ShopModel;
 import com.abhirajsharma.urbanspeed.model.SliderModel;
 import com.abhirajsharma.urbanspeed.model.dealsofthedayModel;
 import com.bumptech.glide.Glide;
@@ -54,6 +57,8 @@ public class HomeAdapter extends RecyclerView.Adapter {
                 return HomeModel.CICULAR_HORIZONTAL;
             case 5:
                 return HomeModel.FOUR_IMAGE;
+            case 6:
+                return HomeModel.SHOP_LIST;
             default:
                 return -1;
         }
@@ -82,6 +87,9 @@ public class HomeAdapter extends RecyclerView.Adapter {
             case HomeModel.FOUR_IMAGE:
                 View fourview = LayoutInflater.from(parent.getContext()).inflate(R.layout.four_image, parent, false);
                 return new fourImage(fourview);
+            case HomeModel.SHOP_LIST:
+                View shop_view = LayoutInflater.from(parent.getContext()).inflate(R.layout.blank_recycler, parent, false);
+                return new shopViewHolder( shop_view );
 
             default:
                 return null;
@@ -133,6 +141,12 @@ public class HomeAdapter extends RecyclerView.Adapter {
                 String title = homeModelList.get(position).getFourImageTitle();
                 ((fourImage) holder).setData(image1, image2, image3, image4, name1, name2, name3, name4, title, tag1, tag2, tag3, tag4);
                 break;
+            case HomeModel.SHOP_LIST:
+                List<ShopModel> shop_list = homeModelList.get(position).getShopModelList();
+                ((shopViewHolder) holder).setRecyclerView( shop_list );
+                break;
+
+
             default:
                 return;
 
@@ -287,6 +301,7 @@ public class HomeAdapter extends RecyclerView.Adapter {
             viewAllbtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
                /*     Intent intent=new Intent( itemView.getContext(), Product.class );
                     intent.putExtra( "ids",  Ids );
                     intent.putExtra( "from_grocery_category",2 );
@@ -409,6 +424,8 @@ public class HomeAdapter extends RecyclerView.Adapter {
             image1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    Intent intent = new Intent(itemView.getContext(), ShopActivity.class);
+                    itemView.getContext().startActivity(intent);
                  /*   Intent intent=new Intent( itemView.getContext(), SearchedProduct.class );
                     intent.putExtra( "tag_string",t1 );
                     itemView.getContext().startActivity( intent );*/
@@ -417,6 +434,8 @@ public class HomeAdapter extends RecyclerView.Adapter {
             image2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    Intent intent = new Intent(itemView.getContext(), ShopActivity.class);
+                    itemView.getContext().startActivity(intent);
                    /* Intent intent=new Intent( itemView.getContext(), SearchedProduct.class );
                     intent.putExtra( "tag_string",t2 );
                     itemView.getContext().startActivity( intent );*/
@@ -425,6 +444,8 @@ public class HomeAdapter extends RecyclerView.Adapter {
             image3.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    Intent intent = new Intent(itemView.getContext(), ShopActivity.class);
+                    itemView.getContext().startActivity(intent);
                     /*Intent intent=new Intent( itemView.getContext(), SearchedProduct.class );
                     intent.putExtra( "tag_string",t3 );
                     itemView.getContext().startActivity( intent );*/
@@ -433,6 +454,8 @@ public class HomeAdapter extends RecyclerView.Adapter {
             image4.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    Intent intent = new Intent(itemView.getContext(), ShopActivity.class);
+                    itemView.getContext().startActivity(intent);
                   /*  Intent intent=new Intent( itemView.getContext(), SearchedProduct.class );
                     intent.putExtra( "tag_string",t4 );
                     itemView.getContext().startActivity( intent );*/
@@ -442,11 +465,33 @@ public class HomeAdapter extends RecyclerView.Adapter {
             exploreLL.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    Intent intent = new Intent(itemView.getContext(), ShopActivity.class);
+                    itemView.getContext().startActivity(intent);
+
                   /*  Intent intent=new Intent( itemView.getContext(), SearchedProduct.class );
                     intent.putExtra( "tag_string",t1+" "+t2+" "+t3+" "+t4 );
                     itemView.getContext().startActivity( intent );*/
                 }
             });
+        }
+    }
+
+    public class shopViewHolder extends  RecyclerView.ViewHolder{
+        private RecyclerView recyclerView;
+        public shopViewHolder(@NonNull View itemView) {
+            super( itemView );
+            recyclerView=itemView.findViewById( R.id.blank_recycler );
+
+        }
+        private void setRecyclerView (List<ShopModel> shopModelList){
+
+            ShopAdapter shopAdapter = new ShopAdapter(shopModelList);
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(itemView.getContext());
+            linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
+            recyclerView.setLayoutManager(linearLayoutManager);
+            recyclerView.setAdapter(shopAdapter);
+            shopAdapter.notifyDataSetChanged();
+
         }
     }
 

@@ -19,8 +19,17 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import kotlinx.android.synthetic.main.fragment_home.view.*
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.fragment_home.view.*
 
-//BaseExampleFragment()
+class HomeFrag : Fragment() {
+
+    var shopModel: ArrayList<ShopModel> = ArrayList()
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val view = inflater.inflate(R.layout.fragment_home, container, false)
 
 class HomeFrag : Fragment(), AppBarLayout.OnOffsetChangedListener {
 
@@ -64,13 +73,17 @@ class HomeFrag : Fragment(), AppBarLayout.OnOffsetChangedListener {
                 .addOnFailureListener { exception ->
                     Log.d(TAG, "Error getting documents: ", exception)
                 }
+        return view
+    }
 
+    override fun onStart() {
+        super.onStart()
         val homeModelList: ArrayList<HomeModel> = ArrayList()
         val homeAdapter = HomeAdapter(homeModelList)
         val grocerymain = LinearLayoutManager(activity)
         grocerymain.orientation = RecyclerView.VERTICAL
-        view.home_recycler!!.layoutManager = grocerymain
-        view.home_recycler!!.adapter = homeAdapter
+        home_recycler!!.layoutManager = grocerymain
+        home_recycler!!.adapter = homeAdapter
 
 
         FirebaseFirestore.getInstance().collection("GROCERYHOME").orderBy("index")
@@ -146,6 +159,10 @@ class HomeFrag : Fragment(), AppBarLayout.OnOffsetChangedListener {
                                         documentSnapshot["tag_3"].toString(),
                                         documentSnapshot["tag_4"].toString()
                                 ))
+                            }
+
+                            if(documentSnapshot["view_type"]as Long ==6L){
+                                homeModelList.add(HomeModel(6, 0, DBquaries.shopModelList))
                             }
                         }
                         homeAdapter.notifyDataSetChanged()
@@ -272,3 +289,4 @@ class HomeFrag : Fragment(), AppBarLayout.OnOffsetChangedListener {
     }
 
 }
+

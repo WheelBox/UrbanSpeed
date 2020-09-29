@@ -11,6 +11,7 @@ public class HomeModel {
     public static final int TRENDING = 3;
     public static final int CICULAR_HORIZONTAL=4;
     public static final int FOUR_IMAGE=5;
+    public static final int SHOP_LIST=6;
 
 
     private int type,type1,type2;
@@ -25,6 +26,7 @@ public class HomeModel {
     private List<HomeCategoryModels> homeCategoryModelsList;
     private String name_1,name_2,name_3,name_4;
     private String tag_1,tag_2,tag_3,tag_4;
+    private List<ShopModel> shopModelList;
 
     ////BANNER_SLIDER
 
@@ -35,6 +37,12 @@ public class HomeModel {
     public HomeModel(int type, List<SliderModel> sliderModelList) {
         this.type = type;
         this.sliderModelList = sliderModelList;
+    }
+
+    public HomeModel(int type, int type1, List<ShopModel> shopModelList) {
+        this.type = type;
+        this.type1 = type1;
+        this.shopModelList = shopModelList;
     }
 
     public HomeModel(int type, String title, List<dealsofthedayModel> dealsofthedayModelList, ArrayList<String> ids, String background_color) {
@@ -241,6 +249,14 @@ public class HomeModel {
 
     public void setFourImageTitle(String fourImageTitle) {
         this.fourImageTitle = fourImageTitle;
+    }
+
+    public List<ShopModel> getShopModelList() {
+        return shopModelList;
+    }
+
+    public void setShopModelList(List<ShopModel> shopModelList) {
+        this.shopModelList = shopModelList;
     }
 
     ////FOURiMAGE

@@ -1,5 +1,6 @@
 package com.abhirajsharma.urbanspeed.adapter;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.abhirajsharma.urbanspeed.R;
+import com.abhirajsharma.urbanspeed.ShopActivity;
 import com.abhirajsharma.urbanspeed.model.SliderModel;
 import com.bumptech.glide.Glide;
 
@@ -45,6 +47,9 @@ public class SliderAdapter extends PagerAdapter {
             @Override
             public void onClick(View view) {
                 if (!tags.isEmpty()) {
+
+                    Intent intent = new Intent( container.getContext( ), ShopActivity.class );
+                    container.getContext( ).startActivity( intent );
                   /*  Intent intent = new Intent( container.getContext( ), SearchedProduct.class );
                     intent.putExtra( "tag_string", tags );
                     container.getContext( ).startActivity( intent );*/
