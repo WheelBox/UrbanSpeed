@@ -1,33 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-
-    >
-
-
-
-
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/productsearchMenu"
-        android:orderInCategory="200"
-        app:showAsAction="always"
         android:icon="@drawable/ic_account_circle_black_24dp"
         android:iconTint="#fffFFF"
-
-        android:title="Search">
-    </item>
-
-
-
+        android:orderInCategory="200"
+        android:title="Search"
+        app:showAsAction="always" />
     <item
         android:id="@+id/productcartMenu"
-
         android:icon="@drawable/ic_shopping_cart_black_24dp"
         android:orderInCategory="100"
         android:title="Cart"
-
-        app:showAsAction="always">
-
-    </item>
-
+        app:showAsAction="always" />
 </menu>

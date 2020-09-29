@@ -2,6 +2,7 @@ package com.abhirajsharma.urbanspeed;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -9,6 +10,7 @@ import androidx.annotation.NonNull;
 
 import com.abhirajsharma.urbanspeed.model.ShopModel;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -23,6 +25,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 
 public class DBquaries {
@@ -208,8 +211,13 @@ public class DBquaries {
                         }
 
                     }
-                } );
-
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("checkMe", Objects.requireNonNull(e.getMessage()));
+                    }
+                });
     }
 
 
@@ -236,6 +244,18 @@ public class DBquaries {
     }
 
     public static void calcualtePriceGrocery(String todo, String amount) {
+//         if (todo.equals("+")) {
+//             DBquaries.PRICE_IN_CART_GROCERY = DBquaries.PRICE_IN_CART_GROCERY + Integer.parseInt(amount);
+//             MyCart.priceIncart.setText(String.valueOf(PRICE_IN_CART_GROCERY));
+//             MyCart.tax.setText(String.valueOf(DELIVERY_CHARGES));
+//             MyCart.grandTotal.setText(String.valueOf(PRICE_IN_CART_GROCERY + DELIVERY_CHARGES));
+//             MyCart.payAmount.setText("₹" + (PRICE_IN_CART_GROCERY + DELIVERY_CHARGES));
+//         } else {
+//             DBquaries.PRICE_IN_CART_GROCERY = DBquaries.PRICE_IN_CART_GROCERY - Integer.parseInt(amount);
+//             MyCart.priceIncart.setText(String.valueOf(PRICE_IN_CART_GROCERY));
+//             MyCart.tax.setText(String.valueOf(DELIVERY_CHARGES));
+//             MyCart.payAmount.setText("₹" + (PRICE_IN_CART_GROCERY + DELIVERY_CHARGES));
+//             MyCart.grandTotal.setText(String.valueOf(PRICE_IN_CART_GROCERY + DELIVERY_CHARGES));
         if (todo.equals( "+" )) {
             DBquaries.PRICE_IN_CART_GROCERY = DBquaries.PRICE_IN_CART_GROCERY + Integer.parseInt( amount );
             MyCart.priceIncart.setText( String.valueOf( PRICE_IN_CART_GROCERY ) );
@@ -250,8 +270,6 @@ public class DBquaries {
             MyCart.tax.setText( String.valueOf( DELIVERY_CHARGES ) );
             MyCart.payAmount.setText( "₹" + (PRICE_IN_CART_GROCERY + DELIVERY_CHARGES) );
             MyCart.grandTotal.setText( String.valueOf( PRICE_IN_CART_GROCERY + DELIVERY_CHARGES ) );
-
-
         }
 
 

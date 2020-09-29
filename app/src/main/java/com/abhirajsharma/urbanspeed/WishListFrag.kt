@@ -16,7 +16,6 @@ import com.abhirajsharma.urbanspeed.model.WishListModel
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_wish_list.view.*
 
-
 class WishListFrag : Fragment() {
 
     private val TAG = "checkMe"
