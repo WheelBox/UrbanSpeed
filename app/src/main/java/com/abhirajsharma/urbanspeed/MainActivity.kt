@@ -23,6 +23,7 @@ import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
 
+//, BaseExampleFragment.BaseExampleFragmentCallbacks
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -43,6 +44,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
+        supportActionBar!!.setDisplayShowTitleEnabled(false)
+        //toolbar.setNavigationIcon(R.drawable.ic_toolbar);
+        //toolbar.setNavigationIcon(R.drawable.ic_toolbar);
+        toolbar.title = ""
+        toolbar.subtitle = ""
+        //toolbar.setLogo(R.drawable.ic_toolbar);
+
 
         searchView = findViewById(R.id.searchView)
 
@@ -82,6 +90,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 Log.d("checkMe", "Text changed:$newText")
                 Log.d("checkMe", "Text Change " + GlobalInfo.searchFragment.toString())
                 if (newText.isNotEmpty()) {
+                    GlobalInfo.textSearch = newText
                     supportFragmentManager
                             .beginTransaction()
                             .replace(R.id.fragContainer, SearchFrag())
@@ -103,7 +112,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.search_and_cart_icon, menu)
-        setupSearchView(menu!!)
+//        setupSearchView(menu!!)
         return true
     }
 
@@ -140,14 +149,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         if (item.itemId == R.id.productcartMenu) {
             startActivity(Intent(this, MyCart::class.java))
         }
-        if (item.itemId == R.id.productsearchMenu) {
-            Toast.makeText(this, "Searched clicked", Toast.LENGTH_SHORT).show()
+//        if (item.itemId == R.id.productsearchMenu) {
+//            Toast.makeText(this, "Searched clicked", Toast.LENGTH_SHORT).show()
 //            supportFragmentManager
 //                    .beginTransaction()
 //                    .replace(R.id.fragContainer, SearchFrag())
 //                    .addToBackStack(null)
 //                    .commit()
-        }
+//        }
         return super.onOptionsItemSelected(item)
     }
 
@@ -201,6 +210,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onBackPressed() {
+
+//        val fragments: List<*> = supportFragmentManager.fragments
+//        Log.d("checkMe",fragments.size.toString())
+//
+//        val currentFragment = fragments[fragments.size - 2] as BaseExampleFragment
+//        if (!currentFragment.onActivityBackPress()) {
+//            super.onBackPressed()
+//        }
+
+
         val f = this.supportFragmentManager.findFragmentById(R.id.fragContainer)!!
         if (f is SearchFrag) {
             supportFragmentManager.popBackStack()
@@ -224,5 +243,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             super.onBackPressed()
         }
     }
+
+//    override fun onAttachSearchViewToDrawer(searchView: FloatingSearchView?) {
+//
+//    }
 
 }

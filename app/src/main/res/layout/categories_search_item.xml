@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="2dp"
@@ -13,23 +12,24 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/grocery_home_product_layout"
         android:layout_width="match_parent"
+        android:paddingStart="20dp"
         android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/grocery_home_productImage"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="2dp"
-            android:layout_marginBottom="2dp"
-            android:scaleType="centerCrop"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.025"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.2"
-            app:srcCompat="@drawable/ic_account_circle_black_24dp" />
+        <!--        <ImageView-->
+        <!--            android:id="@+id/searchItemImg"-->
+        <!--            android:layout_width="50dp"-->
+        <!--            android:layout_height="50dp"-->
+        <!--            android:layout_marginStart="8dp"-->
+        <!--            android:layout_marginTop="2dp"-->
+        <!--            android:layout_marginBottom="2dp"-->
+        <!--            android:scaleType="centerCrop"-->
+        <!--            app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintHorizontal_bias="0.025"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toTopOf="parent"-->
+        <!--            app:layout_constraintVertical_bias="0.2"-->
+        <!--            app:srcCompat="@drawable/ic_account_circle_black_24dp" />-->
 
         <!--        <LinearLayout-->
         <!--            android:id="@+id/linearLayout3"-->
@@ -56,18 +56,19 @@
         <!--        </LinearLayout>-->
 
         <TextView
-            android:id="@+id/grocery_home_productDescription"
+            android:id="@+id/searchItemDes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="12dp"
             android:maxLines="1"
+            android:layout_marginBottom="5dp"
             android:text="Get groceries and food delivered"
             android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/linearLayout3"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/grocery_home_productImage"
-            app:layout_constraintTop_toBottomOf="@+id/grocery_home_product_Name" />
+            app:layout_constraintTop_toBottomOf="@+id/searchItemName" />
 
         <!--        <TextView-->
         <!--            android:id="@+id/grocery_home_product_Price"-->
@@ -93,16 +94,16 @@
         <!--            app:layout_constraintBottom_toBottomOf="@+id/grocery_home_product_Price"-->
         <!--            app:layout_constraintStart_toEndOf="@+id/grocery_home_product_Price" />-->
 
-        <TextView
-            android:id="@+id/textView97"
-            android:layout_width="0dp"
-            android:layout_height="0.8dp"
-            android:background="#909797"
-            android:text=""
-            app:layout_constraintBottom_toBottomOf="@+id/grocery_home_product_CutPrice"
-            app:layout_constraintEnd_toEndOf="@+id/grocery_home_product_CutPrice"
-            app:layout_constraintStart_toStartOf="@+id/grocery_home_product_CutPrice"
-            app:layout_constraintTop_toTopOf="@+id/grocery_home_product_CutPrice" />
+        <!--        <TextView-->
+        <!--            android:id="@+id/textView97"-->
+        <!--            android:layout_width="0dp"-->
+        <!--            android:layout_height="0.8dp"-->
+        <!--            android:background="#909797"-->
+        <!--            android:text=""-->
+        <!--            app:layout_constraintBottom_toBottomOf="@+id/grocery_home_product_CutPrice"-->
+        <!--            app:layout_constraintEnd_toEndOf="@+id/grocery_home_product_CutPrice"-->
+        <!--            app:layout_constraintStart_toStartOf="@+id/grocery_home_product_CutPrice"-->
+        <!--            app:layout_constraintTop_toTopOf="@+id/grocery_home_product_CutPrice" />-->
 
         <!--        <TextView-->
         <!--            android:id="@+id/grocery_home_product_Offer"-->
@@ -129,26 +130,26 @@
         <!--            app:layout_constraintStart_toEndOf="@+id/grocery_home_productImage"-->
         <!--            app:layout_constraintTop_toBottomOf="@+id/grocery_home_product_Price" />-->
 
-        <TextView
-            android:id="@+id/grocery_home_productEDT"
-            android:layout_width="wrap_content"
-            android:layout_height="18dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="2dp"
-            android:layout_marginEnd="8dp"
-            android:maxLines="1"
-            android:text="Store just 2 kms away"
-            android:textColor="#ED802C"
-            android:textSize="10sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/grocery_home_productImage"
-            app:layout_constraintTop_toBottomOf="@+id/textView7"
-            tools:ignore="SmallSp" />
+        <!--        <TextView-->
+        <!--            android:id="@+id/grocery_home_productEDT"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="18dp"-->
+        <!--            android:layout_marginStart="8dp"-->
+        <!--            android:layout_marginTop="2dp"-->
+        <!--            android:layout_marginEnd="8dp"-->
+        <!--            android:maxLines="1"-->
+        <!--            android:text="Store just 2 kms away"-->
+        <!--            android:textColor="#ED802C"-->
+        <!--            android:textSize="10sp"-->
+        <!--            app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintHorizontal_bias="0.0"-->
+        <!--            app:layout_constraintStart_toEndOf="@+id/grocery_home_productImage"-->
+        <!--            app:layout_constraintTop_toBottomOf="@+id/textView7"-->
+        <!--            tools:ignore="SmallSp" />-->
 
         <TextView
-            android:id="@+id/grocery_home_product_Name"
+            android:id="@+id/searchItemName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -159,7 +160,6 @@
             android:textSize="15sp"
             app:layout_constraintEnd_toStartOf="@+id/linearLayout3"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/grocery_home_productImage"
             app:layout_constraintTop_toTopOf="parent" />
 
 

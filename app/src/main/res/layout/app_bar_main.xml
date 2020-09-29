@@ -10,7 +10,6 @@
         android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <FrameLayout
@@ -21,8 +20,9 @@
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
+                android:layout_height="?actionBarSize"
                 android:background="@color/colorPrimaryDark"
+                app:contentInsetStart="0dp"
                 app:menu="@menu/search_and_cart_icon"
                 app:popupTheme="@style/AppTheme.PopupOverlay">
 
@@ -43,7 +43,7 @@
                 app:cursorColor="@android:color/holo_red_light"
                 app:iconsTint="#F44336"
                 app:type="card"
-                tools:visibility="visible" />
+                tools:visibility="invisible" />
         </FrameLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
