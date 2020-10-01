@@ -31,9 +31,7 @@ import com.abhirajsharma.urbanspeed.model.grocery_cart_product_Model;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.TaskExecutors;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -45,8 +43,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 public class MyCart extends AppCompatActivity {
 
@@ -64,6 +60,7 @@ public class MyCart extends AppCompatActivity {
     private static String otp = new DecimalFormat( "000000" ).format( new Random( ).nextInt( 999999 ) );
     private final String CHANNEL_ID = "ai";
     private String ShopNMAE="";
+     long[] shop_orderListSieze={0};
 
 
     private ImageView shopImage;
@@ -119,129 +116,129 @@ public class MyCart extends AppCompatActivity {
 
             payment_layout.setVisibility( View.INVISIBLE );
             loadingDialog.dismiss( );
-        }
+        }else {
 
 
-        FirebaseFirestore.getInstance().collection( "STORES" ).document( DBquaries.store_id ).get().addOnCompleteListener( new OnCompleteListener<DocumentSnapshot>( ) {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()){
+            FirebaseFirestore.getInstance( ).collection( "STORES" ).document( DBquaries.store_id ).get( ).addOnCompleteListener( new OnCompleteListener<DocumentSnapshot>( ) {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful( )) {
 
-                    String name=task.getResult().get( "name" ).toString();
-                    ShopNMAE=name;
-                    String imaeg=task.getResult().get( "image" ).toString();
-                    String description=task.getResult().get( "category" ).toString();
+                        String name = task.getResult( ).get( "name" ).toString( );
+                        ShopNMAE = name;
+                        String imaeg = task.getResult( ).get( "image" ).toString( );
+                        String description = task.getResult( ).get( "category" ).toString( );
 
-                    Glide.with( MyCart.this ).load( imaeg ).into( shopImage );
-                    shopName.setText( name );
-                    shopDescription.setText( description );
+                        Glide.with( MyCart.this ).load( imaeg ).into( shopImage );
+                        shopName.setText( name );
+                        shopDescription.setText( description );
+
+
+                    }
 
 
                 }
+            } );
 
 
+            grocery_cart_product_modelList = new ArrayList<>( );
 
-            }
-        } );
+            grocery_cart_product_adapter = new grocery_cart_product_Adapter(
+                    grocery_cart_product_modelList
+            );
 
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager( this );
+            linearLayoutManager.setOrientation( RecyclerView.VERTICAL );
+            cartProduct_Recycler.setLayoutManager( linearLayoutManager );
+            cartProduct_Recycler.setAdapter( grocery_cart_product_adapter );
+            cartProduct_Recycler.stopScroll( );
+            cartProduct_Recycler.setNestedScrollingEnabled( false );
 
-
-        grocery_cart_product_modelList = new ArrayList<>();
-
-        grocery_cart_product_adapter = new grocery_cart_product_Adapter(
-                grocery_cart_product_modelList
-        );
-
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
-        cartProduct_Recycler.setLayoutManager(linearLayoutManager);
-        cartProduct_Recycler.setAdapter(grocery_cart_product_adapter);
-        cartProduct_Recycler.stopScroll();
-        cartProduct_Recycler.setNestedScrollingEnabled( false );
-
-        for (int x = 0; x < size; x++) {
+            for (int x = 0; x < size; x++) {
 
 
-            final String id = DBquaries.grocery_CartList_product_id.get( x );
-            final int finalX = x;
-            FirebaseFirestore.getInstance().collection( "USERS" ).document( FirebaseAuth.getInstance( ).getUid( ) )
-                    .collection( "USER_DATA" ).document( "MY_GROCERY_CARTITEMCOUNT" ).get( )
-                    .addOnCompleteListener( new OnCompleteListener<DocumentSnapshot>( ) {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if (task.isSuccessful( )) {
-                                final String count = task.getResult( ).get( id ).toString( );
-                                DBquaries.grocery_CartList_product_count.add( count );
-                                loadingDialog.show( );
-                                FirebaseFirestore.getInstance().collection( "STORES" ).document( DBquaries.store_id ).collection( "PRODUCTS" ).document( id ).get( )
-                                        .addOnCompleteListener( new OnCompleteListener<DocumentSnapshot>( ) {
-                                            @Override
-                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                                if (task.isSuccessful( )) {
-                                                    DBquaries.PRICE_IN_CART_GROCERY = DBquaries.PRICE_IN_CART_GROCERY + Integer.parseInt( count ) * Integer.parseInt( task.getResult( ).get( "price" ).toString( ) );
-                                                    DBquaries.TOTAL_SAVE = DBquaries.TOTAL_SAVE + Integer.parseInt( count ) * (-Integer.parseInt( task.getResult( ).get( "price" ).toString( ) ) + Integer.parseInt( task.getResult( ).get( "cut_price" ).toString( ) ));
-                                                    priceIncart.setText( String.valueOf( DBquaries.PRICE_IN_CART_GROCERY ) );
-                                                    totalSave.setText( "₹" + String.valueOf( DBquaries.TOTAL_SAVE ) );
-                                                    tax.setText(String.valueOf( DBquaries.DELIVERY_CHARGES  )  );
-                                                    grandTotal.setText( String.valueOf( DBquaries.PRICE_IN_CART_GROCERY+ DBquaries.DELIVERY_CHARGES ) );
-                                                    payAmount.setText( "₹"+String.valueOf( DBquaries.PRICE_IN_CART_GROCERY+ DBquaries.DELIVERY_CHARGES ) );
-                                                    if ((long) task.getResult( ).get( "in_stock" ) == 0) {
-                                                        DBquaries.grocery_CartList_product_OutOfStock.add( id );
+                final String id = DBquaries.grocery_CartList_product_id.get( x );
+                final int finalX = x;
+                FirebaseFirestore.getInstance( ).collection( "USERS" ).document( FirebaseAuth.getInstance( ).getUid( ) )
+                        .collection( "USER_DATA" ).document( "MY_GROCERY_CARTITEMCOUNT" ).get( )
+                        .addOnCompleteListener( new OnCompleteListener<DocumentSnapshot>( ) {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if (task.isSuccessful( )) {
+                                    final String count = task.getResult( ).get( id ).toString( );
+                                    DBquaries.grocery_CartList_product_count.add( count );
+                                    loadingDialog.show( );
+                                    FirebaseFirestore.getInstance( ).collection( "STORES" ).document( DBquaries.store_id ).collection( "PRODUCTS" ).document( id ).get( )
+                                            .addOnCompleteListener( new OnCompleteListener<DocumentSnapshot>( ) {
+                                                @Override
+                                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                    if (task.isSuccessful( )) {
+                                                        DBquaries.PRICE_IN_CART_GROCERY = DBquaries.PRICE_IN_CART_GROCERY + Integer.parseInt( count ) * Integer.parseInt( task.getResult( ).get( "price" ).toString( ) );
+                                                        DBquaries.TOTAL_SAVE = DBquaries.TOTAL_SAVE + Integer.parseInt( count ) * (-Integer.parseInt( task.getResult( ).get( "price" ).toString( ) ) + Integer.parseInt( task.getResult( ).get( "cut_price" ).toString( ) ));
+                                                        priceIncart.setText( String.valueOf( DBquaries.PRICE_IN_CART_GROCERY ) );
+                                                        totalSave.setText( "₹" + String.valueOf( DBquaries.TOTAL_SAVE ) );
+                                                        tax.setText( String.valueOf( DBquaries.DELIVERY_CHARGES ) );
+                                                        grandTotal.setText( String.valueOf( DBquaries.PRICE_IN_CART_GROCERY + DBquaries.DELIVERY_CHARGES ) );
+                                                        payAmount.setText( "₹" + String.valueOf( DBquaries.PRICE_IN_CART_GROCERY + DBquaries.DELIVERY_CHARGES ) );
+                                                        if ((long) task.getResult( ).get( "in_stock" ) == 0) {
+                                                            DBquaries.grocery_CartList_product_OutOfStock.add( id );
+                                                        }
+
+                                                        grocery_cart_product_modelList.add( new grocery_cart_product_Model(
+                                                                task.getResult( ).get( "name" ).toString( ),
+                                                                task.getResult( ).get( "description" ).toString( ),
+                                                                task.getResult( ).get( "price" ).toString( ),
+                                                                task.getResult( ).get( "cut_price" ).toString( ),
+                                                                id,
+                                                                count,
+                                                                task.getResult( ).get( "offer" ).toString( ),
+                                                                task.getResult( ).get( "image_01" ).toString( ),
+                                                                (long) task.getResult( ).get( "in_stock" ),
+                                                                finalX
+
+
+                                                        ) );
+
+
                                                     }
 
-                                                    grocery_cart_product_modelList.add( new grocery_cart_product_Model(
-                                                            task.getResult( ).get( "name" ).toString( ),
-                                                            task.getResult( ).get( "description" ).toString( ),
-                                                            task.getResult( ).get( "price" ).toString( ),
-                                                            task.getResult( ).get( "cut_price" ).toString( ),
-                                                            id,
-                                                            count,
-                                                            task.getResult( ).get( "offer" ).toString( ),
-                                                            task.getResult( ).get( "image_01" ).toString( ),
-                                                            (long) task.getResult( ).get( "in_stock" ),
-                                                            finalX
 
-
-                                                    ) );
-
+                                                    cart_activity.setVisibility( View.VISIBLE );
+                                                    loadingDialog.dismiss( );
+                                                    grocery_cart_product_adapter.notifyDataSetChanged( );
 
                                                 }
+                                            } );
 
 
-
-                                                cart_activity.setVisibility( View.VISIBLE );
-                                                loadingDialog.dismiss( );
-                                                grocery_cart_product_adapter.notifyDataSetChanged( );
-
-                                            }
-                                        } );
-
-
+                                }
                             }
-                        }
-                    } );
-
-
-        }
-
-        grocery_cart_product_adapter.notifyDataSetChanged( );
-
-
-        payInCash.setOnClickListener( new View.OnClickListener( ) {
-            @Override
-            public void onClick(View view) {
-                Date dNow = new Date( );
-                SimpleDateFormat ft = new SimpleDateFormat( "yyMMddhhmmssMs" );
-                String datetime = ft.format( dNow );
-
-                String OId="ON"+datetime+otp;
-
-                addOrderDetails( OId,"PID",false );
+                        } );
 
 
             }
-        } );
 
+            shop_orderListSieze = getListsize( );
+
+
+            grocery_cart_product_adapter.notifyDataSetChanged( );
+
+
+            payInCash.setOnClickListener( new View.OnClickListener( ) {
+                @Override
+                public void onClick(View view) {
+                    Date dNow = new Date( );
+                    SimpleDateFormat ft = new SimpleDateFormat( "yyMMddhhmmssMs" );
+                    String datetime = ft.format( dNow );
+
+                    String OId = "ON" + datetime + otp;
+
+                    addOrderDetails( OId, "PID", false );
+
+
+                }
+            } );
+        }
 
     }
 
@@ -322,6 +319,21 @@ public class MyCart extends AppCompatActivity {
                             }
                         } );
 
+                        final Map<String, Object> orderIdSHOP = new HashMap<>( );
+                        orderIdSHOP.put( "order_id_" + shop_orderListSieze[0], OrderId );
+                        orderIdSHOP.put( "list_size", shop_orderListSieze[0]+ 1 );
+
+                        FirebaseFirestore.getInstance().collection( "STORES" ).document( DBquaries.store_id ).collection( "ORDERS" ).document( "order_list" )
+                                .update( orderIdSHOP ).addOnCompleteListener( new OnCompleteListener<Void>( ) {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if(task.isSuccessful()){
+                                }
+                            }
+                        } );
+
+
+
 
                         NotificationCompat.Builder builder =
                                 new NotificationCompat.Builder( MyCart.this, CHANNEL_ID )
@@ -345,6 +357,7 @@ public class MyCart extends AppCompatActivity {
                         orderId.put( "order_id_" + DBquaries.grocery_OrderList.size( ), OrderId );
                         orderId.put( "list_size", DBquaries.grocery_OrderList.size( ) + 1 );
 
+
                         FirebaseFirestore.getInstance().collection( "USERS" ).document( FirebaseAuth.getInstance( ).getCurrentUser( ).getUid( ) )
                                 .collection( "USER_DATA" ).document( "MY_GROCERY_ORDERS" ).update( orderId )
                                 .addOnCompleteListener( new OnCompleteListener<Void>( ) {
@@ -355,6 +368,7 @@ public class MyCart extends AppCompatActivity {
                                             DBquaries.grocery_OrderList.add( OrderId );
                                             Map<String, Object> Size = new HashMap<>( );
                                             Size.put( "list_size", 0 );
+                                            Size.put( "store_id", "" );
                                             FirebaseFirestore.getInstance().collection( "USERS" ).document( FirebaseAuth.getInstance( ).getCurrentUser( ).getUid( ) )
                                                     .collection( "USER_DATA" ).document( "MY_GROCERY_CARTLIST" ).set( Size )
                                                     .addOnCompleteListener( new OnCompleteListener<Void>( ) {
@@ -399,6 +413,25 @@ public class MyCart extends AppCompatActivity {
 
 
     }
+
+
+    private long[] getListsize(){
+        final long[] size = {0};
+        FirebaseFirestore.getInstance().collection( "STORES" ).document( DBquaries.store_id ).collection( "ORDERS" ).document( "order_list" )
+                .get().addOnCompleteListener( new OnCompleteListener<DocumentSnapshot>( ) {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    size[0] =( (long)task.getResult().get( "list_size" ));
+                }
+
+
+            }
+        } );
+        return  size;
+
+    }
+
 
 
     @Override
