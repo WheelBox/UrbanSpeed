@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,6 +28,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.abhirajsharma.urbanspeed.adapter.grocery_cart_product_Adapter;
 import com.abhirajsharma.urbanspeed.model.grocery_cart_product_Model;
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskExecutors;
@@ -61,6 +63,11 @@ public class MyCart extends AppCompatActivity {
     private TextView  editAddress;
     private static String otp = new DecimalFormat( "000000" ).format( new Random( ).nextInt( 999999 ) );
     private final String CHANNEL_ID = "ai";
+    private String ShopNMAE="";
+
+
+    private ImageView shopImage;
+    private TextView shopName,shopDescription;
 
     private Button payInCash;
 
@@ -78,7 +85,6 @@ public class MyCart extends AppCompatActivity {
         payAmount = findViewById( R.id.grocery_cart_payAmount );
         cart_activity=findViewById( R.id.cart_activity );
 
-
         cart_activity.setVisibility( View.INVISIBLE );
         payment_layout = findViewById( R.id.PaymentLayout );
         totalSave = findViewById( R.id.grocery_cart_totalSave );
@@ -87,6 +93,9 @@ public class MyCart extends AppCompatActivity {
         disccount = findViewById( R.id.discount_price );
         grandTotal = findViewById( R.id.grandTotalPrice );
         payInCash = findViewById( R.id.myCartGroceryPayinCashPayment );
+        shopImage=findViewById( R.id.cart_shop_image );
+        shopName=findViewById( R.id.cart_shop_name);
+        shopDescription=findViewById( R.id.cart_shop_description );
         toolbar.setTitle("My Cart");
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
@@ -112,6 +121,31 @@ public class MyCart extends AppCompatActivity {
             loadingDialog.dismiss( );
         }
 
+
+        FirebaseFirestore.getInstance().collection( "STORES" ).document( DBquaries.store_id ).get().addOnCompleteListener( new OnCompleteListener<DocumentSnapshot>( ) {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+
+                    String name=task.getResult().get( "name" ).toString();
+                    ShopNMAE=name;
+                    String imaeg=task.getResult().get( "image" ).toString();
+                    String description=task.getResult().get( "category" ).toString();
+
+                    Glide.with( MyCart.this ).load( imaeg ).into( shopImage );
+                    shopName.setText( name );
+                    shopDescription.setText( description );
+
+
+                }
+
+
+
+            }
+        } );
+
+
+
         grocery_cart_product_modelList = new ArrayList<>();
 
         grocery_cart_product_adapter = new grocery_cart_product_Adapter(
@@ -136,12 +170,10 @@ public class MyCart extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                             if (task.isSuccessful( )) {
-
                                 final String count = task.getResult( ).get( id ).toString( );
                                 DBquaries.grocery_CartList_product_count.add( count );
-
                                 loadingDialog.show( );
-                                FirebaseFirestore.getInstance().collection( "PRODUCTS" ).document( id ).get( )
+                                FirebaseFirestore.getInstance().collection( "STORES" ).document( DBquaries.store_id ).collection( "PRODUCTS" ).document( id ).get( )
                                         .addOnCompleteListener( new OnCompleteListener<DocumentSnapshot>( ) {
                                             @Override
                                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -243,11 +275,11 @@ public class MyCart extends AppCompatActivity {
             OrderDetails.put( "review", "" );
             OrderDetails.put( "rating", "0" );
             OrderDetails.put( "otp", otp );
+            OrderDetails.put( "store_id",DBquaries.store_id);
+            OrderDetails.put( "store_name",ShopNMAE);
             OrderDetails.put( "is_pickUp",true);
             pid = groceryCartProductModel.getProduct_id( );
-
             String stock = String.valueOf( groceryCartProductModel.getIn_stock( ) );
-
             grandToatal = grandToatal + Integer.parseInt( groceryCartProductModel.getPrice( ) );
             final Map<String, Object> Stock = new HashMap<>( );
             Stock.put( "in_stock", Integer.parseInt( stock ) - Integer.parseInt( DBquaries.grocery_CartList_product_count.get( groceryCartProductModel.getInde( ) ) ) );

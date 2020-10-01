@@ -69,15 +69,14 @@ public class GroceryProductAdapter extends RecyclerView.Adapter<GroceryProductAd
         String id = groceryProductModelList.get( position ).getId( );
         String tag=groceryProductModelList.get( position ).getTag_list();
         String description=groceryProductModelList.get( position ).getDescription();
-
-
         long inStock = groceryProductModelList.get( position ).getStock( );
         String image = groceryProductModelList.get( position ).getImage( );
+        String store_id=groceryProductModelList.get( position ).getStore_id( );
 
 
         //   holder.checkAdmin( product_code );
 
-        holder.setData( name, offerType, price, offerAmount, inStock, rating, reviewCount, image, id,tag,description );
+        holder.setData( name, offerType, price, offerAmount, inStock, rating, reviewCount, image, id,tag,description,store_id );
 
 
     }
@@ -135,7 +134,7 @@ public class GroceryProductAdapter extends RecyclerView.Adapter<GroceryProductAd
         }*/
 
         @SuppressLint("RestrictedApi")
-        private void setData(final String Name, String cutPrice, String Price, String OfferAmount, long stock, String Rating, String reciew_count, String resource, final String Id, final String Tag,String Description) {
+        private void setData(final String Name, String cutPrice, String Price, String OfferAmount, long stock, String Rating, String reciew_count, String resource, final String Id, final String Tag, String Description, final String store_id) {
            /* if (DBquaries.IS_ADMIN) {
                 favouriteButton.setVisibility( View.GONE );
 
@@ -171,6 +170,7 @@ public class GroceryProductAdapter extends RecyclerView.Adapter<GroceryProductAd
                 public void onClick(View view) {
                     Intent intent = new Intent( itemView.getContext( ), ProductDetails.class );
                     intent.putExtra( "product_id", Id );
+                    intent.putExtra( "store_id", store_id );
                     intent.putExtra( "tag_string" ,Tag);
                     itemView.getContext( ).startActivity( intent );
                 }
@@ -178,7 +178,6 @@ public class GroceryProductAdapter extends RecyclerView.Adapter<GroceryProductAd
 
             price.setText( "₹"+Price+"/-" );
             cutprice.setText( "₹"+cutPrice+"/-" );
-
 
             name.setText( Name );
             offer.setText( OfferAmount + " off" );

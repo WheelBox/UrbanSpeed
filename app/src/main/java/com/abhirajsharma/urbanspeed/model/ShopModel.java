@@ -2,15 +2,24 @@ package com.abhirajsharma.urbanspeed.model;
 
 public class ShopModel  {
 
-    String image,name,category,distance,rating,offer;
+    String image,name,category,distance,rating,offer,id;
 
-    public ShopModel(String image, String name, String category, String distance, String rating, String offer) {
+    public ShopModel(String image, String name, String category, String distance, String rating, String offer,String id) {
         this.image = image;
         this.name = name;
         this.category = category;
         this.distance = distance;
         this.rating = rating;
         this.offer = offer;
+        this.id=id;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getImage() {

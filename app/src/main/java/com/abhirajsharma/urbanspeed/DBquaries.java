@@ -37,6 +37,8 @@ public class DBquaries {
     public static List<ShopModel> shopModelList=new ArrayList<>(  );
     public static List<String> home_shop_list = new ArrayList<>( );
 
+    public static  String store_id="";
+
 
 
     public static int PRICE_IN_CART_GROCERY = 0;
@@ -229,8 +231,8 @@ public class DBquaries {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful( )) {
-                    for (long x = 0; x < (long) task.getResult( ).get( "list_size" ); x++) {
-
+                     store_id=task.getResult( ).get( "store_id" ).toString();
+                     for (long x = 0; x < (long) task.getResult( ).get( "list_size" ); x++) {
                         String id = task.getResult( ).get( "id_" + x ).toString( );
                         grocery_CartList_product_id.add( id );
                     }
@@ -314,7 +316,8 @@ public class DBquaries {
                                                             task.getResult().get( "category" ).toString(),
                                                             String.valueOf( distance ),
                                                             task.getResult().get( "rating" ).toString(),
-                                                            task.getResult().get( "offer" ).toString()
+                                                            task.getResult().get( "offer" ).toString(),
+                                                            task.getResult().getId()
 
                                                     ) );
 

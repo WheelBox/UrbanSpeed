@@ -4,29 +4,32 @@ import java.util.ArrayList;
 
 public class GroceryProductModel {
 
-    String name, offertype, offerAmount, price, rating, reviewCount, id, tag_list, description;
-
-    public GroceryProductModel() {
-
-    }
-
+    String name,offertype,offerAmount,price,rating,reviewCount,id,tag_list,description,store_id;
     long stock;
     String image;
     private ArrayList<String> tags;
-
-    public GroceryProductModel(String image, String name, String offertype, String offerAmount, String price, String rating, String reviewCount, long Stock, String id, String tag_list, String description) {
-        this.image = image;
+    public GroceryProductModel(String image, String name, String offertype, String offerAmount, String price, String rating, String reviewCount, long Stock, String id,String tag_list,String description,String store_id) {
+        this.image=image;
         this.name = name;
-        this.id = id;
+        this.id=id;
         this.offertype = offertype;
         this.offerAmount = offerAmount;
         this.price = price;
         this.rating = rating;
-        this.reviewCount = reviewCount;
-        this.stock = Stock;
-        this.tag_list = tag_list;
-        this.description = description;
+        this.reviewCount=reviewCount;
+        this.stock=Stock;
+        this.tag_list=tag_list;
+        this.description=description;
+        this.store_id=store_id;
 
+    }
+
+    public String getStore_id() {
+        return store_id;
+    }
+
+    public void setStore_id(String store_id) {
+        this.store_id = store_id;
     }
 
     public String getDescription() {

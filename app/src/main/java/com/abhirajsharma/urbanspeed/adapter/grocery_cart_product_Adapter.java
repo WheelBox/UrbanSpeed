@@ -144,7 +144,7 @@ public class grocery_cart_product_Adapter extends RecyclerView.Adapter<grocery_c
                 public void onClick(View view) {
                     Intent intent=new Intent( itemView.getContext(), ProductDetails.class );
                     intent.putExtra( "product_id",id );
-                    intent.putExtra( "tag_string",Name );
+                    intent.putExtra( "store_id",DBquaries.store_id );
 
                     itemView.getContext().startActivity( intent );
                 }

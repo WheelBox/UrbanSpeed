@@ -68,7 +68,8 @@ public class ShopActivity extends AppCompatActivity {
                                 documentSnapshot.get( "category" ).toString(),
                                 "2 km away from you !",
                                 documentSnapshot.get( "rating" ).toString(),
-                                documentSnapshot.get( "offer" ).toString()
+                                documentSnapshot.get( "offer" ).toString(),
+                                documentSnapshot.getId()
 
                         ) );
                         shopAdapter.notifyDataSetChanged();

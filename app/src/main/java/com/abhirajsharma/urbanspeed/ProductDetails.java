@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -59,6 +60,8 @@ public class ProductDetails extends AppCompatActivity {
     public static boolean ADDED_towishList = false;
     private List<String> productImages;
     String product_id="";
+    String store_id="";
+    String store_name="";
 
     /////productImage/nmae/price
 
@@ -109,6 +112,8 @@ public class ProductDetails extends AppCompatActivity {
 
 
         product_id=getIntent().getStringExtra( "product_id" );
+        store_id=getIntent().getStringExtra( "store_id" );
+
 
         if(DBquaries.grocery_CartList_product_id.contains( product_id )){
 
@@ -180,8 +185,8 @@ public class ProductDetails extends AppCompatActivity {
         reviewRecycler.setNestedScrollingEnabled(false);
 
         groceryProductModel = new ArrayList<>();
-        groceryProductModel.add(new GroceryProductModel("jegf", "product", "%", "200", "3000", "4.1", "22", 22, "laiuihehdifiuh", "","this is deascription"));
-        groceryProductModel.add(new GroceryProductModel("jegf", "product", "%", "200", "3000", "4.1", "22", 22, "laiuihehdifiuh", "","this is deascription"));
+        groceryProductModel.add(new GroceryProductModel("jegf", "product", "%", "200", "3000", "4.1", "22", 22, "laiuihehdifiuh", "","this is deascription",store_id));
+        groceryProductModel.add(new GroceryProductModel("jegf", "product", "%", "200", "3000", "4.1", "22", 22, "laiuihehdifiuh", "","this is deascription",store_id));
 
 
         productImages=new ArrayList<>(  );
@@ -191,7 +196,8 @@ public class ProductDetails extends AppCompatActivity {
         relevant_recycler.setLayoutManager( linearLayoutManager );
         relevant_recycler.setAdapter(groceryProductAdapter);
 
-        FirebaseFirestore.getInstance( ).collection( "PRODUCTS" ).document( product_id ).get( )
+
+        FirebaseFirestore.getInstance().collection( "STORES" ).document( store_id ).collection( "PRODUCTS" ).document( product_id ).get( )
                 .addOnCompleteListener( new OnCompleteListener<DocumentSnapshot>( ) {
                     @SuppressLint("SetTextI18n")
                     @Override
@@ -274,23 +280,91 @@ public class ProductDetails extends AppCompatActivity {
 
 
     private void AddtoCart(){
-        loadingDialog.show();
-        addtoCart.setClickable( false );
-        final Map<String, Object> updateListSize = new HashMap<>( );
-        updateListSize.put( "list_size", (long) DBquaries.grocery_CartList_product_id.size( ) + 1 );
+        if(DBquaries.store_id.equals(store_id)){
+            addtoCart.setClickable( false );
 
-        Map<String, Object> product_Id = new HashMap<>( );
-        product_Id.put( "id_" + (long) DBquaries.grocery_CartList_product_id.size( ), product_id );
+            final Map<String, Object> updateListSize = new HashMap<>( );
+            updateListSize.put( "list_size", (long) DBquaries.grocery_CartList_product_id.size( ) + 1 );
 
-        FirebaseFirestore.getInstance( ).collection( "USERS" ).document( FirebaseAuth.getInstance( ).getUid( ) )
-                .collection( "USER_DATA" ).document( "MY_GROCERY_CARTLIST" ).
-                update( product_Id ).addOnCompleteListener( new OnCompleteListener<Void>( ) {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if(task.isSuccessful()){
+            Map<String, Object> product_Id = new HashMap<>( );
+            product_Id.put( "id_" + (long) DBquaries.grocery_CartList_product_id.size( ), product_id );
+
+            FirebaseFirestore.getInstance( ).collection( "USERS" ).document( FirebaseAuth.getInstance( ).getUid( ) )
+                    .collection( "USER_DATA" ).document( "MY_GROCERY_CARTLIST" ).
+                    update( product_Id ).addOnCompleteListener( new OnCompleteListener<Void>( ) {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if(task.isSuccessful()){
+                        FirebaseFirestore.getInstance( ).collection( "USERS" ).document( FirebaseAuth.getInstance( ).getUid( ) )
+                                .collection( "USER_DATA" ).document( "MY_GROCERY_CARTLIST" ).
+                                update( updateListSize ).addOnCompleteListener( new OnCompleteListener<Void>( ) {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if(task.isSuccessful()){
+                                    DBquaries.grocery_CartList_product_id.add( product_id );
+                                    addtoCart.setVisibility( View.GONE );
+                                    addtoCart.setClickable( true );
+                                    cartFAB.setSupportImageTintList( ColorStateList.valueOf( Color.parseColor( "#39559e" ) ) );
+
+                                    gotoCart.setVisibility( View.VISIBLE );
+                                    Toast.makeText( ProductDetails.this, "Added to cart", Toast.LENGTH_SHORT ).show( );
+
+
+
+                                    loadingDialog.dismiss();
+
+
+                                    Map<String, Object> Count = new HashMap<>( );
+                                    Count.put( product_id,1 );
+
+                                    FirebaseFirestore.getInstance( ).collection( "USERS" ).document( FirebaseAuth.getInstance( ).getUid( ) )
+                                            .collection( "USER_DATA" ).document( "MY_GROCERY_CARTITEMCOUNT" ).
+                                            update( Count ).addOnCompleteListener( new OnCompleteListener<Void>( ) {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                        }
+                                    } );
+
+                                }
+
+                            }
+                        } );
+
+                    }
+                }
+            } );
+
+
+        }else {
+
+            final Dialog continuue_dialog=new Dialog( ProductDetails.this );
+            continuue_dialog.setContentView( R.layout.cart_alert );
+            continuue_dialog.getWindow().setLayout( ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT );
+            continuue_dialog.setCancelable( true );
+            final Button btn=continuue_dialog.findViewById( R.id.update_button );
+            continuue_dialog.show();
+            btn.setOnClickListener( new View.OnClickListener( ) {
+                @Override
+                public void onClick(View view) {
+                    continuue_dialog.dismiss();
+                    addtoCart.setClickable( false );
+
+                    DBquaries.grocery_CartList_product_id.clear();
+                    DBquaries.grocery_CartList_product_count.clear( );
+
+
+                    Map<String, Object> product_Id = new HashMap<>( );
+                    DBquaries.store_id=store_id;
+                    product_Id.put( "id_" + (long) DBquaries.grocery_CartList_product_id.size( ), product_id );
+                    product_Id.put( "list_size", (long) DBquaries.grocery_CartList_product_id.size( ) + 1 );
+
+                    product_Id.put( "store_id", store_id );
+
+
+
                     FirebaseFirestore.getInstance( ).collection( "USERS" ).document( FirebaseAuth.getInstance( ).getUid( ) )
                             .collection( "USER_DATA" ).document( "MY_GROCERY_CARTLIST" ).
-                            update( updateListSize ).addOnCompleteListener( new OnCompleteListener<Void>( ) {
+                            set( product_Id ).addOnCompleteListener( new OnCompleteListener<Void>( ) {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if(task.isSuccessful()){
@@ -322,10 +396,25 @@ public class ProductDetails extends AppCompatActivity {
 
                         }
                     } );
-
                 }
-            }
-        } );
+            } );
+
+
+
+
+
+
+
+
+
+
+
+        }
+
+
+
+
+
 
 
     }

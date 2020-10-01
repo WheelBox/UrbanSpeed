@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,8 +15,15 @@ import com.abhirajsharma.urbanspeed.Products;
 import com.abhirajsharma.urbanspeed.R;
 import com.abhirajsharma.urbanspeed.model.ShopModel;
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder> {
     private List<ShopModel> shopModelList;
@@ -38,8 +46,9 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder> {
         String rating=shopModelList.get( position ).getRating();
         String distace=shopModelList.get( position ).getDistance();
         String offer=shopModelList.get( position ).getOffer();
+        String id=shopModelList.get( position ).getId();
 
-        holder.setData( image,name,category,rating,offer,distace );
+        holder.setData( image,name,category,rating,offer,distace,id);
 
 
 
@@ -74,7 +83,7 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder> {
 
         }
 
-        private void setData(String Image,String Nmaae,String Category,String Rating,String Offer,String Distance){
+        private void setData(String Image, String Nmaae, String Category, String Rating, String Offer, String Distance, final String ID){
             Glide.with( itemView.getContext() ).load( Image ).into(image);
             name.setText( Nmaae );
             category.setText( Category );
@@ -86,9 +95,45 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder> {
                 @Override
                 public void onClick(View view) {
                     Intent intent=new Intent( itemView.getContext(), Products.class );
-                    itemView.getContext().startActivity(
-                            intent
-                    );
+                    intent.putExtra( "store_id", ID);
+                    itemView.getContext().startActivity( intent );
+
+                 /*   FirebaseFirestore.getInstance().collection( "STORES" ).document( ID ).collection( "PRODUCTS" ).get().addOnCompleteListener( new OnCompleteListener<QuerySnapshot>( ) {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if(task.isSuccessful()){
+                                for (QueryDocumentSnapshot documentSnapshot:task.getResult()){
+                                    String id =documentSnapshot.getId();
+                                    Map<String,Object> AddProductDetails=new HashMap<>(  );
+                                    AddProductDetails.put( "cut_price","1000" );
+
+                                    FirebaseFirestore.getInstance().collection( "STORES" ).document(ID).collection( "PRODUCTS" ).document( id ).update( AddProductDetails ).addOnCompleteListener( new OnCompleteListener<Void>( ) {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if(task.isSuccessful()){
+
+                                                Toast.makeText( itemView.getContext(), " Task Done", Toast.LENGTH_SHORT ).show( );
+
+                                            }
+                                        }
+                                    } );
+
+
+
+
+                                }
+
+
+
+                            }
+                        }
+                    } );*/
+
+
+
+
+
+
                 }
             } );
 
