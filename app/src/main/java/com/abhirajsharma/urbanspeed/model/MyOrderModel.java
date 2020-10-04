@@ -2,11 +2,11 @@ package com.abhirajsharma.urbanspeed.model;
 
 public class MyOrderModel {
 
-    private String name, deliveryStat, description, product_id, order_id, rating, review, otp;
+    private String name, deliveryStat, description, product_id, order_id, rating, review, otp,store_name,store_id;
     private String image;
     private boolean is_cancled, is_deliverd;
 
-    public MyOrderModel(String name, String deliveryStat, String image, String description, String order_id, String product_id, String rating, String review, boolean is_cancled, boolean is_deliverd, String otp) {
+    public MyOrderModel(String name, String deliveryStat, String image, String description, String order_id, String product_id, String rating, String review, boolean is_cancled, boolean is_deliverd, String otp,String store_name,String store_id) {
         this.name = name;
         this.deliveryStat = deliveryStat;
         this.image = image;
@@ -18,7 +18,25 @@ public class MyOrderModel {
         this.is_cancled = is_cancled;
         this.is_deliverd = is_deliverd;
         this.otp = otp;
+        this.store_name=store_name;
+        this.store_id=store_id;
 
+    }
+
+    public String getStore_id() {
+        return store_id;
+    }
+
+    public void setStore_id(String store_id) {
+        this.store_id = store_id;
+    }
+
+    public String getStore_name() {
+        return store_name;
+    }
+
+    public void setStore_name(String store_name) {
+        this.store_name = store_name;
     }
 
     public String getOtp() {

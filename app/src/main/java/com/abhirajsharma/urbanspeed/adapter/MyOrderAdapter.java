@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -15,9 +16,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.abhirajsharma.urbanspeed.OrderDetails;
 import com.abhirajsharma.urbanspeed.R;
 import com.abhirajsharma.urbanspeed.model.MyOrderModel;
+import com.abhirajsharma.urbanspeed.write_review;
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHolder> {
 
@@ -47,12 +55,13 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
         boolean is_Deliverd = myOrderGroceryModelList.get(position).isIs_deliverd();
         boolean is_Cancled = myOrderGroceryModelList.get(position).isIs_cancled();
         String otp = myOrderGroceryModelList.get(position).getOtp();
+        String store_id=myOrderGroceryModelList.get(position).getStore_id();
+        String storeNmae=myOrderGroceryModelList.get(position).getStore_name();
 
 
-        holder.setDAta(name, image, description, order_id, productId, rating, review, otp);
-         holder.setdeliveryStat( is_Cancled, is_Deliverd, DeliceryStatus );
-
-        // holder.setStar( order_id, productId );
+        holder.setDAta(name, image, description, order_id, productId, rating, review, otp,storeNmae,store_id);
+        holder.setdeliveryStat( is_Cancled, is_Deliverd, DeliceryStatus );
+        holder.setStar( order_id, productId,store_id );
     }
 
     @Override
@@ -63,7 +72,7 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView deliveryStatus, name, write_rewiew;
+        private TextView deliveryStatus, name, write_rewiew,store;
         private ImageView image;
         private ConstraintLayout constraintLayout;
         private TextView blueDot, greenDot, RedDot, description, otp_txt;
@@ -81,7 +90,7 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
             blueDot = itemView.findViewById(R.id.myOrder_groceryItem_BlueDot);
             greenDot = itemView.findViewById(R.id.myOrder_groceryItem_GreenDot);
             RedDot = itemView.findViewById(R.id.myOrder_groceryItem_RedDot);
-
+            store=itemView.findViewById( R.id.myOrder_groceryItemStoreName );
             star1 = itemView.findViewById(R.id.myOrder_star1);
             star2 = itemView.findViewById(R.id.myOrder_star2);
             star3 = itemView.findViewById(R.id.myOrder_star3);
@@ -94,14 +103,13 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
         }
 
 
-        public void setDAta(String Name, String res, String desc, final String Oid, final String Pid, String Rating, final String Review, String Otp) {
+        public void setDAta(String Name, String res, String desc, final String Oid, final String Pid, String Rating, final String Review, String Otp,String StoreNmae,String stoewId) {
 
-              Glide.with( itemView.getContext( ) ).load( res ).into( image );
-
-
+            Glide.with( itemView.getContext( ) ).load( res ).into( image );
             otp_txt.setText(Otp);
             name.setText(Name);
             description.setText(desc);
+            store.setText( StoreNmae );
 
             constraintLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -129,8 +137,6 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
             }
 
             if (Rating.equals("1")) {
-
-
                 star1.setImageResource(R.drawable.ic_star_green_24dp);
                 star2.setImageResource(R.drawable.ic_star_border_black_24dp);
                 star4.setImageResource(R.drawable.ic_star_border_black_24dp);
@@ -152,8 +158,6 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
                 star5.setImageResource(R.drawable.ic_star_border_black_24dp);
             }
             if (Rating.equals("4")) {
-
-
                 star1.setImageResource(R.drawable.ic_star_green_24dp);
                 star2.setImageResource(R.drawable.ic_star_green_24dp);
                 star4.setImageResource(R.drawable.ic_star_green_24dp);
@@ -161,23 +165,24 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
                 star5.setImageResource(R.drawable.ic_star_border_black_24dp);
             }
             if (Rating.equals("5")) {
-
                 star1.setImageResource(R.drawable.ic_star_green_24dp);
                 star2.setImageResource(R.drawable.ic_star_green_24dp);
                 star4.setImageResource(R.drawable.ic_star_green_24dp);
                 star3.setImageResource(R.drawable.ic_star_green_24dp);
                 star5.setImageResource(R.drawable.ic_star_green_24dp);
             }
-/*
+
 
             write_rewiew.setOnClickListener( new View.OnClickListener( ) {
                 @Override
                 public void onClick(View view) {
+
                     if (Review.length( ) == 0) {
-                        Intent intent = new Intent( itemView.getContext( ), WriteReview.class );
+                        Intent intent = new Intent( itemView.getContext( ), write_review.class );
                         intent.putExtra( "layout_code", 1 );
                         intent.putExtra( "order_id", Oid );
                         intent.putExtra( "product_id", Pid );
+                        intent.putExtra( "store_id",stoewId  );
                         itemView.getContext( ).startActivity( intent );
 
                     }
@@ -188,7 +193,7 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
 
         }
 
-        private void setStar(final String order_id, final String product_id) {
+        private void setStar(final String order_id, final String product_id,final  String store_id) {
 
             final Map<String, Object> RATING = new HashMap<>( );
 
@@ -214,7 +219,7 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
 
                                 Toast.makeText( itemView.getContext( ), "Thank You", Toast.LENGTH_SHORT ).show( );
 
-                                FirebaseFirestore.getInstance( ).collection( "PRODUCTS" ).document( product_id ).collection( "REVIEWS" ).document( order_id )
+                                FirebaseFirestore.getInstance( ).collection( "STORES" ).document( store_id ).collection( "PRODUCTS" ).document( product_id ).collection( "REVIEWS" ).document( order_id )
                                         .update( RATING ).addOnCompleteListener( new OnCompleteListener<Void>( ) {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
@@ -251,10 +256,10 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful( )) {
+
                                 Toast.makeText( itemView.getContext( ), "Thank You", Toast.LENGTH_SHORT ).show( );
 
-
-                                FirebaseFirestore.getInstance( ).collection( "PRODUCTS" ).document( product_id ).collection( "REVIEWS" ).document( order_id )
+                                FirebaseFirestore.getInstance( ).collection( "STORES" ).document( store_id ).collection( "PRODUCTS" ).document( product_id ).collection( "REVIEWS" ).document( order_id )
                                         .update( RATING ).addOnCompleteListener( new OnCompleteListener<Void>( ) {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
@@ -267,6 +272,7 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
 
                         }
                     } );
+
                 }
 
 
@@ -283,28 +289,28 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
                     star5.setImageResource( R.drawable.ic_star_border_black_24dp );
                     RATING.put( "rating", "3" );
 
-
                     FirebaseFirestore.getInstance( ).collection( "ORDERS" ).document( order_id ).collection( "ORDER_LIST" ).document( product_id )
                             .update( RATING ).addOnCompleteListener( new OnCompleteListener<Void>( ) {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful( )) {
 
+                                Toast.makeText( itemView.getContext( ), "Thank You", Toast.LENGTH_SHORT ).show( );
 
-                                FirebaseFirestore.getInstance( ).collection( "PRODUCTS" ).document( product_id ).collection( "REVIEWS" ).document( order_id )
+                                FirebaseFirestore.getInstance( ).collection( "STORES" ).document( store_id ).collection( "PRODUCTS" ).document( product_id ).collection( "REVIEWS" ).document( order_id )
                                         .update( RATING ).addOnCompleteListener( new OnCompleteListener<Void>( ) {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
 
                                     }
                                 } );
-                                Toast.makeText( itemView.getContext( ), "Thank You", Toast.LENGTH_SHORT ).show( );
 
 
                             }
 
                         }
                     } );
+
                 }
 
 
@@ -323,6 +329,7 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
                     RATING.put( "rating", "4" );
 
 
+
                     FirebaseFirestore.getInstance( ).collection( "ORDERS" ).document( order_id ).collection( "ORDER_LIST" ).document( product_id )
                             .update( RATING ).addOnCompleteListener( new OnCompleteListener<Void>( ) {
                         @Override
@@ -331,7 +338,7 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
 
                                 Toast.makeText( itemView.getContext( ), "Thank You", Toast.LENGTH_SHORT ).show( );
 
-                                FirebaseFirestore.getInstance( ).collection( "PRODUCTS" ).document( product_id ).collection( "REVIEWS" ).document( order_id )
+                                FirebaseFirestore.getInstance( ).collection( "STORES" ).document( store_id ).collection( "PRODUCTS" ).document( product_id ).collection( "REVIEWS" ).document( order_id )
                                         .update( RATING ).addOnCompleteListener( new OnCompleteListener<Void>( ) {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
@@ -344,6 +351,7 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
 
                         }
                     } );
+
                 }
 
 
@@ -362,13 +370,16 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
                     RATING.put( "rating", "5" );
 
 
+
                     FirebaseFirestore.getInstance( ).collection( "ORDERS" ).document( order_id ).collection( "ORDER_LIST" ).document( product_id )
                             .update( RATING ).addOnCompleteListener( new OnCompleteListener<Void>( ) {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful( )) {
+
                                 Toast.makeText( itemView.getContext( ), "Thank You", Toast.LENGTH_SHORT ).show( );
-                                FirebaseFirestore.getInstance( ).collection( "PRODUCTS" ).document( product_id ).collection( "REVIEWS" ).document( order_id )
+
+                                FirebaseFirestore.getInstance( ).collection( "STORES" ).document( store_id ).collection( "PRODUCTS" ).document( product_id ).collection( "REVIEWS" ).document( order_id )
                                         .update( RATING ).addOnCompleteListener( new OnCompleteListener<Void>( ) {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
@@ -381,10 +392,11 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
 
                         }
                     } );
+
                 }
 
 
-            } );*/
+            } );
 
 
         }
@@ -410,6 +422,11 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
 
 
         }
+
+
+
+
+
     }
 
 }

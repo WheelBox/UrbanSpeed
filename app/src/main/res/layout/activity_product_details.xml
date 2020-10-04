@@ -54,6 +54,7 @@
                 >
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/product_details_rating_CL"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
@@ -417,6 +418,7 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/relevant_product_recycler"
+                android:layout_marginBottom="60dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 

@@ -104,9 +104,9 @@ public class myOrder extends AppCompatActivity {
                                                 documentSnapshot.get( "review" ).toString( ),
                                                 (boolean) documentSnapshot.get( "is_cancled" ),
                                                 (boolean) documentSnapshot.get( "delivery_status" ),
-                                                documentSnapshot.get( "otp" ).toString( )
-
-
+                                                documentSnapshot.get( "otp" ).toString( ),
+                                                documentSnapshot.get( "store_name" ).toString( ),
+                                                documentSnapshot.get( "store_id" ).toString( )
                                         ) );
 
 

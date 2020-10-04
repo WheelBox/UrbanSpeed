@@ -57,6 +57,8 @@ public class OrderDetails extends AppCompatActivity {
     private ConstraintLayout Bill_LL,payent_stat_Cl;
     private TextView remove_txt;
     private Dialog loadingDialog;
+    private ImageView shopImage;
+    private TextView shopName,shopDescription;
 
 
     @Override
@@ -66,6 +68,8 @@ public class OrderDetails extends AppCompatActivity {
 
         otherProduct_Recycler = findViewById(R.id.order_details_other_product_recycler);
         toolbar = findViewById(R.id.toolbar_grocery_Orders_details);
+
+
 
 
         loadingDialog= new Dialog( OrderDetails.this );
@@ -97,6 +101,12 @@ public class OrderDetails extends AppCompatActivity {
         updateEDT_editText=findViewById( R.id.updateEDT_editText );
 
 
+        shopImage=findViewById( R.id.order_details_shop_image );
+        shopName=findViewById( R.id.order_details_shop_name);
+        shopDescription=findViewById( R.id.order_details_shop_description );
+
+
+
         no_countLayout = findViewById( R.id.grocery_cart_noCountLayout );
         product_quantity = findViewById( R.id.grocery_cart_product_Quantity );
         product_image = findViewById( R.id.grocery_cart_productImage );
@@ -118,7 +128,6 @@ public class OrderDetails extends AppCompatActivity {
         toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
 
         myOrderGroceryModelList = new ArrayList<>();
 
@@ -156,7 +165,9 @@ public class OrderDetails extends AppCompatActivity {
                                     product_name.setText( documentSnapshot.get("name").toString() );
                                     product_description.setText( documentSnapshot.get("description").toString() );
                                     product_price.setText( "₹"+documentSnapshot.get("price").toString()+"/-" );
-
+                                    shopDescription.setText(  documentSnapshot.get("store_description").toString() );
+                                    shopName.setText(  documentSnapshot.get("store_name").toString() );
+                                    Glide.with( OrderDetails.this ).load(documentSnapshot.get("store_image").toString()).into( shopImage );
                                     if(documentSnapshot.get("offer").toString().equals( "0" )){
                                         product_offer.setVisibility( View.GONE );
                                         product_cutPrice.setVisibility( View.GONE );
@@ -210,8 +221,6 @@ public class OrderDetails extends AppCompatActivity {
                                     loadingDialog.dismiss();
 
                                 }else {
-
-
                                     myOrderGroceryModelList.add( new MyOrderModel(
                                             documentSnapshot.get( "name" ).toString( ),
                                             documentSnapshot.get( "delivery_time" ).toString( ),
@@ -223,7 +232,9 @@ public class OrderDetails extends AppCompatActivity {
                                             documentSnapshot.get( "review" ).toString( ),
                                             (boolean)documentSnapshot.get( "is_cancled" ),
                                             (boolean)documentSnapshot.get( "delivery_status" ),
-                                            documentSnapshot.get( "otp" ).toString( )
+                                            documentSnapshot.get( "otp" ).toString( ),
+                                            documentSnapshot.get( "store_name" ).toString( ),
+                                            documentSnapshot.get( "store_id" ).toString( )
                                     ) );
                                     loadingDialog.dismiss();
 

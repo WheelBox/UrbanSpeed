@@ -168,7 +168,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="TextView"
+        android:text="product_description"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/myOrder_groceryItemName" />
 
@@ -194,6 +194,18 @@
         app:layout_constraintStart_toEndOf="@+id/tv"
         app:layout_constraintTop_toBottomOf="@+id/myOrder_groceryItemDeliveryStatus"
         app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/myOrder_groceryItemStoreName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:text="store name"
+        android:textColor="#5E5D5D"
+        app:layout_constraintEnd_toEndOf="@+id/myOrder_groceryItemName"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/myOrder_groceryItemDescription"
+        app:layout_constraintTop_toBottomOf="@+id/myOrder_groceryItemName" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -60,7 +60,10 @@ public class MyCart extends AppCompatActivity {
     private static String otp = new DecimalFormat( "000000" ).format( new Random( ).nextInt( 999999 ) );
     private final String CHANNEL_ID = "ai";
     private String ShopNMAE="";
-     long[] shop_orderListSieze={0};
+    private String ShopIMAGE="";
+    private String ShopDESCRIPTION="";
+
+    long[] shop_orderListSieze={0};
 
 
     private ImageView shopImage;
@@ -127,7 +130,11 @@ public class MyCart extends AppCompatActivity {
                         String name = task.getResult( ).get( "name" ).toString( );
                         ShopNMAE = name;
                         String imaeg = task.getResult( ).get( "image" ).toString( );
+                        ShopIMAGE = imaeg;
+
                         String description = task.getResult( ).get( "category" ).toString( );
+                        ShopDESCRIPTION = description;
+
 
                         Glide.with( MyCart.this ).load( imaeg ).into( shopImage );
                         shopName.setText( name );
@@ -274,6 +281,9 @@ public class MyCart extends AppCompatActivity {
             OrderDetails.put( "otp", otp );
             OrderDetails.put( "store_id",DBquaries.store_id);
             OrderDetails.put( "store_name",ShopNMAE);
+            OrderDetails.put( "store_image",ShopIMAGE);
+            OrderDetails.put( "store_description",ShopDESCRIPTION);
+
             OrderDetails.put( "is_pickUp",true);
             pid = groceryCartProductModel.getProduct_id( );
             String stock = String.valueOf( groceryCartProductModel.getIn_stock( ) );
@@ -380,7 +390,7 @@ public class MyCart extends AppCompatActivity {
                                                                 id.put( "order_id", OrderId );
                                                                 id.put( "review", "" );
                                                                 id.put( "rating", "0" );
-                                                                FirebaseFirestore.getInstance( ).collection( "PRODUCTS" ).document( finalPid ).collection( "REVIEWS" ).document( OrderId )
+                                                                FirebaseFirestore.getInstance( ).collection( "STORES" ).document( DBquaries.store_id ).collection( "PRODUCTS" ).document( finalPid ).collection( "REVIEWS" ).document( OrderId )
                                                                         .set( id ).addOnCompleteListener( new OnCompleteListener<Void>( ) {
                                                                     @Override
                                                                     public void onComplete(@NonNull Task<Void> task) {
@@ -391,7 +401,7 @@ public class MyCart extends AppCompatActivity {
                                                                 DBquaries.grocery_CartList_product_id.clear( );
                                                                 DBquaries.grocery_CartList_product_count.clear( );
 
-                                                                Intent intent = new Intent( MyCart.this, Products.class );
+                                                                Intent intent = new Intent( MyCart.this, ShopActivity.class );
                                                                 startActivity( intent );
                                                             }
 
