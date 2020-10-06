@@ -1,12 +1,28 @@
 package com.abhirajsharma.urbanspeed;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
+import android.location.Address;
+import android.location.Criteria;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.abhirajsharma.urbanspeed.model.ShopModel;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -21,11 +37,16 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.core.OrderBy;
 import com.google.firestore.v1.StructuredQuery;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+
+import static android.content.Context.LOCATION_SERVICE;
+import static androidx.constraintlayout.motion.widget.Debug.getLocation;
 
 
 public class DBquaries {
@@ -36,8 +57,9 @@ public class DBquaries {
     public static List<String> grocery_OrderList = new ArrayList<>( );
     public static List<ShopModel> shopModelList=new ArrayList<>(  );
     public static List<String> home_shop_list = new ArrayList<>( );
-
     public static  String store_id="";
+    private static int LOCATION_PERMISSION_CODE=1;
+
 
 
 
@@ -222,7 +244,6 @@ public class DBquaries {
                 });
     }
 
-
     public static void loadGroceryCartList(final Context context) {
         grocery_CartList_product_id.clear( );
         FirebaseFirestore.getInstance( ).collection( "USERS" ).document( FirebaseAuth.getInstance( ).getUid( ) )
@@ -333,6 +354,103 @@ public class DBquaries {
                         }
                     }
                 } );
+
+    }
+
+    public static void askPermission(Context context){
+
+       LocationManager locationManager = (LocationManager) context.getSystemService( LOCATION_SERVICE);
+        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            OnGPS(context);
+        } else {
+            getLocation(context);
+        }
+
+
+
+    }
+    private static void OnGPS(Context context) {
+
+        new AlertDialog.Builder( context )
+                .setTitle( "Enable GPS" )
+                .setCancelable( false )
+                .setMessage( "we have to enable the GPS to access your location" )
+                .setPositiveButton( "ok", new DialogInterface.OnClickListener( ) {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        context.startActivity(new Intent( Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+
+                    }
+                } ).setNegativeButton( "no", new DialogInterface.OnClickListener( ) {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss( );
+            }
+        } ).create().show();
+    }
+
+    private static void getLocation(Context context){
+        if (ActivityCompat.checkSelfPermission(
+                context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions( (Activity) context, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_CODE);
+        }else {
+            LocationManager locationManager = (LocationManager)
+                    context.getSystemService(LOCATION_SERVICE);
+            Criteria criteria = new Criteria();
+            String bestProvider = locationManager.getBestProvider(criteria, true);
+            Location location = locationManager.getLastKnownLocation(bestProvider);
+            Toast.makeText( context,"in else part",Toast.LENGTH_SHORT ).show();
+
+            LocationListener loc_listener = new LocationListener() {
+
+                public void onLocationChanged(Location l) {}
+                public void onProviderEnabled(String p) {}
+
+                public void onProviderDisabled(String p) {}
+
+                public void onStatusChanged(String p, int status, Bundle extras) {}
+            };
+            locationManager
+                    .requestLocationUpdates(bestProvider, 0, 0, loc_listener);
+            location = locationManager.getLastKnownLocation(bestProvider);
+
+            try {
+                double lat = location.getLatitude();
+                double lon = location.getLongitude();
+                Geocoder geocoder;
+                List<Address> addresses;
+                geocoder = new Geocoder(context, Locale.getDefault());
+                Toast.makeText( context, String.valueOf( lat ), Toast.LENGTH_SHORT ).show( );
+
+
+                addresses = geocoder.getFromLocation(lat, lon, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+                String address = addresses.get(0).getAddressLine(0);
+
+
+                Map<String,Object> loca=new HashMap<>(  );
+                loca.put( "lat",String.valueOf( lat ) );
+                loca.put( "lon",String.valueOf( lon ) );
+
+
+
+                FirebaseFirestore.getInstance().collection( "USERS" ).document( FirebaseAuth.getInstance().getCurrentUser().getUid() ).update( loca )
+                        .addOnCompleteListener( new OnCompleteListener<Void>( ) {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+
+                                Toast.makeText( context, "updated", Toast.LENGTH_SHORT ).show( );
+
+                            }
+                        } );
+
+
+
+            }catch (NullPointerException | IOException e) {
+                // Toast.makeText( context, (CharSequence) e, Toast.LENGTH_SHORT ).show( );
+            }
+
+        }
 
     }
 
