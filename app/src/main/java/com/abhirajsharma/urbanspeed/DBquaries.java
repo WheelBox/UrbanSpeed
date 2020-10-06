@@ -388,7 +388,6 @@ public class DBquaries {
             }
         } ).create().show();
     }
-
     private static void getLocation(Context context){
         if (ActivityCompat.checkSelfPermission(
                 context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
@@ -404,7 +403,12 @@ public class DBquaries {
 
             LocationListener loc_listener = new LocationListener() {
 
-                public void onLocationChanged(Location l) {}
+                public void onLocationChanged(Location l) {
+                    double lat = l.getLatitude();
+                    double lon = l.getLongitude();
+
+
+                }
                 public void onProviderEnabled(String p) {}
 
                 public void onProviderDisabled(String p) {}
@@ -426,7 +430,7 @@ public class DBquaries {
 
                 addresses = geocoder.getFromLocation(lat, lon, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
                 String address = addresses.get(0).getAddressLine(0);
-
+                DBquaries.findDistance(String.valueOf(lat  ), String.valueOf(lon  ));
 
                 Map<String,Object> loca=new HashMap<>(  );
                 loca.put( "lat",String.valueOf( lat ) );
@@ -438,8 +442,8 @@ public class DBquaries {
                         .addOnCompleteListener( new OnCompleteListener<Void>( ) {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
-
-                                Toast.makeText( context, "updated", Toast.LENGTH_SHORT ).show( );
+                                DBquaries.shopModelList.clear();
+                                DBquaries.setShop();
 
                             }
                         } );

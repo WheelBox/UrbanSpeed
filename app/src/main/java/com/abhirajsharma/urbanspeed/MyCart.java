@@ -61,6 +61,10 @@ public class MyCart extends AppCompatActivity {
     private final String CHANNEL_ID = "ai";
     private String ShopNMAE="";
     private String ShopIMAGE="";
+    private String userNmae="";
+    private String userADDRESS="";
+    private String userAdderssType="";
+    private String userPhone="";
     private String ShopDESCRIPTION="";
 
     long[] shop_orderListSieze={0};
@@ -121,6 +125,19 @@ public class MyCart extends AppCompatActivity {
             loadingDialog.dismiss( );
         }else {
 
+
+            FirebaseFirestore.getInstance().collection( "USERS" ).document( FirebaseAuth.getInstance().getCurrentUser().getUid() ).get().addOnCompleteListener( new OnCompleteListener<DocumentSnapshot>( ) {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if(task.isSuccessful()){
+                        userNmae=task.getResult().get( "fullname" ).toString();
+                        userAdderssType=task.getResult().get( "address_type" ).toString();
+                        userPhone=task.getResult().get( "phone" ).toString();
+                        userADDRESS=task.getResult().get( "address_details" ).toString();
+
+                    }
+                }
+            } );
 
             FirebaseFirestore.getInstance( ).collection( "STORES" ).document( DBquaries.store_id ).get( ).addOnCompleteListener( new OnCompleteListener<DocumentSnapshot>( ) {
                 @Override
@@ -266,10 +283,10 @@ public class MyCart extends AppCompatActivity {
             OrderDetails.put( "image", groceryCartProductModel.getImage( ) );
             OrderDetails.put( "item_count", DBquaries.grocery_CartList_product_count.get( groceryCartProductModel.getInde( ) ) );
           ///need to be update
-            OrderDetails.put( "user_name", "user_name" );
-            OrderDetails.put( "user_phn", "phone" );
-            OrderDetails.put( "user_address_details", "user_address" );
-            OrderDetails.put( "user_address_type", "Home" );
+            OrderDetails.put( "user_name", userNmae );
+            OrderDetails.put( "user_phn", userPhone );
+            OrderDetails.put( "user_address_details", userADDRESS );
+            OrderDetails.put( "user_address_type", userAdderssType );
             OrderDetails.put( "user_id", FirebaseAuth.getInstance( ).getCurrentUser( ).getUid( ) );
             OrderDetails.put( "payment_mode", Payment_Mode );
             OrderDetails.put( "delivery_status", false );
@@ -291,7 +308,7 @@ public class MyCart extends AppCompatActivity {
             final Map<String, Object> Stock = new HashMap<>( );
             Stock.put( "in_stock", Integer.parseInt( stock ) - Integer.parseInt( DBquaries.grocery_CartList_product_count.get( groceryCartProductModel.getInde( ) ) ) );
 
-            FirebaseFirestore.getInstance().collection( "PRODUCTS" ).document( pid )
+            FirebaseFirestore.getInstance().collection( "STORES" ).document( DBquaries.store_id ).collection( "PRODUCTS" ).document( pid )
                     .update( Stock ).addOnCompleteListener( new OnCompleteListener<Void>( ) {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
