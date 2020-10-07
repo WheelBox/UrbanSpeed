@@ -325,11 +325,16 @@ public class DBquaries {
 
 
 
+
+
                                 FirebaseFirestore.getInstance().collection( "STORES" ).document( id ).get()
                                         .addOnCompleteListener( new OnCompleteListener<DocumentSnapshot>( ) {
                                             @Override
                                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                                 if(task.isSuccessful()){
+
+
+
 
 
                                                     shopModelList.add( new ShopModel(task.getResult().get( "image" ).toString(),
@@ -357,106 +362,7 @@ public class DBquaries {
 
     }
 
-    public static void askPermission(Context context){
 
-       LocationManager locationManager = (LocationManager) context.getSystemService( LOCATION_SERVICE);
-        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            OnGPS(context);
-        } else {
-            getLocation(context);
-        }
-
-
-
-    }
-    private static void OnGPS(Context context) {
-
-        new AlertDialog.Builder( context )
-                .setTitle( "Enable GPS" )
-                .setCancelable( false )
-                .setMessage( "we have to enable the GPS to access your location" )
-                .setPositiveButton( "ok", new DialogInterface.OnClickListener( ) {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        context.startActivity(new Intent( Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-
-                    }
-                } ).setNegativeButton( "no", new DialogInterface.OnClickListener( ) {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss( );
-            }
-        } ).create().show();
-    }
-    private static void getLocation(Context context){
-        if (ActivityCompat.checkSelfPermission(
-                context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions( (Activity) context, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_CODE);
-        }else {
-            LocationManager locationManager = (LocationManager)
-                    context.getSystemService(LOCATION_SERVICE);
-            Criteria criteria = new Criteria();
-            String bestProvider = locationManager.getBestProvider(criteria, true);
-            Location location = locationManager.getLastKnownLocation(bestProvider);
-            Toast.makeText( context,"in else part",Toast.LENGTH_SHORT ).show();
-
-            LocationListener loc_listener = new LocationListener() {
-
-                public void onLocationChanged(Location l) {
-                    double lat = l.getLatitude();
-                    double lon = l.getLongitude();
-
-
-                }
-                public void onProviderEnabled(String p) {}
-
-                public void onProviderDisabled(String p) {}
-
-                public void onStatusChanged(String p, int status, Bundle extras) {}
-            };
-            locationManager
-                    .requestLocationUpdates(bestProvider, 0, 0, loc_listener);
-            location = locationManager.getLastKnownLocation(bestProvider);
-
-            try {
-                double lat = location.getLatitude();
-                double lon = location.getLongitude();
-                Geocoder geocoder;
-                List<Address> addresses;
-                geocoder = new Geocoder(context, Locale.getDefault());
-                Toast.makeText( context, String.valueOf( lat ), Toast.LENGTH_SHORT ).show( );
-
-
-                addresses = geocoder.getFromLocation(lat, lon, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
-                String address = addresses.get(0).getAddressLine(0);
-                DBquaries.findDistance(String.valueOf(lat  ), String.valueOf(lon  ));
-
-                Map<String,Object> loca=new HashMap<>(  );
-                loca.put( "lat",String.valueOf( lat ) );
-                loca.put( "lon",String.valueOf( lon ) );
-
-
-
-                FirebaseFirestore.getInstance().collection( "USERS" ).document( FirebaseAuth.getInstance().getCurrentUser().getUid() ).update( loca )
-                        .addOnCompleteListener( new OnCompleteListener<Void>( ) {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                DBquaries.shopModelList.clear();
-                                DBquaries.setShop();
-
-                            }
-                        } );
-
-
-
-            }catch (NullPointerException | IOException e) {
-                // Toast.makeText( context, (CharSequence) e, Toast.LENGTH_SHORT ).show( );
-            }
-
-        }
-
-    }
 
 
 }
