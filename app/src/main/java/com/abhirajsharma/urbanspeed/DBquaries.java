@@ -312,7 +312,7 @@ public class DBquaries {
 
     public static void setShop(){
         shopModelList.clear();
-        FirebaseFirestore.getInstance().collection("USERS").document(FirebaseAuth.getInstance().getCurrentUser().getUid()).collection("MY_NEAR_STORES").orderBy( "distance", Query.Direction.ASCENDING ).limit( 5 ).get()
+        FirebaseFirestore.getInstance().collection("USERS").document(FirebaseAuth.getInstance().getCurrentUser().getUid()).collection("MY_NEAR_STORES").orderBy( "distance", Query.Direction.ASCENDING ).get()
                 .addOnCompleteListener( new OnCompleteListener<QuerySnapshot>( ) {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -322,10 +322,6 @@ public class DBquaries {
 
                                 String id=documentSnapshot.getId();
                                 final long distance=(long)documentSnapshot.get( "distance" );
-
-
-
-
 
                                 FirebaseFirestore.getInstance().collection( "STORES" ).document( id ).get()
                                         .addOnCompleteListener( new OnCompleteListener<DocumentSnapshot>( ) {
@@ -344,6 +340,7 @@ public class DBquaries {
                                                             task.getResult().get( "rating" ).toString(),
                                                             task.getResult().get( "offer" ).toString(),
                                                             task.getResult().getId()
+
 
                                                     ) );
 

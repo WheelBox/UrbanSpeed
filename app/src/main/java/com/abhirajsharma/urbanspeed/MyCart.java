@@ -89,6 +89,8 @@ public class MyCart extends AppCompatActivity {
         payAmount = findViewById( R.id.grocery_cart_payAmount );
         cart_activity=findViewById( R.id.cart_activity );
 
+
+        address_layout=findViewById( R.id.address_layout );
         cart_activity.setVisibility( View.INVISIBLE );
         payment_layout = findViewById( R.id.PaymentLayout );
         totalSave = findViewById( R.id.grocery_cart_totalSave );
@@ -100,6 +102,7 @@ public class MyCart extends AppCompatActivity {
         shopImage=findViewById( R.id.cart_shop_image );
         shopName=findViewById( R.id.cart_shop_name);
         shopDescription=findViewById( R.id.cart_shop_description );
+        editAddress=findViewById( R.id.grocery_cart_address_editTxt );
         toolbar.setTitle("My Cart");
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
@@ -116,6 +119,14 @@ public class MyCart extends AppCompatActivity {
 
         DBquaries.PRICE_IN_CART_GROCERY =0;
         DBquaries.TOTAL_SAVE=0;
+
+        editAddress.setOnClickListener( new View.OnClickListener( ) {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent( MyCart.this,MyAddress.class);
+                startActivity( intent );
+            }
+        } );
 
         if (size == 0) {
             noItemLL.setVisibility( View.VISIBLE );
@@ -134,6 +145,10 @@ public class MyCart extends AppCompatActivity {
                         userAdderssType=task.getResult().get( "address_type" ).toString();
                         userPhone=task.getResult().get( "phone" ).toString();
                         userADDRESS=task.getResult().get( "address_details" ).toString();
+
+                        if (userADDRESS.isEmpty()) {
+                            address_layout.setVisibility( View.GONE );
+                        }
 
                     }
                 }
@@ -251,13 +266,23 @@ public class MyCart extends AppCompatActivity {
             payInCash.setOnClickListener( new View.OnClickListener( ) {
                 @Override
                 public void onClick(View view) {
-                    Date dNow = new Date( );
-                    SimpleDateFormat ft = new SimpleDateFormat( "yyMMddhhmmssMs" );
-                    String datetime = ft.format( dNow );
 
-                    String OId = "ON" + datetime + otp;
+                    if (address_layout.getVisibility( ) == View.GONE) {
 
-                    addOrderDetails( OId, "PID", false );
+                        Intent intent=new Intent( MyCart.this,MyAddress.class);
+                        startActivity( intent );
+
+                    }else {
+                        Date dNow = new Date( );
+                        SimpleDateFormat ft = new SimpleDateFormat( "yyMMddhhmmssMs" );
+                        String datetime = ft.format( dNow );
+
+                        String OId = "ON" + datetime + otp;
+
+                        addOrderDetails( OId, "PID", false );
+                    }
+
+
 
 
                 }

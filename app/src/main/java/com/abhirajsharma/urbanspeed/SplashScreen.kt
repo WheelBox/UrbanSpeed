@@ -13,13 +13,14 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import java.io.IOException
 import java.util.*
+
 
 class SplashScreen: AppCompatActivity() {
 
     var locationManager: LocationManager? = null
+    var loaction:Location?=null
     private val REQUEST_LOCATION = 1
 
     private val mAuth by lazy {
@@ -33,7 +34,9 @@ class SplashScreen: AppCompatActivity() {
                 startActivity(Intent(this, LoginActivity::class.java))
             }, 1500)
         }else{
-
+            DBquaries.findDistance("28.414497825686833","77.29039451247131")
+            DBquaries.shopModelList.clear()
+            DBquaries.setShop()
             locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
             if (!locationManager!!.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                 OnGPS()
@@ -52,15 +55,14 @@ class SplashScreen: AppCompatActivity() {
     }
     private fun OnGPS() {
         val builder = AlertDialog.Builder(this)
-        builder.setMessage("Enable GPS").setCancelable(false).setPositiveButton("Yes") {
-            dialog, which -> startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)) }
+        builder.setMessage("Enable GPS").setCancelable(false)
+                .setPositiveButton("Yes") { dialog, which -> startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)) }
                 .setNegativeButton("No") {
                     ///updating location
                     dialog, which -> dialog.cancel() }
         val alertDialog = builder.create()
         alertDialog.show()
     }
-
     fun getLocation() {
         if (ActivityCompat.checkSelfPermission(
                         applicationContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
@@ -68,10 +70,9 @@ class SplashScreen: AppCompatActivity() {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), REQUEST_LOCATION)
         } else {
 
-            // Get the location manager
             val locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
             val criteria = Criteria()
-            val bestProvider = locationManager.getBestProvider(criteria, true)
+            val bestProvider = locationManager.getBestProvider(criteria, false)
             var location = locationManager.getLastKnownLocation(bestProvider!!)
             val loc_listener: LocationListener = object : LocationListener {
                 override fun onLocationChanged(l: Location) {}
@@ -85,35 +86,20 @@ class SplashScreen: AppCompatActivity() {
             try {
                 val lat = location!!.latitude
                 val lon = location.longitude
-
-
                 val geocoder: Geocoder
                 val addresses: List<Address>
                 geocoder = Geocoder(this, Locale.getDefault())
                 addresses = geocoder.getFromLocation(lat, lon, 1) // Here 1 represent max location result to returned, by documents it recommended 1 to 5
                 val address = addresses[0].getAddressLine(0) // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
-
-
-                DBquaries.findDistance(lat.toString(), lon.toString())
-                val update: MutableMap<String, Any> = HashMap()
-                update["lat"] = lat.toString()
-                update["lon"] = lon.toString()
-                FirebaseFirestore.getInstance().collection("USERS").document(FirebaseAuth.getInstance().currentUser!!.uid).update(update).addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                    }
-                }
-
-                DBquaries.shopModelList.clear()
-                DBquaries.setShop()
-
-
                 Toast.makeText(applicationContext, address, Toast.LENGTH_SHORT).show()
-
             } catch (e: NullPointerException) {
+                val stat=e.localizedMessage
+                Toast.makeText(applicationContext, stat, Toast.LENGTH_SHORT).show()
             } catch (e: IOException) {
             }
         }
     }
+
 
 
 }
