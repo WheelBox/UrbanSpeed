@@ -37,6 +37,8 @@ class SplashScreen: AppCompatActivity() {
             DBquaries.findDistance("28.414497825686833","77.29039451247131")
             DBquaries.shopModelList.clear()
             DBquaries.setShop()
+
+
             locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
             if (!locationManager!!.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                 OnGPS()

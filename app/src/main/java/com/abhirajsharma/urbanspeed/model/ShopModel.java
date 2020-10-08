@@ -1,8 +1,11 @@
 package com.abhirajsharma.urbanspeed.model;
 
+import java.util.ArrayList;
+
 public class ShopModel  {
 
     String image,name,category,distance,rating,offer,id;
+    ArrayList<String> tags;
 
     public ShopModel(String image, String name, String category, String distance, String rating, String offer,String id) {
         this.image = image;
@@ -12,6 +15,14 @@ public class ShopModel  {
         this.rating = rating;
         this.offer = offer;
         this.id=id;
+    }
+
+    public ArrayList<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(ArrayList<String> tags) {
+        this.tags = tags;
     }
 
     public String getId() {

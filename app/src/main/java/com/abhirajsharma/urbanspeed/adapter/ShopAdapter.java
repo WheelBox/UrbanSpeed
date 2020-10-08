@@ -28,6 +28,14 @@ import java.util.Map;
 public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder> {
     private List<ShopModel> shopModelList;
 
+    public List<ShopModel> getShopModelList() {
+        return shopModelList;
+    }
+
+    public void setShopModelList(List<ShopModel> shopModelList) {
+        this.shopModelList = shopModelList;
+    }
+
     public ShopAdapter(List<ShopModel> shopModelList) {
         this.shopModelList = shopModelList;
     }

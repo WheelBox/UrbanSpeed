@@ -1,5 +1,6 @@
 package com.abhirajsharma.urbanspeed
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -177,20 +178,18 @@ class HomeFrag : Fragment() {
             private var mLastQuery = ""
 
 
-
-
-
             override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
                 super.onViewCreated(view, savedInstanceState)
 
                 mSearchView = view.findViewById<View>(R.id.floating_search_view) as FloatingSearchView
                 mAppBar = view.findViewById<View>(R.id.appbar) as AppBarLayout
                 mAppBar!!.addOnOffsetChangedListener(this)
-                setupSearchBar()
+
 
             }
 
-            var suggestions = arrayListOf<ProductSuggestion>()
+
+              var suggestions = arrayListOf<ProductSuggestion>()
             var suggestionResult = arrayListOf<GroceryProductModel>()
 
             private fun setupSearchBar() {
@@ -297,6 +296,7 @@ class HomeFrag : Fragment() {
 
 
         }
+
 
 
     }

@@ -9,7 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".write_review"></activity>
+        <activity android:name=".SearchedStore"></activity>
+        <activity android:name=".Search" />
+        <activity android:name=".write_review" />
         <activity android:name=".review" />
         <activity android:name=".ShopActivity" />
         <activity
@@ -45,6 +47,7 @@
             android:resource="@array/preloaded_fonts" />
     </application>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
 </manifest>

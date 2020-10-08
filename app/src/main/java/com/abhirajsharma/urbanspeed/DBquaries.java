@@ -312,6 +312,7 @@ public class DBquaries {
 
     public static void setShop(){
         shopModelList.clear();
+        setallTags();
         FirebaseFirestore.getInstance().collection("USERS").document(FirebaseAuth.getInstance().getCurrentUser().getUid()).collection("MY_NEAR_STORES").orderBy( "distance", Query.Direction.ASCENDING ).get()
                 .addOnCompleteListener( new OnCompleteListener<QuerySnapshot>( ) {
                     @Override
@@ -328,9 +329,6 @@ public class DBquaries {
                                             @Override
                                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                                 if(task.isSuccessful()){
-
-
-
 
 
                                                     shopModelList.add( new ShopModel(task.getResult().get( "image" ).toString(),
@@ -358,6 +356,57 @@ public class DBquaries {
                 } );
 
     }
+
+    /////allproductTagForstore
+
+    public static  List<String> allTags=new ArrayList<>(  );
+
+    public static void setallTags(){
+        allTags.clear();
+        FirebaseFirestore.getInstance().collection("USERS").document(FirebaseAuth.getInstance().getCurrentUser().getUid()).collection("MY_NEAR_STORES").orderBy( "distance", Query.Direction.ASCENDING ).get()
+                .addOnCompleteListener( new OnCompleteListener<QuerySnapshot>( ) {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+
+                            for(QueryDocumentSnapshot documentSnapshot :task.getResult()) {
+
+                                String id = documentSnapshot.getId( );
+                                FirebaseFirestore.getInstance().collection( "STORES" ).document( id ).collection( "PRODUCTS" ).get()
+                                        .addOnCompleteListener( new OnCompleteListener<QuerySnapshot>( ) {
+                                            @Override
+                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                for(QueryDocumentSnapshot documentSnapshot1:task.getResult()){
+
+                                                    String name=documentSnapshot1.get( "name" ).toString();
+
+                                                    if(!allTags.contains( name )){
+                                                        allTags.add( name );
+                                                    }
+
+
+
+                                                }
+
+                                            }
+                                        } );
+
+
+
+                            }
+
+                        }
+                    }
+                } );
+
+
+    }
+
+
+
+
+
+    ///allproductTagForstore
 
 
 
