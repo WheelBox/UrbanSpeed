@@ -102,16 +102,13 @@ class PhoneLogin : AppCompatActivity() {
             if (it.isSuccessful){
                 phoneLayout.showSnackBar("Account Created Successfully.")
 
+                DBquaries.setUserData()
 
                 //  firebaseAuth.signInWithEmailAndPassword( mail,password  );
                 val userData: MutableMap<String, Any> = HashMap()
-                userData["is_valid"] = true
                 userData["fullname"] = ""
-                userData["image"] = ""
-                userData["mail"] = ""
                 userData["lat"] = ""
                 userData["lon"] = ""
-                userData["password"] = ""
                 userData["permanent_phone"] =phone_et.text.toString()
                 userData["phone"] = phone_et.text.toString()
                 userData["previous_position"] = 0
@@ -122,33 +119,8 @@ class PhoneLogin : AppCompatActivity() {
 
 
                 FirebaseFirestore.getInstance().collection("USERS").document(currentuser).set(userData).addOnCompleteListener {
-                    val listSize: MutableMap<String, Any> = HashMap()
-                    listSize["list_size"] = 0
 
-                    FirebaseFirestore.getInstance().collection("USERS").document(currentuser).collection("USER_DATA").document("MY_ADDRESS").set(listSize)
-                            .addOnCompleteListener { }
-                    FirebaseFirestore.getInstance().collection("USERS").document(currentuser).collection("USER_DATA").document("MY_GROCERY_CARTITEMCOUNT").set(listSize)
-                            .addOnCompleteListener { }
-
-                    FirebaseFirestore.getInstance().collection("USERS").document(currentuser).collection("USER_DATA").document("MY_GROCERY_ORDERS").set(listSize)
-                            .addOnCompleteListener { }
-                    FirebaseFirestore.getInstance().collection("USERS").document(currentuser).collection("USER_DATA").document("MY_GROCERY_WISHLIST").set(listSize)
-                            .addOnCompleteListener {
-
-                                val Size: MutableMap<String, Any> = HashMap()
-                                Size["list_size"] = 0
-                                Size["store_id"] = 0
-
-                                FirebaseFirestore.getInstance().collection("USERS").document(currentuser).collection("USER_DATA").document("MY_GROCERY_CARTLIST").set(Size)
-                                        .addOnCompleteListener { }
-                            }
                 }
-
-
-
-
-
-
 
 
                 phoneProgressBar.visibility = View.GONE

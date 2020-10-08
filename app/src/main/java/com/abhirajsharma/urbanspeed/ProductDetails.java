@@ -67,6 +67,7 @@ public class ProductDetails extends AppCompatActivity {
     String product_id="";
     String store_id="";
     String store_name="";
+    private Button buy_now;
 
     /////productImage/nmae/price
 
@@ -114,6 +115,7 @@ public class ProductDetails extends AppCompatActivity {
         descriptionRecycler = findViewById(R.id.description_recycler);
         reviewRecycler = findViewById(R.id.review_recycler);
         relevant_recycler = findViewById(R.id.relevant_product_recycler);
+        buy_now=findViewById( R.id.buy_now_groceryBtn );
 
         /////productImage/nmae/price
 
@@ -180,6 +182,18 @@ public class ProductDetails extends AppCompatActivity {
             cartFAB.setSupportImageTintList( ColorStateList.valueOf( Color.parseColor( "#696969" ) ) );
 
         }
+
+        buy_now.setOnClickListener( new View.OnClickListener( ) {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent( ProductDetails.this,BuyNow.class );
+                intent.putExtra( "product_id",product_id );
+                intent.putExtra( "store_id",store_id );
+
+                intent.putExtra( "stock",in_stock );
+                startActivity( intent );
+            }
+        } );
 
         gotoCart.setOnClickListener( new View.OnClickListener( ) {
             @Override

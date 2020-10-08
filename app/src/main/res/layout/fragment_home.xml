@@ -18,11 +18,34 @@
             android:layout_height="wrap_content"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-            <View
+
+
+
+            <LinearLayout
+                android:id="@+id/home_search_LL"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="55dp"
                 android:background="@color/colorPrimaryDark"
-                app:layout_scrollFlags="scroll|enterAlways" />
+                app:layout_scrollFlags="scroll|enterAlways"
+                >
+
+                <TextView
+                    android:layout_marginHorizontal="12dp"
+                    android:layout_marginVertical="6dp"
+                    android:background="@drawable/corner_round_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="  Srarch Shop,Product,Category...."
+                    android:drawableStart="@drawable/ic_search_black_24dp"
+                    android:paddingStart="12dp"
+                    android:textColor="#252525"
+
+                    android:gravity="center_vertical"
+                    />
+
+
+
+            </LinearLayout>
 
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -82,24 +105,4 @@
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-    <com.arlib.floatingsearchview.FloatingSearchView
-        android:id="@+id/floating_search_view"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        app:floatingSearch_backgroundColor="@android:color/white"
-        app:floatingSearch_clearBtnColor="@android:color/black"
-        app:floatingSearch_close_search_on_keyboard_dismiss="false"
-        app:floatingSearch_dimBackground="false"
-        app:floatingSearch_dismissOnOutsideTouch="true"
-        app:floatingSearch_hintTextColor="#1E1E1E"
-        app:floatingSearch_leftActionColor="@android:color/black"
-        app:floatingSearch_leftActionMode="showSearch"
-        app:floatingSearch_menu="@menu/menu_search_view"
-        app:floatingSearch_menuItemIconColor="@android:color/black"
-        app:floatingSearch_searchBarMarginLeft="10dp"
-        app:floatingSearch_searchBarMarginRight="10dp"
-        app:floatingSearch_searchHint="Search"
-        app:floatingSearch_searchInputTextSize="6sp"
-        app:floatingSearch_showSearchKey="true"
-        app:floatingSearch_suggestionsListAnimDuration="250" />
 </RelativeLayout>

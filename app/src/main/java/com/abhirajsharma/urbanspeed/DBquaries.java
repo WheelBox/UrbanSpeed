@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -59,6 +60,8 @@ public class DBquaries {
     public static List<String> home_shop_list = new ArrayList<>( );
     public static  String store_id="";
     private static int LOCATION_PERMISSION_CODE=1;
+
+    private static LinearLayout search_ll;
 
 
 
@@ -198,6 +201,7 @@ public class DBquaries {
                             public void onComplete(@NonNull Task<Void> task) {
 
                                 if (task.isSuccessful( )) {
+
 
 
                                 }
@@ -354,6 +358,65 @@ public class DBquaries {
                         }
                     }
                 } );
+
+    }
+
+    public static void setUserData(){
+
+
+
+        Map<String,Object> userData=new HashMap<>(  );
+        userData.put( "list_size",0 );
+        userData.put( "store_id","" );
+
+
+        FirebaseFirestore.getInstance().collection( "USERS" ).document( FirebaseAuth.getInstance().getCurrentUser().getUid() ).collection( "USER_DATA")
+                .document( "MY_ADDRESS" ).set( userData ).addOnCompleteListener( new OnCompleteListener<Void>( ) {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+
+                }
+            }
+        } );
+        FirebaseFirestore.getInstance().collection( "USERS" ).document( FirebaseAuth.getInstance().getCurrentUser().getUid() ).collection( "USER_DATA")
+                .document( "MY_GROCERY_CARTITEMCOUNT" ).set( userData ).addOnCompleteListener( new OnCompleteListener<Void>( ) {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+
+                }
+            }
+        } );
+        FirebaseFirestore.getInstance().collection( "USERS" ).document( FirebaseAuth.getInstance().getCurrentUser().getUid() ).collection( "USER_DATA")
+                .document( "MY_GROCERY_ORDERS" ).set( userData ).addOnCompleteListener( new OnCompleteListener<Void>( ) {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+
+                        }
+                    }
+                } );
+        FirebaseFirestore.getInstance().collection( "USERS" ).document( FirebaseAuth.getInstance().getCurrentUser().getUid() ).collection( "USER_DATA")
+                .document( "MY_GROCERY_WISHLIST" ).set( userData ).addOnCompleteListener( new OnCompleteListener<Void>( ) {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+
+                        }
+                    }
+                } );
+        FirebaseFirestore.getInstance().collection( "USERS" ).document( FirebaseAuth.getInstance().getCurrentUser().getUid() ).collection( "USER_DATA")
+                .document( "MY_GROCERY_CARTLIST" ).set( userData ).addOnCompleteListener( new OnCompleteListener<Void>( ) {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+
+                        }
+                    }
+                } );
+
+
 
     }
 

@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,12 +17,9 @@ import com.abhirajsharma.urbanspeed.model.*
 import com.abhirajsharma.urbanspeed.others.ProductSuggestion
 import com.arlib.floatingsearchview.FloatingSearchView
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion
-
 import com.google.android.material.appbar.AppBarLayout
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import kotlinx.android.synthetic.main.fragment_home.view.*
-
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
 
@@ -29,6 +27,7 @@ class HomeFrag : Fragment() {
 
     var shopModel: ArrayList<ShopModel> = ArrayList()
     private val TAG = "checkMe"
+    private val search_ll: LinearLayout? = null
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -41,7 +40,14 @@ class HomeFrag : Fragment() {
                 DBquaries.loadGroceryCartList(view.context)
             }
 
-            if (DBquaries.grocery_OrderList.size === 0) {
+        view.home_search_LL!!.setOnClickListener(View.OnClickListener {
+
+            val intent = Intent(activity, Search::class.java)
+            startActivity(intent)
+        })
+
+
+        if (DBquaries.grocery_OrderList.size === 0) {
                 DBquaries.loadGroceryOrders()
             }
             val homeCategoryModelsList: ArrayList<HomeCategoryModels> = ArrayList()
@@ -181,7 +187,6 @@ class HomeFrag : Fragment() {
             override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
                 super.onViewCreated(view, savedInstanceState)
 
-                mSearchView = view.findViewById<View>(R.id.floating_search_view) as FloatingSearchView
                 mAppBar = view.findViewById<View>(R.id.appbar) as AppBarLayout
                 mAppBar!!.addOnOffsetChangedListener(this)
 
