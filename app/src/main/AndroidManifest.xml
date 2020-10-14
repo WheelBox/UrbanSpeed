@@ -9,7 +9,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SearchedStore"></activity>
+        <activity android:name=".SearchedProduct"></activity>
+        <activity android:name=".XSearch" />
+        <activity android:name=".AddProduct" />
+        <activity android:name=".AdminOrderProduct" />
+        <activity android:name=".AdminConfirmedOrders" />
+        <activity android:name=".AdminPendingOrders" />
+        <activity android:name=".AdminHome" />
+        <activity android:name=".storeDetails" />
+        <activity android:name=".SearchedStore" />
         <activity android:name=".Search" />
         <activity android:name=".write_review" />
         <activity android:name=".review" />
@@ -46,8 +54,8 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
     </application>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
 </manifest>

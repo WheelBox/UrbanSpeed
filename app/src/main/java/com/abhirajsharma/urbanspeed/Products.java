@@ -17,6 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +27,7 @@ import com.abhirajsharma.urbanspeed.adapter.GroceryProductAdapter;
 import com.abhirajsharma.urbanspeed.model.GroceryProductModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -45,8 +47,14 @@ public class Products extends AppCompatActivity {
     private List<GroceryProductModel> groceryProductModel;
     private Dialog loadingDialog;
     private LinearLayout search_LL;
-    private TextView name,rating,address,description;
+    private TextView name,address,description;
     int count=1;
+
+    ////admin
+    private LinearLayout adminLL;
+    private Button pendingOrders,confirmedOrders,addProduct;
+    ////admin
+
 
 
     @Override
@@ -57,9 +65,17 @@ public class Products extends AppCompatActivity {
         product_recycler = findViewById(R.id.grocery_product_recycler);
         search_LL=findViewById( R.id.search_LL );
         name=findViewById( R.id.shop_name );
-        rating=findViewById( R.id.shop_rating );
         address=findViewById( R.id.shop_address );
         description=findViewById( R.id.shop_description );
+
+        ////admin
+        adminLL=findViewById( R.id.admin_ll );
+        pendingOrders=findViewById( R.id.admin_pending_order );
+        confirmedOrders=findViewById( R.id.admin_confirmed_order );
+        addProduct=findViewById( R.id.admin_add_product );
+
+        ////admin
+
 
 
         loadingDialog= new Dialog( Products.this );
@@ -69,7 +85,7 @@ public class Products extends AppCompatActivity {
         loadingDialog.show();
 
         final String id = getIntent().getStringExtra( "store_id" );
-        Toast.makeText( this, id, Toast.LENGTH_SHORT ).show( );
+
 
 
       FirebaseFirestore.getInstance().collection( "STORES" ).document( id ).get().addOnCompleteListener( new OnCompleteListener<DocumentSnapshot>( ) {
@@ -79,7 +95,6 @@ public class Products extends AppCompatActivity {
                     name.setText( task.getResult().get( "name" ).toString() );
                     address.setText( task.getResult().get( "address" ).toString() );
                     description.setText( task.getResult().get( "category" ).toString() );
-                    rating.setText( task.getResult().get( "rating" ).toString() );
 
 
                 }
@@ -94,41 +109,83 @@ public class Products extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                /*
-                DocumentReference ref = FirebaseFirestore.getInstance().collection("STORES").document( "vGD5LbcLYT7mOaT6NRGv" ).collection( "PRODUCTS" ).document(  );
-                String product_id = ref.getId();
-
-
-                Map<String,Object> AddProductDetails=new HashMap<>(  );
-                AddProductDetails.put( "name","Product Name "+count );
-                AddProductDetails.put( "price",String.valueOf( 100*count ) );
-                AddProductDetails.put( "rating",String.valueOf( 2.3 ) );
-                AddProductDetails.put( "review_count","0" );
-                AddProductDetails.put( "in_stock",10*count);
-                AddProductDetails.put( "no_of_description",3 );
-                AddProductDetails.put( "no_of_image",2 );
-                AddProductDetails.put( "offer","30% off" );
-                AddProductDetails.put( "image_01","https://firebasestorage.googleapis.com/v0/b/gsstore.appspot.com/o/PRODUCTS%2Fdetol_liquid_500ml_1.jpg?alt=media&token=b560d1d7-37c9-45d8-871c-9b2d3f721e71" );
-                AddProductDetails.put( "image_02","https://firebasestorage.googleapis.com/v0/b/urban-speed-d20cb.appspot.com/o/laddu_sweet_delicacy_dessert_indian_treat_bowl-512.png?alt=media&token=f5529781-b8c7-42a2-b725-3b5776cd6abd" );
-                AddProductDetails.put( "description_01","type,this is description 1" );
-                AddProductDetails.put( "description_02","type,this is description 2" );
-                AddProductDetails.put( "description_03","type,this is description 3" );
-                AddProductDetails.put( "description","description of product" );
-
-                FirebaseFirestore.getInstance().collection( "STORES" ).document( "vGD5LbcLYT7mOaT6NRGv" ).collection( "PRODUCTS" ).document( product_id )
-                        .( AddProductDetails ).addOnCompleteListener( new OnCompleteListener<Void>( ) {
+                /*FirebaseFirestore.getInstance().collection( "STORES" ).document( id ).collection( "PRODUCTS").get().addOnCompleteListener( new OnCompleteListener<QuerySnapshot>( ) {
                     @Override
-                    public void onComplete(@NonNull Task<Void> task) {
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
                         if(task.isSuccessful()){
-                            count++;
+                            for(QueryDocumentSnapshot documentSnapshot:task.getResult()){
+                                String Id=documentSnapshot.getId();
+                                ArrayList<String> list=new ArrayList<>(  );
+                                list.add( "one" );
+                                list.add( "1" );
+                                list.add( "two" );
+                                list.add( "2" );
+                                list.add( "three" );
+
+                                Map<String,Object> map=new HashMap<>(  );
+                                map.put( "tags",list );
+
+
+                                FirebaseFirestore.getInstance().collection( "STORES" ).document( id ).collection( "PRODUCTS").document( Id ).update( map )
+                                        .addOnCompleteListener( new OnCompleteListener<Void>( ) {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                Toast.makeText( Products.this, "success", Toast.LENGTH_SHORT ).show( );
+                                            }
+                                        } );
+
+
+
+
+                            }
+
 
                         }
-                    }
-                } );
 
-*/
+                    }
+                } );*/
+
+                Intent intent=new Intent( Products.this,XSearch.class );
+                intent.putExtra( "store_id" ,id );
+                startActivity( intent );
+
             }
         } );
+
+
+        if(DBquaries.admins_list.contains( FirebaseAuth.getInstance().getCurrentUser().getUid() )){
+            adminLL.setVisibility( View.VISIBLE );
+            confirmedOrders.setOnClickListener( new View.OnClickListener( ) {
+                @Override
+                public void onClick(View view) {
+                    Intent intent=new Intent( Products.this,AdminConfirmedOrders.class );
+                    intent.putExtra( "store_id",id );
+                    startActivity( intent );
+                }
+            } );
+            pendingOrders.setOnClickListener( new View.OnClickListener( ) {
+                @Override
+                public void onClick(View view) {
+                    Intent intent=new Intent( Products.this,AdminPendingOrders.class );
+                    intent.putExtra( "store_id",id );
+                    startActivity( intent );
+                }
+            } );
+
+            addProduct.setOnClickListener( new View.OnClickListener( ) {
+                @Override
+                public void onClick(View view) {
+                    Intent intent=new Intent( Products.this,AddProduct.class );
+                    intent.putExtra( "store_id",id );
+                    startActivity( intent );
+                }
+            } );
+
+
+        }else {
+            adminLL.setVisibility( View.GONE );
+        }
 
 
 
@@ -159,10 +216,14 @@ public class Products extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful( )) {
+                            DBquaries.allProductStore.clear();
                             for (QueryDocumentSnapshot documentSnapshot : task.getResult( )) {
 
+                                String name=documentSnapshot.get( "name" ).toString( );
+                                DBquaries.allProductStore.add( name );
+
                                 groceryProductModel.add( new GroceryProductModel( documentSnapshot.get( "image_01" ).toString( )
-                                        , documentSnapshot.get( "name" ).toString( )
+                                        , name
                                         , documentSnapshot.get( "cut_price" ).toString( )
                                         , documentSnapshot.get( "offer" ).toString( )
                                         , documentSnapshot.get( "price" ).toString( )

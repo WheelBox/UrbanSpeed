@@ -30,6 +30,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -56,16 +57,10 @@ public class DBquaries {
     public static List<String> grocery_CartList_product_count = new ArrayList<>( );
     public static List<String> grocery_CartList_product_OutOfStock = new ArrayList<>( );
     public static List<String> grocery_OrderList = new ArrayList<>( );
-    public static List<ShopModel> shopModelList=new ArrayList<>(  );
-    public static List<String> home_shop_list = new ArrayList<>( );
+    public static List<String> allProductStore = new ArrayList<>( );
     public static  String store_id="";
     private static int LOCATION_PERMISSION_CODE=1;
-
     private static LinearLayout search_ll;
-
-
-
-
     public static int PRICE_IN_CART_GROCERY = 0;
     public static int TOTAL_SAVE = 0;
     public static int DELIVERY_CHARGES = 20;
@@ -314,8 +309,15 @@ public class DBquaries {
         }
     }
 
+
+
+
+    /////nearbyStores
+    public static List<ShopModel> shopModelList=new ArrayList<>(  );
+    public static List<String> nearbyShopIds=new ArrayList<>(  );
     public static void setShop(){
         shopModelList.clear();
+        nearbyShopIds.clear();
         setallTags();
         FirebaseFirestore.getInstance().collection("USERS").document(FirebaseAuth.getInstance().getCurrentUser().getUid()).collection("MY_NEAR_STORES").orderBy( "distance", Query.Direction.ASCENDING ).get()
                 .addOnCompleteListener( new OnCompleteListener<QuerySnapshot>( ) {
@@ -326,6 +328,7 @@ public class DBquaries {
                             for(QueryDocumentSnapshot documentSnapshot :task.getResult()){
 
                                 String id=documentSnapshot.getId();
+                                nearbyShopIds.add( id );
                                 final long distance=(long)documentSnapshot.get( "distance" );
 
                                 FirebaseFirestore.getInstance().collection( "STORES" ).document( id ).get()
@@ -360,6 +363,8 @@ public class DBquaries {
                 } );
 
     }
+    /////nearbyStores
+
 
     public static void setUserData(){
 
@@ -420,10 +425,11 @@ public class DBquaries {
 
     }
 
+
+
+
     /////allproductTagForstore
-
     public static  List<String> allTags=new ArrayList<>(  );
-
     public static void setallTags(){
         allTags.clear();
         FirebaseFirestore.getInstance().collection("USERS").document(FirebaseAuth.getInstance().getCurrentUser().getUid()).collection("MY_NEAR_STORES").orderBy( "distance", Query.Direction.ASCENDING ).get()
@@ -464,12 +470,79 @@ public class DBquaries {
 
 
     }
-
-
-
-
-
     ///allproductTagForstore
+
+
+
+    ///addAdminData
+    public  static void setAdminDATA(Context context){
+
+        DocumentReference ref = FirebaseFirestore.getInstance().collection("STORES").document();
+        String store_id = ref.getId();
+
+        Map<String,Object> adminData=new HashMap<>(  );
+        adminData.put( "store_id",store_id );
+
+        FirebaseFirestore.getInstance().collection( "ADMINS" ).document(FirebaseAuth.getInstance().getCurrentUser().getUid() ).set( adminData )
+                .addOnCompleteListener( new OnCompleteListener<Void>( ) {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+
+                            chechUSERS();
+                            Intent intent=new Intent( context,storeDetails.class);
+                            intent.putExtra( "store_id",store_id );
+                            context.startActivity( intent );
+                        }
+                    }
+                } );
+
+
+    }
+    ///addAdminData
+
+
+    ////Identifying_User
+    public static List<String> users_list=new ArrayList<>(  );
+    public static List<String> admins_list=new ArrayList<>(  );
+    public static void  chechUSERS(){
+       users_list.clear();
+       admins_list.clear();
+        FirebaseFirestore.getInstance().collection( "USERS" ).get().addOnCompleteListener( new OnCompleteListener<QuerySnapshot>( ) {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()){
+                    for (QueryDocumentSnapshot documentSnapshot:task.getResult()){
+                        users_list.add( documentSnapshot.getId());
+                    }
+
+
+                }
+            }
+        } );
+        FirebaseFirestore.getInstance().collection( "ADMINS" ).get().addOnCompleteListener( new OnCompleteListener<QuerySnapshot>( ) {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()){
+                    for (QueryDocumentSnapshot documentSnapshot:task.getResult()){
+                        admins_list.add( documentSnapshot.getId());
+                    }
+
+
+                }
+            }
+        } );
+
+
+
+
+    }
+    ////Identifying_User
+
+
+
+
+
 
 
 

@@ -55,15 +55,12 @@ class ProfileFrag : Fragment() {
         }
 
         view.myAccountCartLL.setOnClickListener {
-            val intent = Intent(activity, Search::class.java)
-            startActivity(intent)
-
-
+            DBquaries.setAdminDATA(context)
         }
 
         view.myAccountChangeAddressLayout.setOnClickListener {
             val intent = Intent(activity, MyAddress::class.java)
-//            FirebaseAuth.getInstance().signOut()
+//
             startActivity(intent)
         }
 

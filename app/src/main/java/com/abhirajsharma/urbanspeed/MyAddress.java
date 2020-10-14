@@ -69,7 +69,6 @@ public class MyAddress extends AppCompatActivity {
 
         loadingDialog= new Dialog( MyAddress.this );
         loadingDialog.setContentView( R.layout.loading_progress_dialouge );
-        loadingDialog.setCancelable( false );
         loadingDialog.getWindow().setLayout( ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT );
         loadingDialog.show();
 
@@ -114,6 +113,7 @@ public class MyAddress extends AppCompatActivity {
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         addRecycler.setLayoutManager(layoutManager);
         addRecycler.setAdapter(addressAdapter);
+        loadingDialog.dismiss();
 
         FirebaseFirestore.getInstance( ).collection( "USERS" ).document( FirebaseAuth.getInstance( ).getCurrentUser( ).getUid( ) )
                 .collection( "USER_DATA" ).document( "MY_ADDRESS" ).collection( "address_list" )

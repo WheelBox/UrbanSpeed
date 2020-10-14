@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -54,6 +55,7 @@ public class MyCart extends AppCompatActivity {
     private LinearLayout noItemLL, payment_layout;
     private ConstraintLayout address_layout,cart_activity;
     public  static CheckBox pickUpCheck;
+    private static boolean isPickUp=false;
     public static TextView totalSave, payAmount;
     public static TextView priceIncart, tax, disccount, grandTotal;
     private TextView  editAddress;
@@ -89,6 +91,8 @@ public class MyCart extends AppCompatActivity {
         payAmount = findViewById( R.id.grocery_cart_payAmount );
         cart_activity=findViewById( R.id.cart_activity );
 
+        pickUpCheck=findViewById( R.id.pickUpCheck );
+
 
         address_layout=findViewById( R.id.address_layout );
         cart_activity.setVisibility( View.INVISIBLE );
@@ -120,6 +124,15 @@ public class MyCart extends AppCompatActivity {
         DBquaries.PRICE_IN_CART_GROCERY =0;
         DBquaries.TOTAL_SAVE=0;
 
+
+
+
+
+
+
+
+
+
         editAddress.setOnClickListener( new View.OnClickListener( ) {
             @Override
             public void onClick(View view) {
@@ -135,6 +148,7 @@ public class MyCart extends AppCompatActivity {
             payment_layout.setVisibility( View.INVISIBLE );
             loadingDialog.dismiss( );
         }else {
+
 
 
             FirebaseFirestore.getInstance().collection( "USERS" ).document( FirebaseAuth.getInstance().getCurrentUser().getUid() ).get().addOnCompleteListener( new OnCompleteListener<DocumentSnapshot>( ) {
@@ -153,7 +167,6 @@ public class MyCart extends AppCompatActivity {
                     }
                 }
             } );
-
             FirebaseFirestore.getInstance( ).collection( "STORES" ).document( DBquaries.store_id ).get( ).addOnCompleteListener( new OnCompleteListener<DocumentSnapshot>( ) {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -178,8 +191,6 @@ public class MyCart extends AppCompatActivity {
 
                 }
             } );
-
-
             grocery_cart_product_modelList = new ArrayList<>( );
 
             grocery_cart_product_adapter = new grocery_cart_product_Adapter(
@@ -192,7 +203,6 @@ public class MyCart extends AppCompatActivity {
             cartProduct_Recycler.setAdapter( grocery_cart_product_adapter );
             cartProduct_Recycler.stopScroll( );
             cartProduct_Recycler.setNestedScrollingEnabled( false );
-
             for (int x = 0; x < size; x++) {
 
 
@@ -256,11 +266,22 @@ public class MyCart extends AppCompatActivity {
 
 
             }
-
             shop_orderListSieze = getListsize( );
-
-
             grocery_cart_product_adapter.notifyDataSetChanged( );
+
+
+            pickUpCheck.setOnCheckedChangeListener( new CompoundButton.OnCheckedChangeListener( ) {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    if(pickUpCheck.isChecked()){
+                        isPickUp=true;
+                    }else {
+                        isPickUp=false;
+                    }
+                }
+            } );
+
+
 
 
             payInCash.setOnClickListener( new View.OnClickListener( ) {
@@ -326,7 +347,7 @@ public class MyCart extends AppCompatActivity {
             OrderDetails.put( "store_image",ShopIMAGE);
             OrderDetails.put( "store_description",ShopDESCRIPTION);
 
-            OrderDetails.put( "is_pickUp",true);
+            OrderDetails.put( "is_pickUp",isPickUp);
             pid = groceryCartProductModel.getProduct_id( );
             String stock = String.valueOf( groceryCartProductModel.getIn_stock( ) );
             grandToatal = grandToatal + Integer.parseInt( groceryCartProductModel.getPrice( ) );

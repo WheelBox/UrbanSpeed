@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Products">
-
+    tools:context=".AdminHome">
 
     <androidx.cardview.widget.CardView
 
@@ -59,39 +58,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
             android:orientation="vertical">
 
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/profile_image"
-                android:layout_width="68dp"
-                android:layout_height="68dp"
-
-                android:src="@drawable/store_default"
-                app:civ_border_color="#FF000000"
-                app:civ_border_width="0dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.026"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
 
         </LinearLayout>
 
 
-        <TextView
 
-            android:id="@+id/textView11"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="105dp"
-            android:layout_marginEnd="12dp"
-            android:background="#fff"
-            android:text=""
-            android:textSize="1dp" />
 
 
 
@@ -103,7 +80,7 @@
             android:elevation="5dp"
             android:background="@drawable/border_black_stroke"
             android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="125dp"
+            android:layout_marginTop="105dp"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:orientation="horizontal">
@@ -136,69 +113,6 @@
 
 
     </androidx.cardview.widget.CardView>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/grocery_product_recycler"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/admin_ll"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView2" />
-
-
-
-    <LinearLayout
-        android:id="@+id/admin_ll"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        >
-
-
-        <Button
-            android:id="@+id/admin_confirmed_order"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.1"
-            android:text="Confirmed Order"
-
-            android:backgroundTint="#178103"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:layout_editor_absoluteY="439dp" />
-        <Button
-            android:id="@+id/admin_add_product"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="ADD Products"
-            android:layout_marginHorizontal="4dp"
-
-            android:backgroundTint="#252525"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            />
-        <Button
-
-            android:id="@+id/admin_pending_order"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.1"
-            android:backgroundTint="#E46F40"
-            android:text="Pending Order"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:layout_editor_absoluteY="439dp" />
-
-
-
-    </LinearLayout>
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

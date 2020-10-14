@@ -17,6 +17,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.abhirajsharma.urbanspeed.AddProduct;
+import com.abhirajsharma.urbanspeed.DBquaries;
 import com.abhirajsharma.urbanspeed.ProductDetails;
 import com.abhirajsharma.urbanspeed.R;
 import com.abhirajsharma.urbanspeed.model.GroceryProductModel;
@@ -74,7 +76,6 @@ public class GroceryProductAdapter extends RecyclerView.Adapter<GroceryProductAd
         String store_id=groceryProductModelList.get( position ).getStore_id( );
 
 
-        //   holder.checkAdmin( product_code );
 
         holder.setData( name, offerType, price, offerAmount, inStock, rating, reviewCount, image, id,tag,description,store_id );
 
@@ -96,13 +97,11 @@ public class GroceryProductAdapter extends RecyclerView.Adapter<GroceryProductAd
             super( itemView );
 
             name = itemView.findViewById( R.id.grocery_home_product_Name );
-
             offer = itemView.findViewById( R.id.grocery_home_product_Offer );
             cutprice = itemView.findViewById( R.id.grocery_home_product_CutPrice );
             price = itemView.findViewById( R.id.grocery_home_product_Price );
             image = itemView.findViewById( R.id.grocery_home_productImage );
             description=itemView.findViewById( R.id.grocery_home_productDescription );
-
             constraintLayout = itemView.findViewById( R.id.grocery_home_product_layout );
             rating = itemView.findViewById( R.id.grocery_home_product_Rating );
 
@@ -110,71 +109,38 @@ public class GroceryProductAdapter extends RecyclerView.Adapter<GroceryProductAd
         }
 
 
-
-
-
-      /*  private void checkAdmin(final String ProductCode){
-
-            String currentUser= FirebaseAuth.getInstance().getCurrentUser().getUid();
-            if(currentUser.equals( DBquaries.GROCERY_ADMIN_ID )){
-                add.setVisibility( View.GONE );
-                leftInstock.setVisibility( View.VISIBLE );
-                constraintLayout.setOnClickListener( new View.OnClickListener( ) {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent=new Intent( itemView.getContext(),GroceryAddProduct.class );
-                        intent.putExtra( "code",ProductCode );
-                        itemView.getContext().startActivity( intent );
-                    }
-                } );
-
-
-            }
-
-        }*/
-
         @SuppressLint("RestrictedApi")
         private void setData(final String Name, String cutPrice, String Price, String OfferAmount, long stock, String Rating, String reciew_count, String resource, final String Id, final String Tag, String Description, final String store_id) {
-           /* if (DBquaries.IS_ADMIN) {
-                favouriteButton.setVisibility( View.GONE );
 
-                no_of_stock.setText( String.valueOf( instock ) );
-                no_of_stock.setVisibility( View.VISIBLE );
-                constraintLayout.setOnClickListener( new View.OnClickListener( ) {
-
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent( itemView.getContext( ), AddProduct.class );
-                        intent.putExtra( "product_id", Id );
-                        intent.putExtra( "layout_code", 1 );
-                        itemView.getContext( ).startActivity( intent );
-                    }
-                } );
-            } else {
-                constraintLayout.setOnClickListener( new View.OnClickListener( ) {
-
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent( itemView.getContext( ), com.gaurishankarprashad.gsstore.GroceryProductDetails.class );
-                        intent.putExtra( "product_id", Id );
-                        intent.putExtra( "tag_string" ,Tag);
-                        itemView.getContext( ).startActivity( intent );
-                    }
-                } );
-
-
-            }*/
             constraintLayout.setOnClickListener( new View.OnClickListener( ) {
-
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent( itemView.getContext( ), ProductDetails.class );
-                    intent.putExtra( "product_id", Id );
-                    intent.putExtra( "store_id", store_id );
-                    intent.putExtra( "tag_string" ,Tag);
-                    itemView.getContext( ).startActivity( intent );
+
+                    String currentUser= FirebaseAuth.getInstance().getCurrentUser().getUid();
+                    if(DBquaries.admins_list.contains(currentUser)){
+                        Intent intent=new Intent( itemView.getContext(), AddProduct.class );
+                        intent.putExtra( "product_id",Id );
+                        intent.putExtra( "layout_code",1 );
+                        intent.putExtra( "store_id",store_id);
+                        intent.putExtra( "relevant_tag",Tag);
+                        intent.putExtra( "name",Name);
+                        itemView.getContext().startActivity( intent );
+
+
+                    } else {
+                        Intent intent = new Intent( itemView.getContext( ), ProductDetails.class );
+                        intent.putExtra( "product_id", Id );
+                        intent.putExtra( "store_id", store_id );
+                        intent.putExtra( "tag_string" ,Tag);
+                        itemView.getContext( ).startActivity( intent );
+
+
+                    }
+
                 }
             } );
+
+
 
             price.setText( "₹"+Price+"/-" );
             cutprice.setText( "₹"+cutPrice+"/-" );
@@ -183,15 +149,7 @@ public class GroceryProductAdapter extends RecyclerView.Adapter<GroceryProductAd
             offer.setText( OfferAmount + " off" );
             description.setText( Description );
 
-            /*if (DBquaries.grocery_wishList.contains( Id )) {
 
-                ADDED_towishList = true;
-                favouriteButton.setSupportImageTintList( ColorStateList.valueOf( Color.parseColor( "#DF4444" ) ) );
-
-            } else {
-                ADDED_towishList = false;
-                favouriteButton.setSupportImageTintList( ColorStateList.valueOf( Color.parseColor( "#9e9e9e" ) ) );
-            }*/
 
 
 

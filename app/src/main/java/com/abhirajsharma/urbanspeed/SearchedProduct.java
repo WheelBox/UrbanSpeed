@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,8 +17,8 @@ import android.widget.Filterable;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.abhirajsharma.urbanspeed.adapter.ShopAdapter;
-import com.abhirajsharma.urbanspeed.model.ShopModel;
+import com.abhirajsharma.urbanspeed.adapter.GroceryProductAdapter;
+import com.abhirajsharma.urbanspeed.model.GroceryProductModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -28,60 +29,54 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class SearchedStore extends AppCompatActivity {
-
+public class SearchedProduct extends AppCompatActivity {
 
     private RecyclerView seachedProductRecycler;
     private TextView noProductTxt;
     private static String name = "";
-    private static List<ShopModel> list = new ArrayList<>( );
+    private static String store_id = "";
+
+    private static List<GroceryProductModel> list = new ArrayList<>( );
     private Toolbar toolbar;
-    String[] tags;
-    ShopModel model;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
-        setContentView( R.layout.activity_searched_store );
+        setContentView( R.layout.activity_searched_product );
 
         seachedProductRecycler = findViewById( R.id.searched_product_recycler );
 
 
         noProductTxt = findViewById( R.id.search_No_product_txt );
 
-        int from_product_list=getIntent( ).getIntExtra( "",-1 );
-
         toolbar = findViewById( R.id.toolbar_searched_product );
-        toolbar.setTitle( "Stores" );
+        toolbar.setTitle( "Products" );
         setSupportActionBar( toolbar );
         toolbar.setTitleTextColor( Color.parseColor( "#FFFFFF" ) );
 
         getSupportActionBar( ).setDisplayShowHomeEnabled( true );
         getSupportActionBar( ).setDisplayHomeAsUpEnabled( true );
+        name = getIntent( ).getStringExtra( "tag_string" );
+        store_id = getIntent( ).getStringExtra( "store_id" );
+        Toast.makeText( SearchedProduct.this,store_id,Toast.LENGTH_SHORT ).show();
+
+        LinearLayoutManager gridLayoutManager = new LinearLayoutManager( getApplicationContext( ) );
+        seachedProductRecycler.setLayoutManager( gridLayoutManager );
 
 
         final List<String> ids = new ArrayList<>( );
 
         final Adapter adapter = new Adapter( list );
         seachedProductRecycler.setAdapter( adapter );
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
-        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
-        seachedProductRecycler.setLayoutManager(linearLayoutManager);
 
-        if(from_product_list==1){
-            name = getIntent( ).getStringExtra( "tag_string" );
-            tags [0]= name;
-        }else {
-            name = getIntent( ).getStringExtra( "tag_string" ).toLowerCase();
-            tags = name.split( " " );
-        }
 
+
+        final String[] tags = name.split( " " );
         for (final String tag : tags) {
-
             ids.clear( );
             list.clear( );
-            FirebaseFirestore.getInstance( ).collection( "STORES" ).whereArrayContains( "tags", tag )
+            FirebaseFirestore.getInstance( ).collection( "STORES" ).document( store_id ).collection( "PRODUCTS" ).whereArrayContains( "tags", tag )
                     .get( ).addOnCompleteListener( new OnCompleteListener<QuerySnapshot>( ) {
                 @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                 @Override
@@ -89,18 +84,21 @@ public class SearchedStore extends AppCompatActivity {
 
                     if (task.isSuccessful( )) {
                         for (DocumentSnapshot documentSnapshot : Objects.requireNonNull( task.getResult( ) )) {
+                            GroceryProductModel model = new GroceryProductModel( Objects.requireNonNull( documentSnapshot.get( "image_01" ) ).toString( )
+                                    , Objects.requireNonNull( documentSnapshot.get( "name" ) ).toString( )
+                                    , documentSnapshot.get( "cut_price" ).toString( )
+                                    , documentSnapshot.get( "offer" ).toString( )
+                                    , documentSnapshot.get( "price" ).toString( )
+                                    , documentSnapshot.get( "rating" ).toString( )
+                                    , documentSnapshot.get( "review_count" ).toString( )
+                                    , (long) documentSnapshot.get( "in_stock" )
+                                    , documentSnapshot.getId( )
+                                    ,documentSnapshot.get( "relevant_tag" ).toString( )
+                                    ,documentSnapshot.get( "description" ).toString( )
+                                    ,store_id
+                            );
 
-                            if(DBquaries.nearbyShopIds.contains( documentSnapshot.getId() )){
-
-                                 model = new ShopModel( documentSnapshot.get( "image" ).toString(),
-                                        documentSnapshot.get( "name" ).toString(),
-                                        documentSnapshot.get( "category" ).toString(),
-                                        "2 km away from you !",
-                                        documentSnapshot.get( "rating" ).toString(),
-                                        documentSnapshot.get( "offer" ).toString(),
-                                        documentSnapshot.getId());
-                                model.setTags( (ArrayList<String>) documentSnapshot.get( "tags" ) );
-                            }
+                            model.setTags( (ArrayList<String>) documentSnapshot.get( "tags" ) );
 
                             if (!ids.contains( model.getId( ) )) {
                                 list.add( model );
@@ -119,23 +117,22 @@ public class SearchedStore extends AppCompatActivity {
 
                             }
                         }
+
+
                     } else {
                         String e = task.getException( ).getMessage( );
-                        Toast.makeText( SearchedStore.this, e, Toast.LENGTH_SHORT ).show( );
+                        Toast.makeText( SearchedProduct.this, e, Toast.LENGTH_SHORT ).show( );
                     }
                 }
             } );
         }
 
-
-
-
     }
 
-    public class Adapter extends ShopAdapter implements Filterable {
-        private List<ShopModel> originalList;
+    public class Adapter extends GroceryProductAdapter implements Filterable {
+        private List<GroceryProductModel> originalList;
 
-        public Adapter(List<ShopModel> groceryProductModelList) {
+        public Adapter(List<GroceryProductModel> groceryProductModelList) {
             super( groceryProductModelList );
             originalList = groceryProductModelList;
         }
@@ -146,14 +143,14 @@ public class SearchedStore extends AppCompatActivity {
                 @Override
                 protected FilterResults performFiltering(CharSequence charSequence) {
                     FilterResults filterResults = new FilterResults( );
-                    List<ShopModel> filterList = new ArrayList<>( );
+                    List<GroceryProductModel> filterList = new ArrayList<>( );
 
                     final String[] tags = name.toLowerCase( ).split( " " );
 
                     ArrayList<String> presentTags = new ArrayList<>( );
 
 
-                    for (ShopModel model : originalList) {
+                    for (GroceryProductModel model : originalList) {
 
 
                         for (String tag : tags) {
@@ -171,7 +168,7 @@ public class SearchedStore extends AppCompatActivity {
                         }
                     }
                     for (int i = tags.length; i > 0; i--) {
-                        for (ShopModel model : originalList) {
+                        for (GroceryProductModel model : originalList) {
                             if (model.getTags( ).size( ) == i) {
                                 filterList.add( model );
                             }
@@ -185,7 +182,7 @@ public class SearchedStore extends AppCompatActivity {
                 @Override
                 protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
                     if (filterResults.count > 0) {
-                        setShopModelList( (List<ShopModel>) filterResults.values );
+                        setGroceryProductModelList( (List<GroceryProductModel>) filterResults.values );
                     }
 
                     notifyDataSetChanged( );

@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.abhirajsharma.urbanspeed.adapter.ShopAdapter;
 import com.abhirajsharma.urbanspeed.model.ShopModel;
@@ -20,6 +21,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ShopActivity extends AppCompatActivity {
@@ -62,6 +64,7 @@ public class ShopActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if(task.isSuccessful()){
                     for(QueryDocumentSnapshot documentSnapshot :task.getResult()){
+
 
                         shopModelList.add( new ShopModel(documentSnapshot.get( "image" ).toString(),
                                 documentSnapshot.get( "name" ).toString(),

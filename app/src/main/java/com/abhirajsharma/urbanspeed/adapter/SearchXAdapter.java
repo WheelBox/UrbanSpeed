@@ -11,36 +11,41 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-
 import com.abhirajsharma.urbanspeed.R;
+import com.abhirajsharma.urbanspeed.SearchedProduct;
 import com.abhirajsharma.urbanspeed.SearchedStore;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class SearchProductNameAdapter extends RecyclerView.Adapter<SearchProductNameAdapter.ViewHolder> implements Filterable {
+public class SearchXAdapter extends RecyclerView.Adapter<SearchXAdapter.ViewHolder> implements Filterable {
+
+
+
 
     private List<String> searchProductNameModelList;
     private List<String> allProducts;
+    private String store_id;
 
-    public SearchProductNameAdapter(List<String> searchProductNameModelList) {
+    public SearchXAdapter(List<String> searchProductNameModelList,String store_id) {
         this.searchProductNameModelList = searchProductNameModelList;
         this.allProducts=new ArrayList<>( searchProductNameModelList );
+        this.store_id=store_id;
     }
+
 
     @NonNull
     @Override
-    public SearchProductNameAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public SearchXAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from( parent.getContext( ) ).inflate( R.layout.search_product_name_item, parent, false );
         return new ViewHolder( view );
     }
 
     @Override
-    public void onBindViewHolder(@NonNull SearchProductNameAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull SearchXAdapter.ViewHolder holder, int position) {
 
 
-        holder.textView.setText(searchProductNameModelList.get( position ));
         holder.setData( searchProductNameModelList.get( position ),position );
     }
 
@@ -90,7 +95,7 @@ public class SearchProductNameAdapter extends RecyclerView.Adapter<SearchProduct
 
     public class ViewHolder extends  RecyclerView.ViewHolder{
 
-        private TextView textView;
+        public TextView textView;
 
         public ViewHolder(@NonNull final View itemView) {
             super( itemView );
@@ -98,19 +103,18 @@ public class SearchProductNameAdapter extends RecyclerView.Adapter<SearchProduct
 
         }
 
-        public void setData(final String name, final int index){
+        private void setData(final String name, final int index){
 
 
+            textView.setText( name );
             textView.setOnClickListener( new View.OnClickListener( ) {
                 @Override
                 public void onClick(View view) {
+                    Intent intent=new Intent( itemView.getContext(), SearchedProduct.class );
+                    intent.putExtra( "tag_string", name);
+                    intent.putExtra( "store_id",store_id );
+                    itemView.getContext().startActivity( intent );
 
-
-
-
-                        Intent intent=new Intent( itemView.getContext(), SearchedStore.class );
-                        intent.putExtra( "tag_string",name );
-                        itemView.getContext().startActivity( intent );
 
 
                 }
@@ -121,3 +125,5 @@ public class SearchProductNameAdapter extends RecyclerView.Adapter<SearchProduct
 
 
 }
+
+

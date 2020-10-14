@@ -48,6 +48,8 @@ public class BuyNow extends AppCompatActivity {
     private Toolbar toolbar;
     private static String otp = new DecimalFormat( "000000" ).format( new Random( ).nextInt( 999999 ) );
 
+
+    private static boolean isPickUp=false;
     private ConstraintLayout buynow;
     private TextView priceIncart;
     private static TextView tax;
@@ -234,7 +236,16 @@ public class BuyNow extends AppCompatActivity {
         } );
 
         product_count.setText( String.valueOf( count[0] ) );
-
+        pickUpCheck.setOnCheckedChangeListener( new CompoundButton.OnCheckedChangeListener( ) {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(pickUpCheck.isChecked()){
+                    isPickUp=true;
+                }else {
+                    isPickUp=false;
+                }
+            }
+        } );
 
         addproduct.setOnClickListener( new View.OnClickListener( ) {
             @Override
@@ -287,11 +298,6 @@ public class BuyNow extends AppCompatActivity {
             }
         } );
 
-        pickUpCheck.setOnCheckedChangeListener( new CompoundButton.OnCheckedChangeListener( ) {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-            }
-        } );
 
 
         order_Btn.setOnClickListener( new View.OnClickListener( ) {
