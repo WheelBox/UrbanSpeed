@@ -1,9 +1,12 @@
 package com.abhirajsharma.urbanspeed
 
+import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.FirebaseException
@@ -18,18 +21,28 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 
 
-class PhoneLogin : AppCompatActivity() {
+class PhoneLogin2 : AppCompatActivity() {
 
     private val auth by lazy { FirebaseAuth.getInstance() }
     var verificationId: String = ""
     private val KEY_VERIFICATION_ID = "key_verification_id"
     lateinit var mCallbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks
-    var countryCode:String = ""
+    var fullPhoneNum = ""
+    var phoneNum = ""
+    var accountType = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_phone_login)
 
+        fullPhoneNum = intent.getStringExtra("fullPhoneNum")!!
+        phoneNum = intent.getStringExtra("phoneNum")!!
+        accountType = intent.getStringExtra("accountType")!!
+
+        val displayingText = resources.getString(R.string.numberFilling) + phoneNum
+        verify(fullPhoneNum)
+
+        fillingNumText.text = displayingText
 //        setSupportActionBar(app_bar)
 
         supportActionBar?.setDisplayShowTitleEnabled(false)
@@ -37,22 +50,42 @@ class PhoneLogin : AppCompatActivity() {
 //            startActivity(Intent(this, LoginActivity::class.java))
 //        }
 
-        otpBtn.setOnClickListener {
-            countryCode = "+" + ccp.selectedCountryCode
-            phoneProgressBar.visibility = View.VISIBLE
-            verify()
-        }
+//        otpBtn.setOnClickListener {
+//            countryCode = "+" + ccp.selectedCountryCode
+//            phoneProgressBar.visibility = View.VISIBLE
+//            verify()
+//        }
 
         verifyBtn.setOnClickListener {
             Log.d("checkMe", "otp: " + otp_et.text.toString())
+            hideSoftKeyboard(this, phoneLayout)
             phoneProgressBar.visibility = View.VISIBLE
-            authenticate()
+            when {
+                otp_et.text.isEmpty() -> {
+                    phoneLayout.showSnackBar("Please enter the OTP received through SMS")
+                }
+                otp_et.text.length < 6 -> {
+                    phoneLayout.showSnackBar("Please enter a valid OTP")
+                }
+                else -> {
+                    authenticate()
+                }
+            }
         }
+
+//        backOtpBtn.setOnClickListener {
+//            finish()
+//        }
 
     }
 
-    private fun verificationCallbacks(){
-        mCallbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks(){
+    private fun hideSoftKeyboard(activity: Activity, view: View) {
+        val imm: InputMethodManager = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view.applicationWindowToken, 0)
+    }
+
+    private fun verificationCallbacks() {
+        mCallbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
             override fun onVerificationCompleted(p0: PhoneAuthCredential) {
                 signInWithPhoneAuthCredential(p0)
@@ -60,15 +93,11 @@ class PhoneLogin : AppCompatActivity() {
 
             override fun onVerificationFailed(e: FirebaseException) {
                 phoneProgressBar.visibility = View.GONE
-                    if (e is FirebaseAuthInvalidCredentialsException) {
-                        if (phone_et.text?.isEmpty()!!){
-                            phoneLayout.showSnackBar("The field cannot be empty.")
-                        }else {
-                            phoneLayout.showSnackBar("The format of the phone number provided is incorrect.")
-                        }
-                    } else if (e is FirebaseTooManyRequestsException) {
-                        phoneLayout.showSnackBar(e.localizedMessage!!.toString())
-                    }
+                if (e is FirebaseAuthInvalidCredentialsException) {
+                    phoneLayout.showSnackBar("The format of the phone number provided is incorrect.")
+                } else if (e is FirebaseTooManyRequestsException) {
+                    phoneLayout.showSnackBar(e.localizedMessage!!.toString())
+                }
             }
 
             override fun onCodeSent(p0: String, p1: PhoneAuthProvider.ForceResendingToken) {
@@ -86,49 +115,58 @@ class PhoneLogin : AppCompatActivity() {
 //        9971439072
     }
 
-    private fun verify() {
+    private fun verify(phone: String) {
         verificationCallbacks()
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                countryCode + phone_et.text.toString(),
+                phone,
                 60,
                 TimeUnit.SECONDS,
                 this,
                 mCallbacks)
-
     }
 
     private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
         auth.signInWithCredential(credential).addOnCompleteListener(this) {
-            if (it.isSuccessful){
+            if (it.isSuccessful) {
+
+                otp_et.setText(credential.smsCode.toString())
+
                 phoneLayout.showSnackBar("Account Created Successfully.")
 
                 DBquaries.setUserData()
 
                 //  firebaseAuth.signInWithEmailAndPassword( mail,password  );
                 val userData: MutableMap<String, Any> = HashMap()
+                //username and img will get updated in next activity -> ImagePicker
                 userData["fullname"] = ""
                 userData["lat"] = ""
                 userData["lon"] = ""
-                userData["permanent_phone"] =phone_et.text.toString()
-                userData["phone"] = phone_et.text.toString()
+                userData["permanent_phone"] = phoneNum
+                userData["phone"] = phoneNum
                 userData["previous_position"] = 0
                 userData["address_details"] = ""
                 userData["address_type"] = ""
-
+                userData["img"] = ""
                 val currentuser = FirebaseAuth.getInstance().currentUser!!.uid
-
 
                 FirebaseFirestore.getInstance().collection("USERS").document(currentuser).set(userData).addOnCompleteListener {
 
                 }
 
-
                 phoneProgressBar.visibility = View.GONE
-                startActivity(Intent(this, SplashScreen::class.java))
+                updateUI()
                 finish()
             }
         }.addOnFailureListener {
             phoneLayout.showSnackBar("Error : ${it.localizedMessage}")
+        }
+    }
+
+    private fun updateUI() {
+        if (accountType == "vendor") {
+            DBquaries.setAdminDATA(this)
+        } else if (accountType == "user") {
+            startActivity(Intent(this, ImagePicker::class.java))
         }
     }
 

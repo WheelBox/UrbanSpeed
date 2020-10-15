@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/phoneLayout2"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/button_gradient_background"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top">
+
+        <ProgressBar
+            android:id="@+id/phoneProgressBar"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="#00000000">
+
+            <ImageView
+                android:id="@+id/backPhoneBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="?attr/actionBarSize"
+                android:paddingStart="30dp"
+                android:paddingEnd="40dp"
+                android:src="@drawable/back" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="20dp"
+            android:fontFamily="@font/rubik_medium"
+            android:text="Enter Phone Number for Verification"
+            android:textColor="#ef6637"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="50dp"
+            android:fontFamily="@font/rubik_medium"
+            android:text="@string/phoneVerificationDetails"
+            android:textColor="@android:color/white"
+            android:textSize="15sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="30dp">
+
+            <com.hbb20.CountryCodePicker
+                android:id="@+id/ccp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="1dp"
+                android:gravity="center"
+                app:ccpDialog_backgroundColor="@android:color/black"
+                app:ccpDialog_textColor="@android:color/white"
+                app:ccp_autoDetectCountry="true"
+                app:ccp_contentColor="@android:color/white"
+                app:ccp_showArrow="false"
+                app:ccp_textSize="15sp" />
+
+            <EditText
+                android:id="@+id/phone_et"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:backgroundTint="#F76726"
+                android:hint="Your Phone Number"
+                android:inputType="phone"
+                android:maxLines="1"
+                android:textColor="@android:color/white"
+                android:textColorHint="#D7D7D7"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <!--        <EditText-->
+        <!--            android:id="@+id/otp_et"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginStart="20dp"-->
+        <!--            android:layout_marginEnd="20dp"-->
+        <!--            android:layout_marginBottom="6dp"-->
+        <!--            android:backgroundTint="#F76726"-->
+        <!--            android:hint="OTP Code"-->
+        <!--            android:inputType="number"-->
+        <!--            android:maxLines="1"-->
+        <!--            android:textColor="@android:color/white"-->
+        <!--            android:textColorHint="#D7D7D7"-->
+        <!--            android:textSize="15sp" />-->
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="right"
+            android:orientation="vertical"
+            android:paddingStart="28dp"
+            android:paddingEnd="30dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/vendorBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="#ef6637"
+                android:fontFamily="@font/rubik_medium"
+                android:text="Login as Vendor"
+                android:textSize="13sp"
+                app:cornerRadius="10dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/userBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="20dp"
+                android:backgroundTint="#FA4232"
+                android:fontFamily="@font/rubik_medium"
+                android:text="login as user"
+                android:textSize="13sp"
+                app:cornerRadius="10dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>

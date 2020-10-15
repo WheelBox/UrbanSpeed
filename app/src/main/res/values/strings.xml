@@ -2,6 +2,7 @@
     <string name="app_name">Urban Speed</string>
     <string name="termsAndCond"><![CDATA[Please read the T&C\'s before continuing]]></string>
     <string name="phoneVerificationDetails">You will receive an OTP code through an SMS for verification</string>
+    <string name="numberFilling">"Waiting to automatically detect an SMS sent to "</string>
     <string name="navigation_drawer_open">Drawer Open</string>
     <string name="navigation_drawer_close">Drawer Closed</string>
     <!-- TODO: Remove or change this placeholder text -->

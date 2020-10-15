@@ -9,4 +9,8 @@
     <color name="whiteColorPrimary">@android:color/white</color>
     <color name="textInputOutlineColor">#F76726</color>
     <color name="mtrl_textinput_default_box_stroke_color" tools:override="true">#fff</color>
+
+    <!--    <color name="ucrop_color_toolbar">@color/teal_500</color>-->
+    <color name="ucrop_color_statusbar">@color/background</color>
+    <color name="ucrop_color_widget_active">@color/textInputOutlineColor</color>
 </resources>

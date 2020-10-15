@@ -4,7 +4,7 @@
     android:id="@+id/phoneLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
+    android:background="@drawable/button_gradient_background"
     android:orientation="vertical">
 
     <FrameLayout
@@ -20,26 +20,42 @@
             android:indeterminate="true"
             android:visibility="gone" />
 
-        <com.google.android.material.appbar.AppBarLayout
+        <!--        <com.google.android.material.appbar.AppBarLayout-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginTop="20dp"-->
+        <!--            android:background="@color/transparent"-->
+        <!--            app:elevation="0dp">-->
+
+        <!--            <androidx.appcompat.widget.Toolbar-->
+        <!--                android:id="@+id/app_bar"-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="?attr/actionBarSize"-->
+        <!--                android:background="@color/transparent"-->
+        <!--                android:paddingStart="12dp"-->
+        <!--                android:paddingLeft="12dp"-->
+        <!--                android:paddingEnd="12dp"-->
+        <!--                android:paddingRight="12dp"-->
+        <!--                app:contentInsetStart="0dp"-->
+        <!--                app:navigationIcon="@drawable/back" />-->
+
+        <!--        </com.google.android.material.appbar.AppBarLayout>-->
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="?attr/actionBarSize"
             android:layout_marginTop="20dp"
-            android:background="@color/background"
-            app:elevation="0dp">
+            android:background="#00000000">
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/app_bar"
-                android:layout_width="wrap_content"
-                android:layout_height="?attr/actionBarSize"
-                android:background="@color/background"
-                android:paddingStart="12dp"
-                android:paddingLeft="12dp"
-                android:paddingEnd="12dp"
-                android:paddingRight="12dp"
-                app:contentInsetStart="0dp"
-                app:navigationIcon="@drawable/back" />
+            <!--            <ImageView-->
+            <!--                android:id="@+id/backOtpBtn"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:paddingStart="30dp"-->
+            <!--                android:paddingEnd="40dp"-->
+            <!--                android:layout_height="?attr/actionBarSize"-->
+            <!--                android:src="@drawable/back"/>-->
 
-        </com.google.android.material.appbar.AppBarLayout>
+        </LinearLayout>
 
     </FrameLayout>
 
@@ -56,106 +72,64 @@
             android:layout_marginTop="30dp"
             android:layout_marginRight="20dp"
             android:fontFamily="@font/rubik_medium"
-            android:text="Enter Phone Number for Verification"
+            android:text="OTP verification"
             android:textColor="#ef6637"
             android:textSize="25sp"
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/fillingNumText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
             android:layout_marginRight="20dp"
-            android:layout_marginBottom="50dp"
+            android:layout_marginBottom="35dp"
             android:fontFamily="@font/rubik_medium"
-            android:text="@string/phoneVerificationDetails"
+            android:text="Waiting to automatically detect an SMS sent to"
             android:textColor="@android:color/white"
             android:textSize="15sp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp">
-
-            <com.hbb20.CountryCodePicker
-                android:id="@+id/ccp"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="1dp"
-                android:gravity="center"
-                app:ccpDialog_backgroundColor="@android:color/black"
-                app:ccpDialog_textColor="@android:color/white"
-                app:ccp_autoDetectCountry="true"
-                app:ccp_contentColor="@android:color/white"
-                app:ccp_showArrow="false"
-                app:ccp_textSize="15sp" />
-
-            <EditText
-                android:id="@+id/phone_et"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:backgroundTint="#F76726"
-                android:hint="Your Phone Number"
-                android:inputType="phone"
-                android:maxLines="1"
-                android:textColor="@android:color/white"
-                android:textColorHint="#D7D7D7"
-                android:textSize="16sp" />
-
-        </LinearLayout>
 
         <EditText
+            android:layout_width="200dp"
             android:id="@+id/otp_et"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="6dp"
-            android:backgroundTint="#F76726"
+            android:layout_height="45dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/et_style"
+            android:gravity="center"
             android:hint="OTP Code"
-            android:inputType="number"
             android:maxLines="1"
-            android:textColor="@android:color/white"
+            android:paddingLeft="16dp"
+            android:inputType="number"
+            android:paddingRight="16dp"
+            android:singleLine="true"
             android:textColorHint="#D7D7D7"
+            android:textColor="@android:color/white"
             android:textSize="15sp" />
 
-
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="right">
+            android:layout_gravity="center"
+            android:text="Enter 6-digit code"
+            android:textColor="@android:color/white"
+            android:textSize="12sp" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/verifyBtn"
-                android:layout_width="110dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#ef6637"
-                android:fontFamily="@font/rubik_medium"
-                android:text="Verify"
-                android:textSize="13sp"
-                app:cornerRadius="15dp" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/otpBtn"
-                android:layout_width="110dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginBottom="20dp"
-                android:backgroundTint="#FB5445"
-                android:fontFamily="@font/rubik_medium"
-                android:text="get otp"
-                android:textSize="13sp"
-                app:cornerRadius="15dp" />
-
-        </LinearLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/verifyBtn"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="20dp"
+            android:backgroundTint="#FA4232"
+            android:fontFamily="@font/rubik_medium"
+            android:text="Verify"
+            android:textSize="13sp"
+            app:cornerRadius="10dp" />
 
     </LinearLayout>
-
 
 </LinearLayout>

@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SearchedProduct"></activity>
+        <activity android:name=".SearchedProduct" />
         <activity android:name=".XSearch" />
         <activity android:name=".AddProduct" />
         <activity android:name=".AdminOrderProduct" />
@@ -33,10 +33,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".PhoneLogin"
-            android:parentActivityName=".LoginActivity"
-            android:theme="@style/AppThemeNoBar"
-            android:windowSoftInputMode="adjustPan|adjustResize" />
+            android:name=".PhoneLogin1"
+            android:theme="@style/AppThemeNoBar" />
+        <activity android:name=".PhoneLogin2" />
         <activity
             android:name=".LoginActivity"
             android:theme="@style/AppThemeNoBar" />
@@ -54,8 +53,8 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
     </application>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
 </manifest>

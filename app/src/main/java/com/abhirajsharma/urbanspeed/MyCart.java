@@ -26,7 +26,6 @@ import androidx.core.app.NotificationCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-
 import com.abhirajsharma.urbanspeed.adapter.grocery_cart_product_Adapter;
 import com.abhirajsharma.urbanspeed.model.grocery_cart_product_Model;
 import com.bumptech.glide.Glide;
@@ -58,8 +57,8 @@ public class MyCart extends AppCompatActivity {
     private static boolean isPickUp=false;
     public static TextView totalSave, payAmount;
     public static TextView priceIncart, tax, disccount, grandTotal;
-    private TextView  editAddress;
-    private static String otp = new DecimalFormat( "000000" ).format( new Random( ).nextInt( 999999 ) );
+    private TextView editAddress;
+    private static final String otp = new DecimalFormat("000000").format(new Random().nextInt(999999));
     private final String CHANNEL_ID = "ai";
     private String ShopNMAE="";
     private String ShopIMAGE="";
@@ -68,9 +67,7 @@ public class MyCart extends AppCompatActivity {
     private String userAdderssType="";
     private String userPhone="";
     private String ShopDESCRIPTION="";
-
     long[] shop_orderListSieze={0};
-
 
     private ImageView shopImage;
     private TextView shopName,shopDescription;
@@ -224,11 +221,11 @@ public class MyCart extends AppCompatActivity {
                                                     if (task.isSuccessful( )) {
                                                         DBquaries.PRICE_IN_CART_GROCERY = DBquaries.PRICE_IN_CART_GROCERY + Integer.parseInt( count ) * Integer.parseInt( task.getResult( ).get( "price" ).toString( ) );
                                                         DBquaries.TOTAL_SAVE = DBquaries.TOTAL_SAVE + Integer.parseInt( count ) * (-Integer.parseInt( task.getResult( ).get( "price" ).toString( ) ) + Integer.parseInt( task.getResult( ).get( "cut_price" ).toString( ) ));
-                                                        priceIncart.setText( String.valueOf( DBquaries.PRICE_IN_CART_GROCERY ) );
-                                                        totalSave.setText( "₹" + String.valueOf( DBquaries.TOTAL_SAVE ) );
-                                                        tax.setText( String.valueOf( DBquaries.DELIVERY_CHARGES ) );
-                                                        grandTotal.setText( String.valueOf( DBquaries.PRICE_IN_CART_GROCERY + DBquaries.DELIVERY_CHARGES ) );
-                                                        payAmount.setText( "₹" + String.valueOf( DBquaries.PRICE_IN_CART_GROCERY + DBquaries.DELIVERY_CHARGES ) );
+                                                        priceIncart.setText(String.valueOf(DBquaries.PRICE_IN_CART_GROCERY));
+                                                        totalSave.setText("₹" + DBquaries.TOTAL_SAVE);
+                                                        tax.setText(String.valueOf(DBquaries.DELIVERY_CHARGES));
+                                                        grandTotal.setText(String.valueOf(DBquaries.PRICE_IN_CART_GROCERY + DBquaries.DELIVERY_CHARGES));
+                                                        payAmount.setText("₹" + (DBquaries.PRICE_IN_CART_GROCERY + DBquaries.DELIVERY_CHARGES));
                                                         if ((long) task.getResult( ).get( "in_stock" ) == 0) {
                                                             DBquaries.grocery_CartList_product_OutOfStock.add( id );
                                                         }
@@ -273,11 +270,7 @@ public class MyCart extends AppCompatActivity {
             pickUpCheck.setOnCheckedChangeListener( new CompoundButton.OnCheckedChangeListener( ) {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    if(pickUpCheck.isChecked()){
-                        isPickUp=true;
-                    }else {
-                        isPickUp=false;
-                    }
+                    isPickUp = pickUpCheck.isChecked();
                 }
             } );
 

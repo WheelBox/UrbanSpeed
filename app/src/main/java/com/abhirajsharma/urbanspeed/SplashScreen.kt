@@ -17,10 +17,10 @@ import java.io.IOException
 import java.util.*
 
 
-class SplashScreen: AppCompatActivity() {
+class SplashScreen : AppCompatActivity() {
 
     var locationManager: LocationManager? = null
-    var loaction:Location?=null
+    var loaction: Location? = null
     private val REQUEST_LOCATION = 1
 
     private val mAuth by lazy {
@@ -29,15 +29,14 @@ class SplashScreen: AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        if (mAuth.currentUser==null){
+        if (mAuth.currentUser == null) {
             Handler(Looper.getMainLooper()).postDelayed({
                 startActivity(Intent(this, LoginActivity::class.java))
             }, 1500)
-        }else{
-            DBquaries.findDistance("28.414497825686833","77.29039451247131")
+        } else {
+            DBquaries.findDistance("28.414497825686833", "77.29039451247131")
             DBquaries.shopModelList.clear()
             DBquaries.setShop()
-
 
             locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
             if (!locationManager!!.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
@@ -46,28 +45,28 @@ class SplashScreen: AppCompatActivity() {
                 getLocation()
             }
 
-
-
-
-
             Handler(Looper.getMainLooper()).postDelayed({
                 startActivity(Intent(this, MainActivity::class.java))
             }, 1400)
         }
     }
+
     private fun OnGPS() {
         val builder = AlertDialog.Builder(this)
         builder.setMessage("Enable GPS").setCancelable(false)
                 .setPositiveButton("Yes") { dialog, which -> startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)) }
                 .setNegativeButton("No") {
                     ///updating location
-                    dialog, which -> dialog.cancel() }
+                    dialog, which ->
+                    dialog.cancel()
+                }
         val alertDialog = builder.create()
         alertDialog.show()
     }
-    fun getLocation() {
-        if (ActivityCompat.checkSelfPermission(
-                        applicationContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+
+    private fun getLocation() {
+        if (ActivityCompat.checkSelfPermission
+                (applicationContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
                         applicationContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), REQUEST_LOCATION)
         } else {
@@ -95,13 +94,12 @@ class SplashScreen: AppCompatActivity() {
                 val address = addresses[0].getAddressLine(0) // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
                 Toast.makeText(applicationContext, address, Toast.LENGTH_SHORT).show()
             } catch (e: NullPointerException) {
-                val stat=e.localizedMessage
+                val stat = e.localizedMessage
                 Toast.makeText(applicationContext, stat, Toast.LENGTH_SHORT).show()
             } catch (e: IOException) {
             }
         }
     }
-
 
 
 }

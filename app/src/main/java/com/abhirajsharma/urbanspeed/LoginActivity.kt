@@ -28,8 +28,7 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login_actvity)
 
         phoneVerif.setOnClickListener {
-            startActivity(Intent(this, PhoneLogin::class.java))
-            finish()
+            startActivity(Intent(this, PhoneLogin1::class.java))
         }
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
