@@ -33,9 +33,6 @@ class HomeFrag : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
-
-
-
         if (DBquaries.grocery_CartList_product_id.size === 0) {
             DBquaries.loadGroceryCartList(view.context)
         }
@@ -46,7 +43,7 @@ class HomeFrag : Fragment() {
             startActivity(intent)
         })
 
-        DBquaries.chechUSERS()
+
 
 
         if (DBquaries.grocery_OrderList.size === 0) {

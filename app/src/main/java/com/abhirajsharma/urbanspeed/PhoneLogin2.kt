@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.FirebaseException
@@ -17,7 +18,6 @@ import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_phone_login.*
-import java.util.*
 import java.util.concurrent.TimeUnit
 
 
@@ -30,6 +30,7 @@ class PhoneLogin2 : AppCompatActivity() {
     var fullPhoneNum = ""
     var phoneNum = ""
     var accountType = ""
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +47,7 @@ class PhoneLogin2 : AppCompatActivity() {
 //        setSupportActionBar(app_bar)
 
         supportActionBar?.setDisplayShowTitleEnabled(false)
+
 //        app_bar.setOnClickListener {
 //            startActivity(Intent(this, LoginActivity::class.java))
 //        }
@@ -125,36 +127,15 @@ class PhoneLogin2 : AppCompatActivity() {
                 mCallbacks)
     }
 
+
     private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
         auth.signInWithCredential(credential).addOnCompleteListener(this) {
             if (it.isSuccessful) {
-
                 otp_et.setText(credential.smsCode.toString())
 
-                phoneLayout.showSnackBar("Account Created Successfully.")
-
-                DBquaries.setUserData()
-
-                //  firebaseAuth.signInWithEmailAndPassword( mail,password  );
-                val userData: MutableMap<String, Any> = HashMap()
-                //username and img will get updated in next activity -> ImagePicker
-                userData["fullname"] = ""
-                userData["lat"] = ""
-                userData["lon"] = ""
-                userData["permanent_phone"] = phoneNum
-                userData["phone"] = phoneNum
-                userData["previous_position"] = 0
-                userData["address_details"] = ""
-                userData["address_type"] = ""
-                userData["img"] = ""
-                val currentuser = FirebaseAuth.getInstance().currentUser!!.uid
-
-                FirebaseFirestore.getInstance().collection("USERS").document(currentuser).set(userData).addOnCompleteListener {
-
-                }
-
-                phoneProgressBar.visibility = View.GONE
                 updateUI()
+                phoneProgressBar.visibility = View.GONE
+
                 finish()
             }
         }.addOnFailureListener {
@@ -163,11 +144,74 @@ class PhoneLogin2 : AppCompatActivity() {
     }
 
     private fun updateUI() {
-        if (accountType == "vendor") {
-            DBquaries.setAdminDATA(this)
-        } else if (accountType == "user") {
-            startActivity(Intent(this, ImagePicker::class.java))
+        val currentuser = FirebaseAuth.getInstance().currentUser!!.uid
+        phoneProgressBar.visibility = View.VISIBLE
+        Toast.makeText(applicationContext, DBquaries.admins_list.toString() + DBquaries.users_list.toString() + "_" + currentuser, Toast.LENGTH_SHORT).show()
+
+        FirebaseFirestore.getInstance().collection("USERS").document(FirebaseAuth.getInstance().currentUser!!.uid).get()
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val documentSnapshot = task.result
+                        if (documentSnapshot.exists()) {
+                            phoneProgressBar.visibility = View.GONE
+                            DBquaries.findDistance("28.414497825686833", "77.29039451247131")
+                            DBquaries.setShop()
+                            startActivity(Intent(this, MainActivity::class.java))
+                        }else{
+                            FirebaseFirestore.getInstance().collection("ADMINS").document(FirebaseAuth.getInstance().currentUser!!.uid).get()
+                                    .addOnCompleteListener { task ->
+                                        if (task.isSuccessful) {
+                                            val documentSnapshot = task.result
+                                            if (documentSnapshot.exists()) {
+                                                phoneProgressBar.visibility = View.GONE
+                                                val id = task.result["store_id"].toString()
+                                                val i = Intent(this, Products::class.java)
+                                                i.putExtra("store_id", id)
+                                                startActivity(i)
+
+                                            }else{
+                                                phoneProgressBar.visibility = View.GONE
+                                                if (accountType == "vendor") {
+                                                    DBquaries.setAdminDATA(this)
+                                                } else if (accountType == "user") {
+                                                    DBquaries.setUserData()
+                                                    DBquaries.findDistance("28.414497825686833", "77.29039451247131")
+                                                    val userData: MutableMap<String, Any> = HashMap()
+                                                    userData["fullname"] = ""
+                                                    userData["lat"] = ""
+                                                    userData["lon"] = ""
+                                                    userData["permanent_phone"] = phoneNum
+                                                    userData["phone"] = phoneNum
+                                                    userData["previous_position"] = 0
+                                                    userData["address_details"] = ""
+                                                    userData["address_type"] = ""
+                                                    userData["img"] = ""
+                                                    val currentuser = FirebaseAuth.getInstance().currentUser!!.uid
+
+                                                    FirebaseFirestore.getInstance().collection("USERS").document(currentuser).set(userData).addOnCompleteListener {
+                                                        if(it.isSuccessful){
+                                                            startActivity(Intent(this, UserDetails::class.java))
+                                                        }
+                                                    }
+
+
+
+                                                }
+                                            }
+                                        }
+                                    }
+
+                        }
+                    }
+                }
+
+        if (DBquaries.users_list.contains(currentuser)) {
+            DBquaries.findDistance("28.414497825686833", "77.29039451247131")
+            DBquaries.setShop()
+            startActivity(Intent(this, MainActivity::class.java))
         }
+
+        /* */
     }
 
     private fun View.showSnackBar(msg: String) {

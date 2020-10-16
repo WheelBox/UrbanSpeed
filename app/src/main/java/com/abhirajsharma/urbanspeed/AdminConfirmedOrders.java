@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.abhirajsharma.urbanspeed.adapter.AdminOrderAdaptrer;
 import com.abhirajsharma.urbanspeed.model.AdminOrderModel;
@@ -56,9 +57,11 @@ public class AdminConfirmedOrders extends AppCompatActivity {
         FirebaseFirestore.getInstance().collection( "STORES" ).document( store_id ).collection( "ORDERS" ).document( "order_list" ).get().addOnCompleteListener( new OnCompleteListener<DocumentSnapshot>( ) {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-
                 if(task.isSuccessful()){
                     long list_size=(long)task.getResult().get( "list_size" );
+                    if(list_size==0){
+                        Toast.makeText( AdminConfirmedOrders.this, "No Orders Yet !", Toast.LENGTH_SHORT ).show( );
+                    }
                     for(long x=0;x<list_size;x++){
 
                         String order_id=task.getResult().get( "order_id_"+x ).toString();

@@ -62,6 +62,7 @@ public class Products extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_products);
 
+
         product_recycler = findViewById(R.id.grocery_product_recycler);
         search_LL=findViewById( R.id.search_LL );
         name=findViewById( R.id.shop_name );
@@ -95,7 +96,6 @@ public class Products extends AppCompatActivity {
                     name.setText( task.getResult().get( "name" ).toString() );
                     address.setText( task.getResult().get( "address" ).toString() );
                     description.setText( task.getResult().get( "category" ).toString() );
-
 
                 }
             }
@@ -153,39 +153,51 @@ public class Products extends AppCompatActivity {
             }
         } );
 
+        FirebaseFirestore.getInstance().collection("USERS").document(FirebaseAuth.getInstance().getCurrentUser().getUid()).get().
+                addOnCompleteListener( new OnCompleteListener<DocumentSnapshot>( ) {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if(task.isSuccessful()){
+                            DocumentSnapshot documentSnapshot=task.getResult();
+                            if(documentSnapshot.exists()){
+                                adminLL.setVisibility( View.GONE );
+                            }else {
+                                adminLL.setVisibility( View.VISIBLE );
+                            }
 
-        if(DBquaries.admins_list.contains( FirebaseAuth.getInstance().getCurrentUser().getUid() )){
-            adminLL.setVisibility( View.VISIBLE );
-            confirmedOrders.setOnClickListener( new View.OnClickListener( ) {
-                @Override
-                public void onClick(View view) {
-                    Intent intent=new Intent( Products.this,AdminConfirmedOrders.class );
-                    intent.putExtra( "store_id",id );
-                    startActivity( intent );
-                }
-            } );
-            pendingOrders.setOnClickListener( new View.OnClickListener( ) {
-                @Override
-                public void onClick(View view) {
-                    Intent intent=new Intent( Products.this,AdminPendingOrders.class );
-                    intent.putExtra( "store_id",id );
-                    startActivity( intent );
-                }
-            } );
-
-            addProduct.setOnClickListener( new View.OnClickListener( ) {
-                @Override
-                public void onClick(View view) {
-                    Intent intent=new Intent( Products.this,AddProduct.class );
-                    intent.putExtra( "store_id",id );
-                    startActivity( intent );
-                }
-            } );
+                        }
+                    }
+                } );
 
 
-        }else {
-            adminLL.setVisibility( View.GONE );
-        }
+        confirmedOrders.setOnClickListener( new View.OnClickListener( ) {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent( Products.this,AdminConfirmedOrders.class );
+                intent.putExtra( "store_id",id );
+                startActivity( intent );
+            }
+        } );
+        pendingOrders.setOnClickListener( new View.OnClickListener( ) {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent( Products.this,AdminPendingOrders.class );
+                intent.putExtra( "store_id",id );
+                startActivity( intent );
+            }
+        } );
+
+        addProduct.setOnClickListener( new View.OnClickListener( ) {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent( Products.this,AddProduct.class );
+                intent.putExtra( "store_id",id );
+                startActivity( intent );
+            }
+        } );
+
+
+
 
 
 

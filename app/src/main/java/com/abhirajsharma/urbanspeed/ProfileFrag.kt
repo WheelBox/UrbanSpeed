@@ -55,7 +55,9 @@ class ProfileFrag : Fragment() {
         }
 
         view.myAccountCartLL.setOnClickListener {
-            DBquaries.setAdminDATA(context)
+            val intent = Intent(activity, MyCart::class.java)
+//
+            startActivity(intent)
         }
 
         view.myAccountChangeAddressLayout.setOnClickListener {

@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.abhirajsharma.urbanspeed.adapter.AdminOrderAdaptrer;
 import com.abhirajsharma.urbanspeed.model.AdminOrderModel;
@@ -63,6 +64,9 @@ public class AdminPendingOrders extends AppCompatActivity {
 
                 if(task.isSuccessful()){
                     long list_size=(long)task.getResult().get( "list_size" );
+                    if(list_size==0){
+                        Toast.makeText( AdminPendingOrders.this, "No Orders Yet !", Toast.LENGTH_SHORT ).show( );
+                    }
                     for(long x=0;x<list_size;x++){
 
                         String order_id=task.getResult().get( "order_id_"+x ).toString();
@@ -71,9 +75,9 @@ public class AdminPendingOrders extends AppCompatActivity {
                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                 if(task.isSuccessful()){
 
+
                                     boolean is_paid=(boolean) task.getResult().get( "is_paid" );
                                     if(!is_paid){
-
                                         adminOrderModelList.add( new AdminOrderModel( task.getResult().get( "id" ).toString(),
                                                 task.getResult().get( "time" ).toString(),
                                                 task.getResult().get( "otp" ).toString(),
@@ -99,11 +103,7 @@ public class AdminPendingOrders extends AppCompatActivity {
 
 
                     }
-
-
-
                 }
-
             }
         } );
 

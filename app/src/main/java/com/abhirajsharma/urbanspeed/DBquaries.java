@@ -42,6 +42,7 @@ public class DBquaries {
     public static int TOTAL_SAVE = 0;
     public static int DELIVERY_CHARGES = 20;
     public static boolean IS_ADMIN = false;
+    public static boolean IS_USER = false;
     public static int MIN_ORDER_AMOUNT = 0;
     public final static double AVERAGE_RADIUS_OF_EARTH_KM = 6371;
     /////nearbyStores
@@ -367,16 +368,13 @@ public class DBquaries {
                                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                                 if (task.isSuccessful()) {
 
-
                                                     shopModelList.add(new ShopModel(task.getResult().get("image").toString(),
                                                             task.getResult().get("name").toString(),
                                                             task.getResult().get("category").toString(),
                                                             String.valueOf(distance),
-                                                            task.getResult().get("rating").toString(),
-                                                            task.getResult().get("offer").toString(),
+                                                            "2.8",
+                                                            "20 % off on all products",
                                                             task.getResult().getId()
-
-
                                                     ));
 
                                                 }
@@ -469,7 +467,6 @@ public class DBquaries {
 
 
     }
-
     ///addAdminData
     public static void setAdminDATA(Context context) {
 
@@ -484,14 +481,23 @@ public class DBquaries {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-
-                            chechUSERS();
                             Intent intent = new Intent(context, storeDetails.class);
                             intent.putExtra("store_id", store_id);
                             context.startActivity(intent);
                         }
                     }
                 });
+
+
+    }
+
+
+
+
+    ////Identifying_User
+
+
+    public static  void checkUser(){
 
 
     }
@@ -505,9 +511,11 @@ public class DBquaries {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
                         users_list.add(documentSnapshot.getId());
+                        if(documentSnapshot.getId().equals(  FirebaseAuth.getInstance().getCurrentUser().getUid())){
+                            IS_USER=true;
+                            IS_ADMIN=false;
+                        }
                     }
-
-
                 }
             }
         });
@@ -517,10 +525,11 @@ public class DBquaries {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
                         admins_list.add(documentSnapshot.getId());
-                    }
-
-
-                }
+                        if(documentSnapshot.getId().equals(  FirebaseAuth.getInstance().getCurrentUser().getUid())){
+                            IS_USER=false;
+                            IS_ADMIN=true;
+                        }
+                    } }
             }
         });
 

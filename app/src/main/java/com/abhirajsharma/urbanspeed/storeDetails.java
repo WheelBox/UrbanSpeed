@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -23,6 +24,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
@@ -68,6 +70,7 @@ public class storeDetails extends AppCompatActivity {
     private DatabaseReference mDetabaseRef;
     private String store_id;
     private ImageView store_image;
+    private Dialog loadingDialog;
 
     FusedLocationProviderClient fusedLocationProviderClient;
 
@@ -88,6 +91,10 @@ public class storeDetails extends AppCompatActivity {
         store_image = findViewById( R.id.store_image );
         mStorageRef = FirebaseStorage.getInstance( ).getReference( "STORES" );
         mDetabaseRef = FirebaseDatabase.getInstance( ).getReference( "uploads" );
+        loadingDialog= new Dialog( storeDetails.this );
+        loadingDialog.setContentView( R.layout.loading_progress_dialouge );
+        loadingDialog.setCancelable( false );
+        loadingDialog.getWindow().setLayout( ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT );
 
 
         store_id = getIntent( ).getStringExtra( "store_id" );
@@ -104,8 +111,8 @@ public class storeDetails extends AppCompatActivity {
         next.setOnClickListener( new View.OnClickListener( ) {
             @Override
             public void onClick(View view) {
+                loadingDialog.show();
                 if (!(name.getText( ).toString( ).isEmpty( ) || description.getText( ).toString( ).isEmpty( ) || delivery_charges.getText( ).toString( ).isEmpty( ) || address.getText( ).toString( ).isEmpty( ))) {
-
                     Map<String, Object> adminData = new HashMap<>( );
                     adminData.put( "name", name.getText( ).toString( ) );
                     adminData.put( "category", description.getText( ).toString( ) );
@@ -119,14 +126,28 @@ public class storeDetails extends AppCompatActivity {
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful( )) {
 
-                                Intent intent=new Intent( storeDetails.this,Products.class );
-                                intent.putExtra( "store_id" ,store_id );
-                                startActivity( intent );
+                                Map<String, Object> Data = new HashMap<>( );
+                                adminData.put( "list_size", 0 );
+
+                                FirebaseFirestore.getInstance( ).collection( "STORES" ).document( store_id ).collection( "ORDERS" ).document( "order_list" )
+                                        .set( Data ).addOnCompleteListener( new OnCompleteListener<Void>( ) {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()){
+                                            loadingDialog.dismiss();
+                                            Intent intent=new Intent( storeDetails.this,Products.class );
+                                            intent.putExtra( "store_id" ,store_id );
+                                            startActivity( intent );
+                                        }
+                                    }
+                                } ) ;
+
 
                             }
                         }
                     } );
                 } else {
+                    loadingDialog.dismiss();
                     Toast.makeText( storeDetails.this, "Fill all the details", Toast.LENGTH_SHORT ).show( );
                 }
             }
