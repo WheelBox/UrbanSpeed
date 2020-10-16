@@ -22,6 +22,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.abhirajsharma.urbanspeed.R;
+import com.abhirajsharma.urbanspeed.SearchedProduct;
+import com.abhirajsharma.urbanspeed.SearchedStore;
 import com.abhirajsharma.urbanspeed.ShopActivity;
 import com.abhirajsharma.urbanspeed.model.HomeCategoryModels;
 import com.abhirajsharma.urbanspeed.model.HomeModel;
@@ -39,9 +41,9 @@ public class HomeAdapter extends RecyclerView.Adapter {
 
     private List<HomeModel> homeModelList;
 
+
     public HomeAdapter(List<HomeModel> homeModelList) {
         this.homeModelList = homeModelList;
-
     }
 
     @Override
@@ -333,26 +335,12 @@ public class HomeAdapter extends RecyclerView.Adapter {
 
 
         private void setGridAdapter(String titile, List<dealsofthedayModel> dealsofthedayModelList, final ArrayList<String> Ids, String background_color) {
-            if (dealsofthedayModelList.size() > 4) {
-                gridViewAll.setVisibility(View.VISIBLE);
-            } else {
-                gridViewAll.setVisibility(View.GONE);
-            }
 
+            gridViewAll.setVisibility(View.GONE);
             grid_CL.getBackground().setColorFilter(Color.parseColor(background_color), PorterDuff.Mode.SRC_ATOP);
             gridtitle.setText(titile);
             gridView.setAdapter(new trendingAdapter(dealsofthedayModelList));
 
-            gridViewAll.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                  /*  Intent intent=new Intent( itemView.getContext(), Product.class );
-                    intent.putExtra( "ids",  Ids );
-                    intent.putExtra( "from_grocery_category",2 );
-                    itemView.getContext().startActivity( intent );*/
-
-                }
-            });
         }
     }
 
@@ -424,53 +412,46 @@ public class HomeAdapter extends RecyclerView.Adapter {
             image1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(itemView.getContext(), ShopActivity.class);
-                    itemView.getContext().startActivity(intent);
-                 /*   Intent intent=new Intent( itemView.getContext(), SearchedProduct.class );
+
+                   Intent intent=new Intent( itemView.getContext(), SearchedStore.class );
                     intent.putExtra( "tag_string",t1 );
-                    itemView.getContext().startActivity( intent );*/
+                    itemView.getContext().startActivity( intent );
                 }
             });
             image2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(itemView.getContext(), ShopActivity.class);
-                    itemView.getContext().startActivity(intent);
-                   /* Intent intent=new Intent( itemView.getContext(), SearchedProduct.class );
+
+                    Intent intent=new Intent( itemView.getContext(), SearchedStore.class );
                     intent.putExtra( "tag_string",t2 );
-                    itemView.getContext().startActivity( intent );*/
+                    itemView.getContext().startActivity( intent );
                 }
             });
             image3.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(itemView.getContext(), ShopActivity.class);
-                    itemView.getContext().startActivity(intent);
-                    /*Intent intent=new Intent( itemView.getContext(), SearchedProduct.class );
+
+                    Intent intent=new Intent( itemView.getContext(), SearchedStore.class );
                     intent.putExtra( "tag_string",t3 );
-                    itemView.getContext().startActivity( intent );*/
+                    itemView.getContext().startActivity( intent );
                 }
             });
             image4.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(itemView.getContext(), ShopActivity.class);
-                    itemView.getContext().startActivity(intent);
-                  /*  Intent intent=new Intent( itemView.getContext(), SearchedProduct.class );
+
+                    Intent intent=new Intent( itemView.getContext(), SearchedStore.class );
                     intent.putExtra( "tag_string",t4 );
-                    itemView.getContext().startActivity( intent );*/
+                    itemView.getContext().startActivity( intent );
                 }
             });
 
             exploreLL.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(itemView.getContext(), ShopActivity.class);
-                    itemView.getContext().startActivity(intent);
-
-                  /*  Intent intent=new Intent( itemView.getContext(), SearchedProduct.class );
+                    Intent intent=new Intent( itemView.getContext(), SearchedStore.class );
                     intent.putExtra( "tag_string",t1+" "+t2+" "+t3+" "+t4 );
-                    itemView.getContext().startActivity( intent );*/
+                    itemView.getContext().startActivity( intent );
                 }
             });
         }
@@ -484,7 +465,6 @@ public class HomeAdapter extends RecyclerView.Adapter {
 
         }
         private void setRecyclerView (List<ShopModel> shopModelList){
-
             ShopAdapter shopAdapter = new ShopAdapter(shopModelList);
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(itemView.getContext());
             linearLayoutManager.setOrientation(RecyclerView.VERTICAL);

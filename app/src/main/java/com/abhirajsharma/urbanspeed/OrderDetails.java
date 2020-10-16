@@ -5,6 +5,7 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -12,6 +13,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,13 +27,16 @@ import com.abhirajsharma.urbanspeed.model.MyOrderModel;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class OrderDetails extends AppCompatActivity {
 
@@ -138,6 +143,57 @@ public class OrderDetails extends AppCompatActivity {
         otherProduct_Recycler.setAdapter(myOrderGroceryAdapter);
         remove_txt.setVisibility( View.GONE );
 
+
+
+
+
+        FirebaseFirestore.getInstance().collection("ADMINS").document( FirebaseAuth.getInstance().getCurrentUser().getUid()).get().
+                addOnCompleteListener( new OnCompleteListener<DocumentSnapshot>( ) {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if(task.isSuccessful()){
+                            DocumentSnapshot documentSnapshot=task.getResult();
+                            if(documentSnapshot.exists()){
+                                updateEDT_LL.setVisibility( View.VISIBLE );
+                                updateEDT_button.setOnClickListener( new View.OnClickListener( ) {
+                                    @Override
+                                    public void onClick(View view) {
+                                        if(updateEDT_editText.getText().length()!=0){
+                                            final String time=updateEDT_editText.getText().toString();
+                                            Map<String,Object> EDT=new HashMap<>(  );
+                                            EDT.put( "delivery_time",time );
+
+
+                                            FirebaseFirestore.getInstance( ).collection( "ORDERS" ).document( order_id ).collection( "ORDER_LIST" ).document( product_id )
+                                                    .update( EDT ).addOnCompleteListener( new OnCompleteListener<Void>( ) {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if(task.isSuccessful()){
+                                                        product_delivery_stat.setText( "Estimate delivery time | " +time+ " Day/s" );
+                                                        Toast.makeText( OrderDetails.this, "EDT updated", Toast.LENGTH_SHORT ).show( );
+                                                    }
+
+                                                }
+                                            } );
+
+
+                                        }else {
+                                            Toast.makeText( OrderDetails.this, "enter text", Toast.LENGTH_SHORT ).show( );
+
+                                        }
+
+
+
+                                    }
+                                } );
+                            }
+
+                        }
+                    }
+                } );
+
+
+
         FirebaseFirestore.getInstance( ).collection( "ORDERS" ).document( order_id ).get().addOnCompleteListener( new OnCompleteListener<DocumentSnapshot>( ) {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -162,12 +218,17 @@ public class OrderDetails extends AppCompatActivity {
                                 if(documentSnapshot.get( "product_id" ).toString().equals( product_id )){
 
                                     no_countLayout.setVisibility( View.GONE );
+                                    product_quantity.setVisibility( View.VISIBLE );
                                     product_name.setText( documentSnapshot.get("name").toString() );
                                     product_description.setText( documentSnapshot.get("description").toString() );
                                     product_price.setText( "₹"+documentSnapshot.get("price").toString()+"/-" );
                                     shopDescription.setText(  documentSnapshot.get("store_description").toString() );
                                     shopName.setText(  documentSnapshot.get("store_name").toString() );
-                                    Glide.with( OrderDetails.this ).load(documentSnapshot.get("store_image").toString()).into( shopImage );
+                                    if (documentSnapshot.get("store_image").toString().isEmpty()){
+                                        shopImage.setImageResource( R.drawable.store_default );
+                                    }else {
+                                        Glide.with( OrderDetails.this ).load(documentSnapshot.get("store_image").toString()).into( shopImage );
+                                    }
                                     if(documentSnapshot.get("offer").toString().equals( "0" )){
                                         product_offer.setVisibility( View.GONE );
                                         product_cutPrice.setVisibility( View.GONE );
@@ -183,8 +244,8 @@ public class OrderDetails extends AppCompatActivity {
                                     name.setText( documentSnapshot.get("user_name").toString() );
                                     address_details.setText( documentSnapshot.get("user_address_details").toString() );
                                     type.setText( documentSnapshot.get("user_address_type").toString() );
-                                    //priceinCart.setText( String.valueOf(  Integer.parseInt( documentSnapshot.get("price").toString() )*Integer.parseInt( documentSnapshot.get("item_count").toString() )) );
-                                    // grandTotal.setText(   String.valueOf(  Integer.parseInt( documentSnapshot.get("price").toString() )*Integer.parseInt( documentSnapshot.get("item_count").toString() )));
+                                   // priceinCart.setText( String.valueOf(  Integer.parseInt( documentSnapshot.get("price").toString() )*Integer.parseInt( documentSnapshot.get("item_count").toString() )) );
+                                   //  grandTotal.setText(   String.valueOf(  Integer.parseInt( documentSnapshot.get("price").toString() )*Integer.parseInt( documentSnapshot.get("item_count").toString() )));
                                     paymentMode.setText( documentSnapshot.get("payment_mode").toString()  );
 
                                     if((boolean)documentSnapshot.get( "is_cancled" )){
@@ -251,6 +312,79 @@ public class OrderDetails extends AppCompatActivity {
                 } );
 
 
+        cancel_btn.setOnClickListener( new View.OnClickListener( ) {
+            @Override
+            public void onClick(View view) {
+
+                loadingDialog.show();
+                Map<String,Object> Update =new HashMap<>(  );
+                Update.put( "is_cancled" ,true );
+                FirebaseFirestore.getInstance( ).collection( "ORDERS" ).document( order_id ).collection( "ORDER_LIST" ).document( product_id )
+                        .update( Update ).addOnCompleteListener( new OnCompleteListener<Void>( ) {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+
+                            FirebaseFirestore.getInstance( ).collection( "ORDERS" ).document( order_id ).collection( "ORDER_LIST" ).document( product_id )
+                                    .get().addOnCompleteListener( new OnCompleteListener<DocumentSnapshot>( ) {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    if(task.isSuccessful()){
+                                        int price=Integer.parseInt(  task.getResult().get( "price" ).toString());
+                                        int count=Integer.parseInt(  task.getResult().get( "item_count" ).toString());
+
+                                        final int new_Total=Integer.parseInt( total )-price*count;
+
+                                        Map<String,Object> Update =new HashMap<>(  );
+                                        Update.put( "grand_total" ,String.valueOf( new_Total ) );
+                                        Update.put( "tax" ,String.valueOf( tax_price ) );
+
+                                        FirebaseFirestore.getInstance( ).collection( "ORDERS" ).document( order_id ).update( Update )
+                                                .addOnCompleteListener( new OnCompleteListener<Void>( ) {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                        if(task.isSuccessful()){
+                                                            loadingDialog.dismiss();
+                                                            deliveryStatus.setText( "Cancelled" );
+                                                            cancel_btn.setClickable( false );
+                                                            cancel_btn.setText( "Cancelled" );
+                                                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                                                cancel_btn.setBackgroundTintList( ColorStateList.valueOf( Color.parseColor( "#DF4444" ) ) );
+                                                            }
+                                                            Bill_LL.setVisibility( View.GONE );
+                                                        }
+                                                    }
+                                                } );
+                                    }
+                                }
+                            } );
+
+
+
+                        }
+                    }
+                } );
+            }
+        } );
 
     }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart( );
+        finish();
+        startActivity(getIntent());
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+
+    }
+
+
+
 }

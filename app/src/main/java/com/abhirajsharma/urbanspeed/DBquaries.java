@@ -40,7 +40,7 @@ public class DBquaries {
     private static LinearLayout search_ll;
     public static int PRICE_IN_CART_GROCERY = 0;
     public static int TOTAL_SAVE = 0;
-    public static int DELIVERY_CHARGES = 20;
+    public static int DELIVERY_CHARGES = 0;
     public static boolean IS_ADMIN = false;
     public static boolean IS_USER = false;
     public static int MIN_ORDER_AMOUNT = 0;
@@ -48,6 +48,7 @@ public class DBquaries {
     /////nearbyStores
     public static List<ShopModel> shopModelList = new ArrayList<>();
     public static List<String> nearbyShopIds = new ArrayList<>();
+    public static List<String> nearbyShopIdsDistance = new ArrayList<>();
     /////allproductTagForstore
     public static List<String> allTags = new ArrayList<>();
     ////Identifying_User
@@ -349,6 +350,7 @@ public class DBquaries {
     public static void setShop() {
         shopModelList.clear();
         nearbyShopIds.clear();
+        nearbyShopIdsDistance.clear();
         setallTags();
         FirebaseFirestore.getInstance().collection("USERS").document(FirebaseAuth.getInstance().getCurrentUser().getUid()).collection("MY_NEAR_STORES").orderBy("distance", Query.Direction.ASCENDING).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -361,7 +363,7 @@ public class DBquaries {
                                 String id = documentSnapshot.getId();
                                 nearbyShopIds.add(id);
                                 final long distance = (long) documentSnapshot.get("distance");
-
+                                nearbyShopIdsDistance.add( String.valueOf( distance ) );
                                 FirebaseFirestore.getInstance().collection("STORES").document(id).get()
                                         .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                             @Override
@@ -371,9 +373,9 @@ public class DBquaries {
                                                     shopModelList.add(new ShopModel(task.getResult().get("image").toString(),
                                                             task.getResult().get("name").toString(),
                                                             task.getResult().get("category").toString(),
-                                                            String.valueOf(distance),
+                                                            String.valueOf(distance)+ "km away from you",
                                                             "2.8",
-                                                            "20 % off on all products",
+                                                            task.getResult().get("offer").toString(),
                                                             task.getResult().getId()
                                                     ));
 
@@ -491,17 +493,7 @@ public class DBquaries {
 
     }
 
-
-
-
     ////Identifying_User
-
-
-    public static  void checkUser(){
-
-
-    }
-
     public static void chechUSERS() {
         users_list.clear();
         admins_list.clear();

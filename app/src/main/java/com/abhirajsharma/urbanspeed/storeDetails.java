@@ -5,8 +5,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -22,6 +24,7 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.provider.Settings;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +37,9 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -62,7 +68,7 @@ public class storeDetails extends AppCompatActivity {
     private Button next, addLocation;
     private String lat1 = "";
     private String lon1 = "";
-    private String imageUri="";
+    private String imageUri = "";
     private TextView addimage;
     private static final int PICK_IMAGE_REQUEST = 1;
     private Uri mImageUri;
@@ -71,6 +77,7 @@ public class storeDetails extends AppCompatActivity {
     private String store_id;
     private ImageView store_image;
     private Dialog loadingDialog;
+    private static final int REQUEST_CODE_LOCATION = 1;
 
     FusedLocationProviderClient fusedLocationProviderClient;
 
@@ -91,10 +98,10 @@ public class storeDetails extends AppCompatActivity {
         store_image = findViewById( R.id.store_image );
         mStorageRef = FirebaseStorage.getInstance( ).getReference( "STORES" );
         mDetabaseRef = FirebaseDatabase.getInstance( ).getReference( "uploads" );
-        loadingDialog= new Dialog( storeDetails.this );
+        loadingDialog = new Dialog( storeDetails.this );
         loadingDialog.setContentView( R.layout.loading_progress_dialouge );
         loadingDialog.setCancelable( false );
-        loadingDialog.getWindow().setLayout( ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT );
+        loadingDialog.getWindow( ).setLayout( ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT );
 
 
         store_id = getIntent( ).getStringExtra( "store_id" );
@@ -103,7 +110,20 @@ public class storeDetails extends AppCompatActivity {
         addLocation.setOnClickListener( new View.OnClickListener( ) {
             @Override
             public void onClick(View view) {
-                getLocation( );
+
+               LocationManager locationManager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
+                if (!locationManager.isProviderEnabled( LocationManager.GPS_PROVIDER )) {
+                    Toast.makeText( storeDetails.this, "Turn On your Location to proceed", Toast.LENGTH_SHORT ).show( );
+                    startActivity( new Intent( Settings.ACTION_LOCATION_SOURCE_SETTINGS ) );
+                } else {
+                    if (ContextCompat.checkSelfPermission(
+                            getApplicationContext( ), Manifest.permission.ACCESS_FINE_LOCATION
+                    ) != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions( storeDetails.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE_LOCATION );
+
+                    } else {
+                        getCURRENTlocation( );
+                    }                }
             }
         } );
 
@@ -111,7 +131,7 @@ public class storeDetails extends AppCompatActivity {
         next.setOnClickListener( new View.OnClickListener( ) {
             @Override
             public void onClick(View view) {
-                loadingDialog.show();
+                loadingDialog.show( );
                 if (!(name.getText( ).toString( ).isEmpty( ) || description.getText( ).toString( ).isEmpty( ) || delivery_charges.getText( ).toString( ).isEmpty( ) || address.getText( ).toString( ).isEmpty( ))) {
                     Map<String, Object> adminData = new HashMap<>( );
                     adminData.put( "name", name.getText( ).toString( ) );
@@ -133,21 +153,21 @@ public class storeDetails extends AppCompatActivity {
                                         .set( Data ).addOnCompleteListener( new OnCompleteListener<Void>( ) {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()){
-                                            loadingDialog.dismiss();
-                                            Intent intent=new Intent( storeDetails.this,Products.class );
-                                            intent.putExtra( "store_id" ,store_id );
+                                        if (task.isSuccessful( )) {
+                                            loadingDialog.dismiss( );
+                                            Intent intent = new Intent( storeDetails.this, Products.class );
+                                            intent.putExtra( "store_id", store_id );
                                             startActivity( intent );
                                         }
                                     }
-                                } ) ;
+                                } );
 
 
                             }
                         }
                     } );
                 } else {
-                    loadingDialog.dismiss();
+                    loadingDialog.dismiss( );
                     Toast.makeText( storeDetails.this, "Fill all the details", Toast.LENGTH_SHORT ).show( );
                 }
             }
@@ -157,7 +177,7 @@ public class storeDetails extends AppCompatActivity {
         addimage.setOnClickListener( new View.OnClickListener( ) {
             @Override
             public void onClick(View view) {
-                openFileChooser();
+                openFileChooser( );
             }
         } );
 
@@ -165,47 +185,71 @@ public class storeDetails extends AppCompatActivity {
     }
 
 
-    private void getLocation() {
-        if (ActivityCompat.checkSelfPermission( storeDetails.this,
-                Manifest.permission.ACCESS_FINE_LOCATION ) == PackageManager.PERMISSION_GRANTED) {
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult( requestCode, permissions, grantResults );
 
-            fusedLocationProviderClient.getLastLocation( ).addOnCompleteListener( new OnCompleteListener<Location>( ) {
-                @Override
-                public void onComplete(@NonNull Task<Location> task) {
-
-                    Location location = task.getResult( );
-                    if (location != null) {
-
-
-                        try {
-
-                            double lat = location.getLatitude( );
-                            double lon = location.getLongitude( );
-
-                            lat1 = String.valueOf( lat );
-                            lon1 = String.valueOf( lon );
-                            List<Address> addresses;
-                            Geocoder geocoder = new Geocoder( storeDetails.this, Locale.getDefault( ) );
-                            addresses = geocoder.getFromLocation( lat, lon, 1 ); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
-                            String Address = addresses.get( 0 ).getAddressLine( 0 );
-
-                            address.setText( Address );
-                        } catch (NullPointerException | IOException e) {
-                            e.printStackTrace( );
-                        }
-                    } else {
-                        Toast.makeText( storeDetails.this, "location is null", Toast.LENGTH_SHORT ).show( );
-                    }
-
-                }
-            } );
-
-        } else {
-            ActivityCompat.requestPermissions( storeDetails.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44 );
-
+        if (requestCode == REQUEST_CODE_LOCATION && grantResults.length > 0) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                getCURRENTlocation( );
+            } else {
+                Toast.makeText( this, "Permission Denied", Toast.LENGTH_SHORT ).show( );
+            }
         }
+    }
+
+    @SuppressLint("MissingPermission")
+    private void getCURRENTlocation() {
+
+        LocationRequest locationRequest = new LocationRequest( );
+        locationRequest.setInterval( 10000 );
+        locationRequest.setFastestInterval( 3000 );
+        locationRequest.setPriority( LocationRequest.PRIORITY_HIGH_ACCURACY );
+
+
+        LocationServices.getFusedLocationProviderClient( getApplicationContext( ) ).
+                requestLocationUpdates( locationRequest, new LocationCallback( ) {
+
+                    @Override
+                    public void onLocationResult(LocationResult locationResult) {
+                        super.onLocationResult( locationResult );
+
+                        LocationServices.getFusedLocationProviderClient( storeDetails.this )
+                                .removeLocationUpdates( this );
+                        if(locationResult!=null && locationResult.getLocations().size()>0){
+                            int LatestLocationIndex=locationResult.getLocations().size()-1;
+                            double lat=locationResult.getLocations().get( LatestLocationIndex ).getLatitude();
+                            double lon=locationResult.getLocations().get( LatestLocationIndex ).getLongitude();
+                            lat1=String.valueOf(lat  );
+                            lon1=String.valueOf(lon  );
+
+
+
+                            Geocoder geocoder;
+                            List<Address> addresses;
+                            geocoder = new Geocoder( getApplicationContext(), Locale.getDefault( ) );
+
+                            try {
+                                addresses = geocoder.getFromLocation( lat, lon, 1 ); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+                                String Address = addresses.get( 0 ).getAddressLine( 0 );
+                                address.setText( Address );
+
+
+                            } catch (IOException e) {
+                                e.printStackTrace( );
+                            }
+
+
+                        }else {
+                            Toast.makeText( storeDetails.this, "null", Toast.LENGTH_SHORT ).show( );
+
+                        }
+                    }
+                }, Looper.getMainLooper( ) );
 
     }
+
+
 
     private void openFileChooser() {
 

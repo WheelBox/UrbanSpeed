@@ -13,8 +13,6 @@
         android:id="@+id/toolbar_searched_product"
         android:background="@color/colorPrimaryDark"
         android:minHeight="?attr/actionBarSize"
-
-
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">

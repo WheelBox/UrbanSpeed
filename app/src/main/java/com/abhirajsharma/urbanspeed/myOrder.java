@@ -130,6 +130,15 @@ public class myOrder extends AppCompatActivity {
 
 
     }
+    @Override
+    protected void onRestart() {
+        super.onRestart( );
+        finish();
+        startActivity(getIntent());
+    }
+
+
+
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {

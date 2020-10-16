@@ -78,7 +78,11 @@ public class BuyNow extends AppCompatActivity {
 
 
     private static String mName = "", mPrice = "", mcutPrice = "", mdescription = "", moffer = "", mimage = "";
-
+    private ImageView shopImage;
+    private TextView shopName,shopDescription;
+    private String ShopDESCRIPTION="";
+    private String ShopNMAE="";
+    private String ShopIMAGE="";
 
     ///address
 
@@ -104,6 +108,10 @@ public class BuyNow extends AppCompatActivity {
         address_layout = findViewById( R.id.address_layout );
         remove_txt=findViewById( R.id.grocery_cart_remove_product );
 
+
+        shopImage=findViewById( R.id.cart_shop_image );
+        shopName=findViewById( R.id.cart_shop_name);
+        shopDescription=findViewById( R.id.cart_shop_description );
 
         priceIncart = findViewById( R.id.itemTotalPrice );
         tax = findViewById( R.id.taxChargesPrice );
@@ -235,6 +243,34 @@ public class BuyNow extends AppCompatActivity {
             }
         } );
 
+        FirebaseFirestore.getInstance( ).collection( "STORES" ).document( DBquaries.store_id ).get( ).addOnCompleteListener( new OnCompleteListener<DocumentSnapshot>( ) {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful( )) {
+
+                    String name = task.getResult( ).get( "name" ).toString( );
+                    ShopNMAE = name;
+                    String imaeg = task.getResult( ).get( "image" ).toString( );
+                    DBquaries.DELIVERY_CHARGES=Integer.parseInt( task.getResult( ).get( "delivery_charges" ).toString( ) );
+                    ShopIMAGE = imaeg;
+                    if (imaeg.isEmpty()){
+                        shopImage.setImageResource( R.drawable.store_default );
+                    }else {
+                        Glide.with( getApplicationContext() ).load( imaeg ).into( shopImage );
+                    }
+                    String description = task.getResult( ).get( "category" ).toString( );
+                    ShopDESCRIPTION = description;
+
+                    shopName.setText( name );
+                    shopDescription.setText( description );
+
+
+                }
+
+
+            }
+        } );
+
         product_count.setText( String.valueOf( count[0] ) );
         pickUpCheck.setOnCheckedChangeListener( new CompoundButton.OnCheckedChangeListener( ) {
             @Override
@@ -356,6 +392,10 @@ public class BuyNow extends AppCompatActivity {
         OrderDetails.put( "review", "" );
         OrderDetails.put( "rating", "0" );
         OrderDetails.put( "otp", otp );
+        OrderDetails.put( "store_id",DBquaries.store_id);
+        OrderDetails.put( "store_name",ShopNMAE);
+        OrderDetails.put( "store_image",ShopIMAGE);
+        OrderDetails.put( "store_description",ShopDESCRIPTION);
         OrderDetails.put( "is_pickUp", pickUpCheck.isChecked( ) );
 
 

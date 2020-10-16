@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.abhirajsharma.urbanspeed.R;
+import com.abhirajsharma.urbanspeed.SearchedStore;
 import com.abhirajsharma.urbanspeed.ShopActivity;
 import com.abhirajsharma.urbanspeed.model.dealsofthedayModel;
 import com.bumptech.glide.Glide;
@@ -49,11 +50,8 @@ public class dealsofthedayAdapter extends RecyclerView.Adapter<dealsofthedayAdap
     @Override
     public int getItemCount() {
 
-        if (dealsofthedayModelList.size( ) >= 8) {
-            return 8;
-        } else {
-            return dealsofthedayModelList.size( );
-        }
+        return dealsofthedayModelList.size( );
+
     }
 
 
@@ -81,13 +79,9 @@ public class dealsofthedayAdapter extends RecyclerView.Adapter<dealsofthedayAdap
                 @Override
                 public void onClick(View view) {
 
-                    Intent intent = new Intent(view.getContext(), ShopActivity.class);
-                    view.getContext().startActivity(intent);
-                 /*   Intent intent=new Intent( view.getContext(), GroceryProductDetails.class );
-                    intent.putExtra("product_id", id );
+                    Intent intent=new Intent( view.getContext(), SearchedStore.class );
                     intent.putExtra("tag_string", tag );
-
-                    view.getContext().startActivity( intent );*/
+                    view.getContext().startActivity( intent );
                 }
             } );
         }

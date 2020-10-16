@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,6 +26,7 @@ import android.widget.Toast;
 
 import com.abhirajsharma.urbanspeed.adapter.GroceryProductAdapter;
 import com.abhirajsharma.urbanspeed.model.GroceryProductModel;
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -48,8 +50,7 @@ public class Products extends AppCompatActivity {
     private Dialog loadingDialog;
     private LinearLayout search_LL;
     private TextView name,address,description;
-    int count=1;
-
+    private ImageView storeImage;
     ////admin
     private LinearLayout adminLL;
     private Button pendingOrders,confirmedOrders,addProduct;
@@ -68,6 +69,7 @@ public class Products extends AppCompatActivity {
         name=findViewById( R.id.shop_name );
         address=findViewById( R.id.shop_address );
         description=findViewById( R.id.shop_description );
+        storeImage=findViewById( R.id.store_image);
 
         ////admin
         adminLL=findViewById( R.id.admin_ll );
@@ -96,6 +98,12 @@ public class Products extends AppCompatActivity {
                     name.setText( task.getResult().get( "name" ).toString() );
                     address.setText( task.getResult().get( "address" ).toString() );
                     description.setText( task.getResult().get( "category" ).toString() );
+                    String image=task.getResult().get( "category" ).toString();
+                    if (image.isEmpty()){
+                        storeImage.setImageResource( R.drawable.store_default );
+                    }else {
+                        Glide.with( getApplicationContext() ).load( image ).into( storeImage );
+                    }
 
                 }
             }

@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -15,8 +16,10 @@ import com.abhirajsharma.urbanspeed.adapter.ShopAdapter;
 import com.abhirajsharma.urbanspeed.model.ShopModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -55,46 +58,60 @@ public class ShopActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
+        FirebaseFirestore.getInstance().collection("USERS").document( FirebaseAuth.getInstance().getCurrentUser().getUid()).collection("MY_NEAR_STORES").orderBy("distance", Query.Direction.ASCENDING).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+
+                            for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+
+                                String id = documentSnapshot.getId();
+
+                                final long distance = (long) documentSnapshot.get("distance");
+                                FirebaseFirestore.getInstance().collection("STORES").document(id).get()
+                                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                if (task.isSuccessful()) {
+
+                                                    shopModelList.add(new ShopModel(task.getResult().get("image").toString(),
+                                                            task.getResult().get("name").toString(),
+                                                            task.getResult().get("category").toString(),
+                                                            String.valueOf(distance)+ "km away from you",
+                                                            "2.8",
+                                                            task.getResult().get("offer").toString(),
+                                                            task.getResult().getId()
+                                                    ));
+
+                                                }
+                                                shopAdapter.notifyDataSetChanged();
+                                            }
+                                        });
+
+
+                            }
+                            shopAdapter.notifyDataSetChanged();
 
 
 
-
-        FirebaseFirestore.getInstance().collection( "STORES" ).orderBy( "name" ).get().addOnCompleteListener( new OnCompleteListener<QuerySnapshot>( ) {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful()){
-                    for(QueryDocumentSnapshot documentSnapshot :task.getResult()){
-
-
-                        shopModelList.add( new ShopModel(documentSnapshot.get( "image" ).toString(),
-                                documentSnapshot.get( "name" ).toString(),
-                                documentSnapshot.get( "category" ).toString(),
-                                "2 km away from you !",
-                                documentSnapshot.get( "rating" ).toString(),
-                                documentSnapshot.get( "offer" ).toString(),
-                                documentSnapshot.getId()
-
-                        ) );
-                        shopAdapter.notifyDataSetChanged();
-
-
-
+                        }
                     }
-                    shopAdapter.notifyDataSetChanged();
-
-
-
-                }
-            }
-        } );
-
-
-
-
-
+                });
 
 
 
 
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+
+    }
+
 }

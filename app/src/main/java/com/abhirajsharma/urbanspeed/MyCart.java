@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -172,13 +173,16 @@ public class MyCart extends AppCompatActivity {
                         String name = task.getResult( ).get( "name" ).toString( );
                         ShopNMAE = name;
                         String imaeg = task.getResult( ).get( "image" ).toString( );
+                        DBquaries.DELIVERY_CHARGES=Integer.parseInt( task.getResult( ).get( "delivery_charges" ).toString( ) );
                         ShopIMAGE = imaeg;
-
+                        if (imaeg.isEmpty()){
+                            shopImage.setImageResource( R.drawable.store_default );
+                        }else {
+                            Glide.with( getApplicationContext() ).load( imaeg ).into( shopImage );
+                        }
                         String description = task.getResult( ).get( "category" ).toString( );
                         ShopDESCRIPTION = description;
 
-
-                        Glide.with( MyCart.this ).load( imaeg ).into( shopImage );
                         shopName.setText( name );
                         shopDescription.setText( description );
 
@@ -273,9 +277,6 @@ public class MyCart extends AppCompatActivity {
                     isPickUp = pickUpCheck.isChecked();
                 }
             } );
-
-
-
 
             payInCash.setOnClickListener( new View.OnClickListener( ) {
                 @Override
@@ -398,9 +399,6 @@ public class MyCart extends AppCompatActivity {
                             }
                         } );
 
-
-
-
                         NotificationCompat.Builder builder =
                                 new NotificationCompat.Builder( MyCart.this, CHANNEL_ID )
                                         .setSmallIcon( R.mipmap.ic_launcher )
@@ -480,7 +478,6 @@ public class MyCart extends AppCompatActivity {
 
     }
 
-
     private long[] getListsize(){
         final long[] size = {0};
         FirebaseFirestore.getInstance().collection( "STORES" ).document( DBquaries.store_id ).collection( "ORDERS" ).document( "order_list" )
@@ -498,12 +495,20 @@ public class MyCart extends AppCompatActivity {
 
     }
 
-
-
     @Override
     protected void onRestart() {
         super.onRestart( );
         finish();
         startActivity(getIntent());
     }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+
+    }
+
 }

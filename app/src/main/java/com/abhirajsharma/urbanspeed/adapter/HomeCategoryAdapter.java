@@ -1,5 +1,6 @@
 package com.abhirajsharma.urbanspeed.adapter;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.abhirajsharma.urbanspeed.R;
+import com.abhirajsharma.urbanspeed.SearchedProduct;
+import com.abhirajsharma.urbanspeed.SearchedStore;
 import com.abhirajsharma.urbanspeed.model.HomeCategoryModels;
 import com.bumptech.glide.Glide;
 
@@ -75,11 +78,11 @@ public class HomeCategoryAdapter extends RecyclerView.Adapter<HomeCategoryAdapte
             image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                  /*  if(!TagList.isEmpty()) {
-                        Intent intent = new Intent( itemView.getContext( ), SearchedProduct.class );
+                    if(!TagList.isEmpty()) {
+                        Intent intent = new Intent( itemView.getContext( ), SearchedStore.class );
                         intent.putExtra( "tag_string", TagList );
                         itemView.getContext( ).startActivity( intent );
-                    }*/
+                    }
                 }
             });
 

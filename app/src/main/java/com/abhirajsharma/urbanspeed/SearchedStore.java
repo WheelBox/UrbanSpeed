@@ -7,9 +7,11 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Filter;
 import android.widget.Filterable;
@@ -69,13 +71,10 @@ public class SearchedStore extends AppCompatActivity {
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         seachedProductRecycler.setLayoutManager(linearLayoutManager);
 
-        if(from_product_list==1){
-            name = getIntent( ).getStringExtra( "tag_string" );
-            tags [0]= name;
-        }else {
-            name = getIntent( ).getStringExtra( "tag_string" ).toLowerCase();
-            tags = name.split( " " );
-        }
+
+        name = getIntent( ).getStringExtra( "tag_string" ).toLowerCase();
+        tags = name.split( " " );
+
 
         for (final String tag : tags) {
 
@@ -91,11 +90,11 @@ public class SearchedStore extends AppCompatActivity {
                         for (DocumentSnapshot documentSnapshot : Objects.requireNonNull( task.getResult( ) )) {
 
                             if(DBquaries.nearbyShopIds.contains( documentSnapshot.getId() )){
-
-                                 model = new ShopModel( documentSnapshot.get( "image" ).toString(),
+                                int index=DBquaries.nearbyShopIds.indexOf(  documentSnapshot.getId());
+                                model = new ShopModel( documentSnapshot.get( "image" ).toString(),
                                         documentSnapshot.get( "name" ).toString(),
                                         documentSnapshot.get( "category" ).toString(),
-                                        "2 km away from you !",
+                                        DBquaries.nearbyShopIdsDistance.get( index ),
                                         documentSnapshot.get( "rating" ).toString(),
                                         documentSnapshot.get( "offer" ).toString(),
                                         documentSnapshot.getId());
@@ -192,6 +191,15 @@ public class SearchedStore extends AppCompatActivity {
                 }
             };
         }
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+
     }
 
 }

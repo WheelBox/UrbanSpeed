@@ -14,6 +14,7 @@ import androidx.annotation.RequiresApi;
 
 import com.abhirajsharma.urbanspeed.Products;
 import com.abhirajsharma.urbanspeed.R;
+import com.abhirajsharma.urbanspeed.SearchedStore;
 import com.abhirajsharma.urbanspeed.ShopActivity;
 import com.abhirajsharma.urbanspeed.model.dealsofthedayModel;
 import com.bumptech.glide.Glide;
@@ -65,14 +66,10 @@ public class trendingAdapter extends BaseAdapter {
             imageView.setOnClickListener( new View.OnClickListener( ) {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(view.getContext(), ShopActivity.class);
+                    Intent intent = new Intent(view.getContext(), SearchedStore.class);
+                    intent.putExtra("tag_string", gridmodelList.get( i ).getTag( )  );
                     view.getContext().startActivity(intent);
 
-
-                   /* Intent intent=new Intent( view.getContext(), GroceryProductDetails.class );
-                    intent.putExtra("product_id", id );
-                    intent.putExtra("tag_string", gridmodelList.get( i ).getTag( )  );
-                    view.getContext().startActivity( intent );*/
                 }
             } );
             descriptonwe.setText( gridmodelList.get( i ).getDescription( ) );

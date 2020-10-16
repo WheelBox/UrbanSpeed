@@ -78,7 +78,7 @@
                     app:layout_constraintHorizontal_bias="0.026"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:src="@drawable/ic_account_circle_black_24dp"
+                    android:src="@drawable/store_default"
                     tools:ignore="VectorDrawableCompat" />
 
 
@@ -118,11 +118,14 @@
             <include layout="@layout/grocery_cart_product_item" />
 
             <Button
+
                 android:id="@+id/grocery_cancelProduct_btn"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="8dp"
-                android:background="@drawable/border_black_stroke"
+
+                android:layout_marginVertical="12dp"
+                android:backgroundTint="#DF4444"
+                android:layout_marginHorizontal="20dp"
                 android:text="Cancel Product" />
 
             <LinearLayout

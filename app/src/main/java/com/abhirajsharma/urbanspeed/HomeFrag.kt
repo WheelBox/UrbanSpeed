@@ -43,7 +43,11 @@ class HomeFrag : Fragment() {
             startActivity(intent)
         })
 
+        view.allstoresLL!!.setOnClickListener(View.OnClickListener {
 
+            val intent = Intent(activity, ShopActivity::class.java)
+            startActivity(intent)
+        })
 
 
         if (DBquaries.grocery_OrderList.size === 0) {
@@ -104,6 +108,7 @@ class HomeFrag : Fragment() {
                                 }
                                 homeModelList.add(HomeModel(1, sliderModelList))
                             }
+
                             if (documentSnapshot["view_type"] as Long == 2L) {
                                 val ids = java.util.ArrayList<String>()
                                 val dealsofthedayModelList: ArrayList<dealsofthedayModel> = ArrayList()
@@ -119,6 +124,7 @@ class HomeFrag : Fragment() {
                                 }
                                 homeModelList.add(HomeModel(2, title, dealsofthedayModelList, ids, background))
                             }
+
                             if (documentSnapshot["view_type"] as Long == 3L) {
                                 val ids = java.util.ArrayList<String>()
                                 var gridList: ArrayList<dealsofthedayModel> = ArrayList()
@@ -133,15 +139,18 @@ class HomeFrag : Fragment() {
                                 }
                                 homeModelList.add(HomeModel(3, grid_title, gridList, ids, background))
                             }
+
                             if (documentSnapshot["view_type"] as Long == 4L) {
                                 var circularHorizontallist: ArrayList<HomeCategoryModels> = ArrayList()
                                 val no_of_products = documentSnapshot["no_of_products"] as Long
+                                val title = documentSnapshot["title"].toString()
                                 for (x in 1 until no_of_products + 1) {
                                     circularHorizontallist.add(HomeCategoryModels(documentSnapshot["image_$x"].toString(), documentSnapshot["name_$x"].toString(), documentSnapshot["tag_$x"].toString()
                                     ))
                                 }
-                                homeModelList.add(HomeModel(4, 0, "Top Brands", circularHorizontallist))
+                                homeModelList.add(HomeModel(4, 0, title, circularHorizontallist))
                             }
+
                             if (documentSnapshot["view_type"] as Long == 5L) {
                                 homeModelList.add(HomeModel(5,
                                         documentSnapshot["name_1"].toString(),

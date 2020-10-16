@@ -1,6 +1,7 @@
 package com.abhirajsharma.urbanspeed;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -16,6 +17,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Looper;
 import android.provider.Settings;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,7 +34,12 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -54,8 +61,8 @@ public class NewAddress extends AppCompatActivity {
     private Toolbar toolbar;
     private LinearLayout useGpsLocation;
     LocationManager locationManager;
-    private static final int REQUEST_LOCATION = 1;
-    private static  boolean IS_FROM_GPS=false;
+    private static final int REQUEST_CODE_LOCATION = 1;
+    private static boolean IS_FROM_GPS = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +75,7 @@ public class NewAddress extends AppCompatActivity {
         pin = findViewById( R.id.add_address_pin_et );
         details = findViewById( R.id.add_address_details_et );
         city = findViewById( R.id.add_address_city_et );
-        useGpsLocation=findViewById( R.id.current_location_ll );
+        useGpsLocation = findViewById( R.id.current_location_ll );
 
 
         state = findViewById( R.id.add_address_state_et );
@@ -77,13 +84,13 @@ public class NewAddress extends AppCompatActivity {
         office = findViewById( R.id.address_type_office );
         saveAddress = findViewById( R.id.save_address_btn );
 
-        toolbar=findViewById( R.id.toolbar_editaddress );
+        toolbar = findViewById( R.id.toolbar_editaddress );
 
-        loadingDialog= new Dialog( NewAddress.this );
+        loadingDialog = new Dialog( NewAddress.this );
         loadingDialog.setContentView( R.layout.loading_progress_dialouge );
         loadingDialog.setCancelable( false );
-        loadingDialog.getWindow().setLayout( ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT );
-        loadingDialog.show();
+        loadingDialog.getWindow( ).setLayout( ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT );
+        loadingDialog.show( );
 
 
         toolbar.setTitle( "Edit Address" );
@@ -124,7 +131,7 @@ public class NewAddress extends AppCompatActivity {
                             office.setChecked( true );
                             type = "OFFICE";
                         }
-                        loadingDialog.dismiss();
+                        loadingDialog.dismiss( );
 
                     }
 
@@ -164,26 +171,33 @@ public class NewAddress extends AppCompatActivity {
         useGpsLocation.setOnClickListener( new View.OnClickListener( ) {
             @Override
             public void onClick(View view) {
-                locationManager = (LocationManager) getSystemService( Context.LOCATION_SERVICE);
-                if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                    OnGPS();
+                LocationManager locationManager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
+                if (!locationManager.isProviderEnabled( LocationManager.GPS_PROVIDER )) {
+                    Toast.makeText( NewAddress.this, "Turn On your Location to proceed", Toast.LENGTH_SHORT ).show( );
+                    startActivity( new Intent( Settings.ACTION_LOCATION_SOURCE_SETTINGS ) );
                 } else {
-                    getLocation();
-                }
+                    if (ContextCompat.checkSelfPermission(
+                            getApplicationContext( ), Manifest.permission.ACCESS_FINE_LOCATION
+                    ) != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions( NewAddress.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE_LOCATION );
 
-            }
+                    } else {
+                        getCURRENTlocation( );
+                    }
+
+                }}
         } );
 
         saveAddress.setOnClickListener( new View.OnClickListener( ) {
             @Override
             public void onClick(View view) {
-                UploadAddress( layout_code,name.getText( ).toString( ), phone.getText( ).toString( ), alternatePhone.getText( ).toString( ),
+                UploadAddress( layout_code, name.getText( ).toString( ), phone.getText( ).toString( ), alternatePhone.getText( ).toString( ),
                         pin.getText( ).toString( ), details.getText( ).toString( ), city.getText( ).toString( ), state.getText( ).toString( ),
                         landmark.getText( ).toString( ), type, position );
 
             }
         } );
-        loadingDialog.dismiss();
+        loadingDialog.dismiss( );
 
 
     }
@@ -194,7 +208,7 @@ public class NewAddress extends AppCompatActivity {
 
             Toast.makeText( NewAddress.this, "Enter all * details", Toast.LENGTH_SHORT ).show( );
         } else {
-            loadingDialog.show();
+            loadingDialog.show( );
 
 
             final Map<String, Object> Data = new HashMap<>( );
@@ -206,12 +220,12 @@ public class NewAddress extends AppCompatActivity {
             Data.put( "state", State );
             Data.put( "type", Type );
             Data.put( "index", Position );
-            if(IS_FROM_GPS){
+            if (IS_FROM_GPS) {
                 Data.put( "address_details", Details );
-            }else {
+            } else {
                 Data.put( "address_details", Details + ", " + Landmak + ", " + City + ", " + State + ", " + Pin );
             }
-            Data.put( "is_visible" ,true );
+            Data.put( "is_visible", true );
 
 
             if (Landmak.isEmpty( )) {
@@ -239,21 +253,19 @@ public class NewAddress extends AppCompatActivity {
                         if (Layout_code == 1) {
                             Intent intent = new Intent( NewAddress.this, MyAddress.class );
                             startActivity( intent );
-                            loadingDialog.dismiss();
+                            loadingDialog.dismiss( );
 
-                        }else {
+                        } else {
                             Map<String, Object> UserData = new HashMap<>( );
                             UserData.put( "fullname", Name );
                             UserData.put( "phone", Phone );
                             UserData.put( "address_type", Type );
                             UserData.put( "previous_position", 1 );
-                            if(IS_FROM_GPS){
+                            if (IS_FROM_GPS) {
                                 UserData.put( "address_details", Details );
-                            }else {
+                            } else {
                                 UserData.put( "address_details", Details + ", " + Landmak + ", " + City + ", " + State + ", " + Pin );
                             }
-
-
 
 
                             if (AltPhone.isEmpty( )) {
@@ -270,7 +282,7 @@ public class NewAddress extends AppCompatActivity {
                                             if (task.isSuccessful( )) {
                                                 Intent intent = new Intent( NewAddress.this, MyAddress.class );
                                                 startActivity( intent );
-                                                finish();
+                                                finish( );
 
                                                 Map<String, Object> UserData = new HashMap<>( );
                                                 UserData.put( "list_size", Position + 1 );
@@ -280,7 +292,7 @@ public class NewAddress extends AppCompatActivity {
                                                             @Override
                                                             public void onComplete(@NonNull Task<Void> task) {
                                                                 MyAddress.selectedAdd.setVisibility( View.VISIBLE );
-                                                                loadingDialog.dismiss();
+                                                                loadingDialog.dismiss( );
                                                             }
                                                         } );
 
@@ -308,7 +320,7 @@ public class NewAddress extends AppCompatActivity {
 
         if (item.getItemId( ) == android.R.id.home) {
 
-            finish();
+            finish( );
 
         }
 
@@ -317,79 +329,87 @@ public class NewAddress extends AppCompatActivity {
 
     }
 
-    private void OnGPS() {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Enable GPS").setCancelable(false).setPositiveButton("Yes", new  DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                startActivity(new Intent( Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-            }
-        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-        final AlertDialog alertDialog = builder.create();
-        alertDialog.show();
-    }
-    public void getLocation() {
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult( requestCode, permissions, grantResults );
 
-        if (ActivityCompat.checkSelfPermission(
-                NewAddress.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                NewAddress.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
-        } else {
-
-            // Get the location manager
-            LocationManager locationManager = (LocationManager)
-                    getSystemService(LOCATION_SERVICE);
-            Criteria criteria = new Criteria();
-            String bestProvider = locationManager.getBestProvider(criteria, true);
-            Location location = locationManager.getLastKnownLocation(bestProvider);
-            LocationListener loc_listener = new LocationListener() {
-
-                public void onLocationChanged(Location l) {}
-
-                public void onProviderEnabled(String p) {}
-
-                public void onProviderDisabled(String p) {}
-
-                public void onStatusChanged(String p, int status, Bundle extras) {}
-            };
-            locationManager
-                    .requestLocationUpdates(bestProvider, 0, 0, loc_listener);
-            location = locationManager.getLastKnownLocation(bestProvider);
-            try {
-                double lat = location.getLatitude();
-                double lon = location.getLongitude();
-                IS_FROM_GPS=true;
-                Geocoder geocoder;
-                List<Address> addresses;
-                geocoder = new Geocoder(this, Locale.getDefault());
-
-                addresses = geocoder.getFromLocation(lat, lon, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
-                String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
-                String City = addresses.get(0).getLocality();
-                String State = addresses.get(0).getAdminArea();
-                String country = addresses.get(0).getCountryName();
-                String postalCode = addresses.get(0).getPostalCode();
-                String knownName = addresses.get(0).getFeatureName();
-
-
-                pin.setText( postalCode );
-                city.setText( City );
-                state.setText( State );
-                details.setText( address );
-                landmark.setText( knownName );
-
-
-
-
-            } catch (NullPointerException | IOException e) {
-
+        if (requestCode == REQUEST_CODE_LOCATION && grantResults.length > 0) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                getCURRENTlocation( );
+            } else {
+                Toast.makeText( this, "Permission Denied", Toast.LENGTH_SHORT ).show( );
             }
         }
     }
+
+    @SuppressLint("MissingPermission")
+    private void getCURRENTlocation() {
+
+        LocationRequest locationRequest = new LocationRequest( );
+        locationRequest.setInterval( 10000 );
+        locationRequest.setFastestInterval( 3000 );
+        locationRequest.setPriority( LocationRequest.PRIORITY_HIGH_ACCURACY );
+
+
+        LocationServices.getFusedLocationProviderClient( getApplicationContext( ) ).
+                requestLocationUpdates( locationRequest, new LocationCallback( ) {
+
+                    @Override
+                    public void onLocationResult(LocationResult locationResult) {
+                        super.onLocationResult( locationResult );
+
+                        LocationServices.getFusedLocationProviderClient( NewAddress.this )
+                                .removeLocationUpdates( this );
+                        if(locationResult!=null && locationResult.getLocations().size()>0){
+                            int LatestLocationIndex=locationResult.getLocations().size()-1;
+                            double lat=locationResult.getLocations().get( LatestLocationIndex ).getLatitude();
+                            double lon=locationResult.getLocations().get( LatestLocationIndex ).getLongitude();
+
+
+
+                            Geocoder geocoder;
+                            List<Address> addresses;
+                            geocoder = new Geocoder( getApplicationContext(), Locale.getDefault( ) );
+
+                            try {
+                                addresses = geocoder.getFromLocation( lat, lon, 1 ); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+                                String Address = addresses.get( 0 ).getAddressLine( 0 );
+                                String City = addresses.get( 0 ).getLocality( );
+                                String State = addresses.get( 0 ).getAdminArea( );
+                                String country = addresses.get( 0 ).getCountryName( );
+                                String postalCode = addresses.get( 0 ).getPostalCode( );
+                                String knownName = addresses.get( 0 ).getFeatureName( );
+
+
+                                pin.setText( postalCode );
+                                city.setText( City );
+                                state.setText( State );
+                                details.setText( Address );
+                                landmark.setText( knownName );
+
+
+
+                            } catch (IOException e) {
+                                e.printStackTrace( );
+                            }
+
+
+                        }else {
+                            Toast.makeText( NewAddress.this, "null", Toast.LENGTH_SHORT ).show( );
+
+                        }
+                    }
+                }, Looper.getMainLooper( ) );
+
+    }
+
+
+    @Override
+    protected void onRestart() {
+        super.onRestart( );
+        finish( );
+        startActivity( getIntent( ) );
+    }
+
 
 }

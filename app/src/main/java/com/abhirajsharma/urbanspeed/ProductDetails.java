@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -47,14 +48,14 @@ import java.util.Map;
 
 public class ProductDetails extends AppCompatActivity {
 
-    private RecyclerView descriptionRecycler, reviewRecycler, relevant_recycler;
+    private RecyclerView descriptionRecycler, reviewRecycler;
     private List<grocery_product_details_descrioption_Model> grocery_product_details_descrioption_modelList = new ArrayList<>();
     private List<ReviewModel> reviewModelList;
     private ReviewAdapter reviewAdapter;
     private GroceryProductAdapter groceryProductAdapter;
     private List<GroceryProductModel> groceryProductModel;
     private TextView out_of_stockText;
-    public static LinearLayout addtoCart,gotoCart;
+    public static LinearLayout addtoCart,gotoCart,rating_ll;
     String in_stock="";
 
     private Dialog loadingDialog;
@@ -63,18 +64,14 @@ public class ProductDetails extends AppCompatActivity {
     private TabLayout viewPagerIndicator;
     private FloatingActionButton addtoWishlist,cartFAB;
     public static boolean ADDED_towishList = false;
-    private List<String> productImages;
+    private List<String> productImages=new ArrayList<>(  );
     String product_id="";
     String store_id="";
     String store_name="";
     private Button buy_now;
 
     /////productImage/nmae/price
-
     private TextView name, price, cutprice, offer, rating, reviewCount;
-
-
-
     /////productImage/nmae/price
 
 ///rating
@@ -106,15 +103,12 @@ public class ProductDetails extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_details);
 
-
-
         addtoWishlist = findViewById( R.id.addtoWishlist );
         imageViewPager = findViewById( R.id.grocery_product_image_VP );
         viewPagerIndicator = findViewById( R.id.grocery_product_image_VP_indicator );
 
         descriptionRecycler = findViewById(R.id.description_recycler);
         reviewRecycler = findViewById(R.id.review_recycler);
-        relevant_recycler = findViewById(R.id.relevant_product_recycler);
         buy_now=findViewById( R.id.buy_now_groceryBtn );
 
         /////productImage/nmae/price
@@ -158,7 +152,7 @@ public class ProductDetails extends AppCompatActivity {
         /////productRating
         addtoCart=findViewById( R.id.addtoGroceryCary );
         gotoCart=findViewById( R.id.gotoGroceryCary );
-
+        rating_ll=findViewById( R.id.linearLayout17 );
 
 
         loadingDialog= new Dialog( ProductDetails.this );
@@ -199,16 +193,8 @@ public class ProductDetails extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if(DBquaries.grocery_CartList_product_id.contains( product_id )){
-
-
-                }else {
-                    cartFAB.setSupportImageTintList( ColorStateList.valueOf( Color.parseColor( "#696969" ) ) );
                     Intent intent=new Intent( ProductDetails.this,MyCart.class );
                     startActivity( intent );
-                }
-
-
 
             }
         } );
@@ -326,7 +312,10 @@ public class ProductDetails extends AppCompatActivity {
 
 
                         if(total_rating_count[0]!=0) {
-                          //  review_layout.setVisibility( View.VISIBLE );
+                            product_details_rating_CL.setVisibility( View.VISIBLE );
+                            reviewRecycler.setVisibility( View.VISIBLE );
+                            reviewCount.setVisibility( View.VISIBLE );
+                            rating_ll.setVisibility( View.VISIBLE );
                             avg_star[0] = (5.0 * five_star_count[0] + 4.0 * four_star_count[0] + 3.0 * three_star_count[0] + 2.0 * two_star_count[0] + one_star_count[0]) / total_rating_count[0];
                             avg_rating.setText( String.format( "%.1f", avg_star[0] ) );
 
@@ -352,6 +341,8 @@ public class ProductDetails extends AppCompatActivity {
                         }else {
                             product_details_rating_CL.setVisibility( View.GONE );
                             reviewRecycler.setVisibility( View.GONE );
+                            reviewCount.setVisibility( View.GONE );
+                            rating_ll.setVisibility( View.GONE );
                         }
 
                         if(total_review_count[0]>1){
@@ -366,25 +357,6 @@ public class ProductDetails extends AppCompatActivity {
             }
         } );
 
-
-
-
-
-
-
-
-
-        groceryProductModel = new ArrayList<>();
-        groceryProductModel.add(new GroceryProductModel("jegf", "product", "%", "200", "3000", "4.1", "22", 22, "laiuihehdifiuh", "","this is deascription",store_id));
-        groceryProductModel.add(new GroceryProductModel("jegf", "product", "%", "200", "3000", "4.1", "22", 22, "laiuihehdifiuh", "","this is deascription",store_id));
-
-
-        productImages=new ArrayList<>(  );
-        groceryProductAdapter = new GroceryProductAdapter(groceryProductModel);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
-        linearLayoutManager.setOrientation( RecyclerView.VERTICAL );
-        relevant_recycler.setLayoutManager( linearLayoutManager );
-        relevant_recycler.setAdapter(groceryProductAdapter);
 
 
         FirebaseFirestore.getInstance().collection( "STORES" ).document( store_id ).collection( "PRODUCTS" ).document( product_id ).get( )
@@ -402,11 +374,12 @@ public class ProductDetails extends AppCompatActivity {
                                // viewAllDescription.setVisibility( View.GONE );
                             }
                             for (long x = 1; x < no_of_images + 1; x++) {
-
                                 productImages.add( task.getResult( ).get( "image_0" + x ).toString( ) );
                             }
                             productDetailsViewPagerAdapter productDetailsViewPagerAdapter = new productDetailsViewPagerAdapter( productImages );
                             imageViewPager.setAdapter( productDetailsViewPagerAdapter );
+
+
 
                             for (long x = 1; x < no_of_description + 1; x++) {
 
@@ -428,9 +401,8 @@ public class ProductDetails extends AppCompatActivity {
                                 offer.setVisibility( View.GONE );
                             }
                             if(task.getResult( ).get( "rating" ).toString( ) .length()==1){
-                               // rating_LL.setVisibility( View.GONE );
-                                //review_layout.setVisibility( View.GONE );
                                 reviewCount.setVisibility( View.GONE );
+                                rating_ll.setVisibility( View.GONE );
                             }
                             cutprice.setText( "₹" + task.getResult( ).get( "cut_price" ).toString( ) + "/-" );
                             offer.setText( task.getResult( ).get( "offer" ).toString( ) + " off " );
@@ -451,8 +423,6 @@ public class ProductDetails extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 AddtoCart();
-
-
             }
         } );
 
@@ -470,7 +440,7 @@ public class ProductDetails extends AppCompatActivity {
 
 
     private void AddtoCart(){
-        if(DBquaries.store_id.equals(store_id)){
+        if(DBquaries.store_id.equals(store_id)||DBquaries.store_id.isEmpty()){
             addtoCart.setClickable( false );
 
             final Map<String, Object> updateListSize = new HashMap<>( );
@@ -588,24 +558,6 @@ public class ProductDetails extends AppCompatActivity {
                     } );
                 }
             } );
-
-
-
-
-
-
-
-
-
-
-
         }
-
-
-
-
-
-
-
     }
 }
