@@ -61,9 +61,10 @@ public class DBquaries {
         final int size = grocery_CartList_product_id.size();
 
         if (size == 0) {
-
+            DBquaries.store_id="";
             Map<String, Object> Size = new HashMap<>();
             Size.put("list_size", 0);
+            Size.put("store_id", "");
 
 
             FirebaseFirestore.getInstance().collection("USERS").document(FirebaseAuth.getInstance().getUid())
@@ -103,6 +104,7 @@ public class DBquaries {
                     if (task.isSuccessful()) {
                         Map<String, Object> Size = new HashMap<>();
                         Size.put("list_size", size);
+                        Size.put("store_id", DBquaries.store_id);
 
                         FirebaseFirestore.getInstance().collection("USERS").document(FirebaseAuth.getInstance().getUid())
                                 .collection("USER_DATA").document("MY_GROCERY_CARTLIST")
@@ -147,58 +149,69 @@ public class DBquaries {
 
 //    private static LinearLayout search_ll;
 
-    public static void findDistance(String lat1, String lon1) {
-        final double userLat = Double.parseDouble(lat1);
-        final double userLng = Double.parseDouble(lon1);
+    public static void findDistance() {
 
-        FirebaseFirestore.getInstance().collection("STORES").orderBy("name").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+        FirebaseFirestore.getInstance().collection( "USERS" ).document(FirebaseAuth.getInstance().getCurrentUser().getUid()).get()
+                .addOnCompleteListener( new OnCompleteListener<DocumentSnapshot>( ) {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if(task.isSuccessful()){
+                            final double userLat = Double.parseDouble(task.getResult().get( "lat" ).toString());
+                            final double userLng = Double.parseDouble(task.getResult().get( "lon" ).toString());
+                            FirebaseFirestore.getInstance().collection("STORES").orderBy("name").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
 
-                        String lat = documentSnapshot.get("lat").toString();
-                        final String id = documentSnapshot.getId();
-                        double venueLat = Double.parseDouble(lat);
-                        String lon = documentSnapshot.get("lon").toString();
-                        double venueLng = Double.parseDouble(lon);
+                                            String lat = documentSnapshot.get("lat").toString();
+                                            final String id = documentSnapshot.getId();
+                                            double venueLat = Double.parseDouble(lat);
+                                            String lon = documentSnapshot.get("lon").toString();
+                                            double venueLng = Double.parseDouble(lon);
 
-                        double latDistance = Math.toRadians(userLat - venueLat);
-                        double lngDistance = Math.toRadians(userLng - venueLng);
+                                            double latDistance = Math.toRadians(userLat - venueLat);
+                                            double lngDistance = Math.toRadians(userLng - venueLng);
 
-                        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
-                                + Math.cos(Math.toRadians(userLat)) * Math.cos(Math.toRadians(venueLat))
-                                * Math.sin(lngDistance / 2) * Math.sin(lngDistance / 2);
+                                            double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+                                                    + Math.cos(Math.toRadians(userLat)) * Math.cos(Math.toRadians(venueLat))
+                                                    * Math.sin(lngDistance / 2) * Math.sin(lngDistance / 2);
 
-                        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                                            double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
-                        long distance = Math.round(AVERAGE_RADIUS_OF_EARTH_KM * c);
+                                            long distance = Math.round(AVERAGE_RADIUS_OF_EARTH_KM * c);
 
 
-                        Map<String, Object> dis = new HashMap<>();
-                        dis.put("distance", distance);
+                                            Map<String, Object> dis = new HashMap<>();
+                                            dis.put("distance", distance);
 
-                        FirebaseFirestore.getInstance().collection("USERS").document(FirebaseAuth.getInstance().getUid())
-                                .collection("MY_NEAR_STORES").document(id).set(dis).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
+                                            FirebaseFirestore.getInstance().collection("USERS").document(FirebaseAuth.getInstance().getUid())
+                                                    .collection("MY_NEAR_STORES").document(id).set(dis).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
 
-                                if (task.isSuccessful()) {
+                                                    if (task.isSuccessful()) {
+
+
+                                                    }
+
+                                                }
+                                            });
+
+                                        }
+
+
+                                    }
 
 
                                 }
+                            });
 
-                            }
-                        });
+                        }
 
                     }
+                } );
 
-
-                }
-
-
-            }
-        });
 
 
     }

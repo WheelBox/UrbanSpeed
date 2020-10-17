@@ -154,7 +154,7 @@ class PhoneLogin2 : AppCompatActivity() {
                         val documentSnapshot = task.result
                         if (documentSnapshot.exists()) {
                             phoneProgressBar.visibility = View.GONE
-                            DBquaries.findDistance("28.414497825686833", "77.29039451247131")
+                            DBquaries.findDistance()
                             DBquaries.setShop()
                             startActivity(Intent(this, MainActivity::class.java))
                         }else{
@@ -175,7 +175,6 @@ class PhoneLogin2 : AppCompatActivity() {
                                                     DBquaries.setAdminDATA(this)
                                                 } else if (accountType == "user") {
                                                     DBquaries.setUserData()
-                                                    DBquaries.findDistance("28.414497825686833", "77.29039451247131")
                                                     val userData: MutableMap<String, Any> = HashMap()
                                                     userData["fullname"] = ""
                                                     userData["lat"] = ""
@@ -205,13 +204,9 @@ class PhoneLogin2 : AppCompatActivity() {
                     }
                 }
 
-        if (DBquaries.users_list.contains(currentuser)) {
-            DBquaries.findDistance("28.414497825686833", "77.29039451247131")
-            DBquaries.setShop()
-            startActivity(Intent(this, MainActivity::class.java))
-        }
 
-        /* */
+
+
     }
 
     private fun View.showSnackBar(msg: String) {

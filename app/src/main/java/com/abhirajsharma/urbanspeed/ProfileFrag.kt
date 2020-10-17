@@ -56,7 +56,7 @@ class ProfileFrag : Fragment() {
 
         view.myAccountCartLL.setOnClickListener {
            // val intent = Intent(activity, MyCart::class.java)
-            val intent = Intent(activity, storeDetails::class.java)
+            val intent = Intent(activity, UserDetails::class.java)
                  startActivity(intent)
         }
 

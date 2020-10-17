@@ -78,7 +78,7 @@ public class ShopActivity extends AppCompatActivity {
                                                     shopModelList.add(new ShopModel(task.getResult().get("image").toString(),
                                                             task.getResult().get("name").toString(),
                                                             task.getResult().get("category").toString(),
-                                                            String.valueOf(distance)+ "km away from you",
+                                                            String.valueOf(distance)+ " km away from you",
                                                             "2.8",
                                                             task.getResult().get("offer").toString(),
                                                             task.getResult().getId()

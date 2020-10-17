@@ -132,7 +132,7 @@ public class storeDetails extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 loadingDialog.show( );
-                if (!(name.getText( ).toString( ).isEmpty( ) || description.getText( ).toString( ).isEmpty( ) || delivery_charges.getText( ).toString( ).isEmpty( ) || address.getText( ).toString( ).isEmpty( ))) {
+                if (!(name.getText( ).toString( ).isEmpty( ) || description.getText( ).toString( ).isEmpty( ) || delivery_charges.getText( ).toString( ).isEmpty( ) || lat1.isEmpty( ))) {
                     Map<String, Object> adminData = new HashMap<>( );
                     adminData.put( "name", name.getText( ).toString( ) );
                     adminData.put( "category", description.getText( ).toString( ) );

@@ -94,7 +94,7 @@ public class SearchedStore extends AppCompatActivity {
                                 model = new ShopModel( documentSnapshot.get( "image" ).toString(),
                                         documentSnapshot.get( "name" ).toString(),
                                         documentSnapshot.get( "category" ).toString(),
-                                        DBquaries.nearbyShopIdsDistance.get( index ),
+                                        DBquaries.nearbyShopIdsDistance.get( index )+" km away from you",
                                         documentSnapshot.get( "rating" ).toString(),
                                         documentSnapshot.get( "offer" ).toString(),
                                         documentSnapshot.getId());

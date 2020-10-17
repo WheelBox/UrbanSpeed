@@ -442,12 +442,14 @@ public class ProductDetails extends AppCompatActivity {
     private void AddtoCart(){
         if(DBquaries.store_id.equals(store_id)||DBquaries.store_id.isEmpty()){
             addtoCart.setClickable( false );
+            DBquaries.store_id=store_id;
 
             final Map<String, Object> updateListSize = new HashMap<>( );
             updateListSize.put( "list_size", (long) DBquaries.grocery_CartList_product_id.size( ) + 1 );
 
             Map<String, Object> product_Id = new HashMap<>( );
             product_Id.put( "id_" + (long) DBquaries.grocery_CartList_product_id.size( ), product_id );
+            product_Id.put( "store_id", store_id );
 
             FirebaseFirestore.getInstance( ).collection( "USERS" ).document( FirebaseAuth.getInstance( ).getUid( ) )
                     .collection( "USER_DATA" ).document( "MY_GROCERY_CARTLIST" ).

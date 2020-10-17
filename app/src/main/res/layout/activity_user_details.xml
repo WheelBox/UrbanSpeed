@@ -47,7 +47,7 @@
     <LinearLayout
         android:id="@+id/login_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:clipChildren="false"
         android:clipToPadding="false"
         android:focusable="true"
@@ -125,13 +125,44 @@
                 android:textColor="@android:color/white"
                 android:textColorHint="#D7D7D7"
                 android:textSize="15sp" />
+            <TextView
+                android:id="@+id/address_txt_user"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:visibility="gone"
+                android:textColor="#fff"
+                android:layout_marginTop="12dp"
+                android:gravity="center"
+                />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/addLocationBtn"
+                style="@style/Widget.MaterialComponents.Button"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="#D8283C"
+                android:text="Add Location"
+                android:textColor="@android:color/white"
+                app:cornerRadius="10dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_gravity="bottom"
+            >
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/profileCreateBtn"
                 style="@style/Widget.MaterialComponents.Button"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
+                android:layout_gravity="bottom"
                 android:layout_marginTop="30dp"
                 android:backgroundTint="#D8283C"
                 android:text="Create profile"
@@ -139,6 +170,10 @@
                 app:cornerRadius="10dp" />
 
         </LinearLayout>
+
+
+
+
     </LinearLayout>
 
 </LinearLayout>
