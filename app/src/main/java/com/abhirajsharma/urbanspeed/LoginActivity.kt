@@ -74,23 +74,13 @@ class LoginActivity : AppCompatActivity() {
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
                         val user = auth.currentUser!!
-                        updateUI(user)
+                        startActivity(Intent(this,GoogleLogin2::class.java))
                     } else {
                         rootLayout.showSnackBar("Authentication Failed.")
                     }
                 }
     }
 
-    private fun updateUI(account: FirebaseUser) {
-        progressBar.visibility = View.GONE
-        UserInfo.userName = account.displayName.toString()
-        UserInfo.userId = account.uid
-        UserInfo.userMail = account.email.toString()
-        UserInfo.userImg = account.photoUrl.toString()
-        val i = Intent(this, MainActivity::class.java)
-        startActivity(i)
-        finish()
-    }
 
     private fun View.showSnackBar(msg: String) {
         val snack = Snackbar.make(this, msg, Snackbar.LENGTH_SHORT)

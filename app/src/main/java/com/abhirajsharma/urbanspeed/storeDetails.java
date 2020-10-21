@@ -147,7 +147,7 @@ public class storeDetails extends AppCompatActivity {
                             if (task.isSuccessful( )) {
 
                                 Map<String, Object> Data = new HashMap<>( );
-                                adminData.put( "list_size", 0 );
+                                Data.put( "list_size", 0 );
 
                                 FirebaseFirestore.getInstance( ).collection( "STORES" ).document( store_id ).collection( "ORDERS" ).document( "order_list" )
                                         .set( Data ).addOnCompleteListener( new OnCompleteListener<Void>( ) {

@@ -98,7 +98,7 @@ public class Products extends AppCompatActivity {
                     name.setText( task.getResult().get( "name" ).toString() );
                     address.setText( task.getResult().get( "address" ).toString() );
                     description.setText( task.getResult().get( "category" ).toString() );
-                    String image=task.getResult().get( "category" ).toString();
+                    String image=task.getResult().get( "image" ).toString();
                     if (image.isEmpty()){
                         storeImage.setImageResource( R.drawable.store_default );
                     }else {
@@ -153,7 +153,6 @@ public class Products extends AppCompatActivity {
 
                     }
                 } );*/
-
                 Intent intent=new Intent( Products.this,XSearch.class );
                 intent.putExtra( "store_id" ,id );
                 startActivity( intent );

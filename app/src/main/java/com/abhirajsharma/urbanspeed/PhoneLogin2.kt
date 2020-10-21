@@ -146,7 +146,6 @@ class PhoneLogin2 : AppCompatActivity() {
     private fun updateUI() {
         val currentuser = FirebaseAuth.getInstance().currentUser!!.uid
         phoneProgressBar.visibility = View.VISIBLE
-        Toast.makeText(applicationContext, DBquaries.admins_list.toString() + DBquaries.users_list.toString() + "_" + currentuser, Toast.LENGTH_SHORT).show()
 
         FirebaseFirestore.getInstance().collection("USERS").document(FirebaseAuth.getInstance().currentUser!!.uid).get()
                 .addOnCompleteListener { task ->
@@ -157,6 +156,7 @@ class PhoneLogin2 : AppCompatActivity() {
                             DBquaries.findDistance()
                             DBquaries.setShop()
                             startActivity(Intent(this, MainActivity::class.java))
+                            finish()
                         }else{
                             FirebaseFirestore.getInstance().collection("ADMINS").document(FirebaseAuth.getInstance().currentUser!!.uid).get()
                                     .addOnCompleteListener { task ->
@@ -168,6 +168,7 @@ class PhoneLogin2 : AppCompatActivity() {
                                                 val i = Intent(this, Products::class.java)
                                                 i.putExtra("store_id", id)
                                                 startActivity(i)
+                                                finish()
 
                                             }else{
                                                 phoneProgressBar.visibility = View.GONE
@@ -190,6 +191,7 @@ class PhoneLogin2 : AppCompatActivity() {
                                                     FirebaseFirestore.getInstance().collection("USERS").document(currentuser).set(userData).addOnCompleteListener {
                                                         if(it.isSuccessful){
                                                             startActivity(Intent(this, UserDetails::class.java))
+                                                            finish()
                                                         }
                                                     }
 

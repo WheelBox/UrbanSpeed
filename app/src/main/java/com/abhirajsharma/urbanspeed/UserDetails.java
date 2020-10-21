@@ -120,7 +120,7 @@ public class UserDetails extends AppCompatActivity {
                     Toast.makeText( UserDetails.this, "Add All Details ", Toast.LENGTH_SHORT ).show( );
                 }else {
                     loadingDialog.show();
-                    DBquaries.setShop();
+
 
                     Map<String,Object> userData=new HashMap<>(  );
                     userData.put( "permanent_name", userNmae.getText().toString());
@@ -133,9 +133,11 @@ public class UserDetails extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if(task.isSuccessful()){
-
+                                        DBquaries.findDistance();
+                                        DBquaries.setShop();
                                         Intent intent=new Intent( UserDetails.this,MainActivity.class );
                                         startActivity( intent );
+                                        finish();
 
                                     }
                                 }
@@ -206,7 +208,7 @@ public class UserDetails extends AppCompatActivity {
                                 addresses = geocoder.getFromLocation( lat, lon, 1 ); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
                                 String Address = addresses.get( 0 ).getAddressLine( 0 );
                                 address_txt.setText( Address );
-                                DBquaries.findDistance();
+
 
 
                             } catch (IOException e) {
