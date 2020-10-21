@@ -72,7 +72,6 @@
 
 
     </LinearLayout>
-
     <LinearLayout
         android:id="@+id/store_description_ll"
 
@@ -119,7 +118,7 @@
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/store_description_ll">
+        app:layout_constraintTop_toBottomOf="@+id/store_offer_ll">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -136,8 +135,42 @@
             android:layout_marginEnd="12dp"
             android:background="@drawable/border_black_stroke"
             android:ems="10"
-            android:hint="Name"
+            android:hint="in Rupees"
             android:inputType="number"
+            android:paddingStart="8dp"
+            android:textColor="#000"
+
+            android:theme="@style/Edit_Text"
+            app:layout_constraintVertical_bias="0.0" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/store_offer_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/store_description_ll">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="Offers :-"
+            android:textColor="#000"
+            android:textSize="18dp" />
+        <EditText
+            android:id="@+id/add_offer_et"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="12dp"
+            android:background="@drawable/border_black_stroke"
+            android:ems="10"
+            android:hint="offer"
+            android:inputType="text"
             android:paddingStart="8dp"
             android:textColor="#000"
 

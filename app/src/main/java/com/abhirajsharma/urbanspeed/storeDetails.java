@@ -55,6 +55,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -63,7 +64,7 @@ import java.util.Objects;
 
 public class storeDetails extends AppCompatActivity {
 
-    private EditText name, description, delivery_charges;
+    private EditText name, description, delivery_charges,offer;
     private TextView address;
     private Button next, addLocation;
     private String lat1 = "";
@@ -96,6 +97,7 @@ public class storeDetails extends AppCompatActivity {
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient( this );
         addimage = findViewById( R.id.addShopImage );
         store_image = findViewById( R.id.store_image );
+        offer=findViewById( R.id.add_offer_et );
         mStorageRef = FirebaseStorage.getInstance( ).getReference( "STORES" );
         mDetabaseRef = FirebaseDatabase.getInstance( ).getReference( "uploads" );
         loadingDialog = new Dialog( storeDetails.this );
@@ -120,7 +122,6 @@ public class storeDetails extends AppCompatActivity {
                             getApplicationContext( ), Manifest.permission.ACCESS_FINE_LOCATION
                     ) != PackageManager.PERMISSION_GRANTED) {
                         ActivityCompat.requestPermissions( storeDetails.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE_LOCATION );
-
                     } else {
                         getCURRENTlocation( );
                     }                }
@@ -132,15 +133,24 @@ public class storeDetails extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 loadingDialog.show( );
-                if (!(name.getText( ).toString( ).isEmpty( ) || description.getText( ).toString( ).isEmpty( ) || delivery_charges.getText( ).toString( ).isEmpty( ) || lat1.isEmpty( ))) {
+                if (!(name.getText( ).toString( ).isEmpty( ) || description.getText( ).toString( ).isEmpty( ) || delivery_charges.getText( ).toString( ).isEmpty( ) || offer.getText( ).toString( ).isEmpty( ) || lat1.isEmpty( ))) {
+
+                    ArrayList<String> tags=new ArrayList<>(  );
+                    tags.add( name.getText( ).toString( ) );
+                    tags.add( description.getText( ).toString( ) );
+
+
+
                     Map<String, Object> adminData = new HashMap<>( );
                     adminData.put( "name", name.getText( ).toString( ) );
                     adminData.put( "category", description.getText( ).toString( ) );
                     adminData.put( "delivery_charges", delivery_charges.getText( ).toString( ) );
                     adminData.put( "address", address.getText( ).toString( ) );
+                    adminData.put( "offer", offer.getText( ).toString( ) );
                     adminData.put( "image", imageUri );
                     adminData.put( "lat", lat1 );
                     adminData.put( "lon", lon1 );
+                    adminData.put( "tags",tags );
                     FirebaseFirestore.getInstance( ).collection( "STORES" ).document( store_id ).set( adminData ).addOnCompleteListener( new OnCompleteListener<Void>( ) {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
